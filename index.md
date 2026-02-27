@@ -1,9 +1,10 @@
 ---
-title: 
-feature_image: "https://raw.githubusercontent.com/MUnitQuest/MUnitQuest.github.io/refs/heads/main/Images/header_emg_spikes.jpg"
+title: Welcome to MUnitQuest Competition
+feature_image: "https://raw.githubusercontent.com/MUnitQuest/MUnitQuest.github.io/refs/heads/main/Images/header_new.jpg"
 feature_text: |
-  ## MUnitQuest: A community-driven competition on motor unit identification
+  ## This website is under construction. For educational purposes only. All information is fictitious. 
 ---
+
 
 
 ### Summary, aims, and scope 
