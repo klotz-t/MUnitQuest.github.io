@@ -13,7 +13,7 @@ h1, h2, h3, h4, h5, h6 {
 ------------------------- */
 body {
   font-size: 16px;      /* Adjust font size */
-  line-height: 1.2;     /* Optional line spacing */
+  line-height: normal;  /* default browser spacing */
   text-align: justify;   /* Block format */
 }
 
@@ -21,7 +21,8 @@ body {
    LINKS
 ------------------------- */
 a {
-  color: #0b3d91;
+  color: #0b3d91;               /* link text color */
+  text-decoration: none;   /* ensure no line is under the link */
 }
 
 /* Optional: adjust paragraph spacing */
