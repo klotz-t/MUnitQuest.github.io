@@ -38,8 +38,9 @@ Since the development of the concentric needle by Adrian and Bronk nearly 100 ye
 
 
 <p float="left">
-  <img src="Images/inperial_logo.png" width="120">
-  <img src="Images/UniStuttgartLogo.png" width="120">
+  <img src="Images/inperial_logo.png" width="200" />
+  <img src="Images/logo_empty.jpeg" width="30" />
+  <img src="Images/UniStuttgartLogo.png" width="200" />
 </p>  
 
 
