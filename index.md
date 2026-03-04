@@ -5,11 +5,11 @@ feature_text:
 ---
 
 
-### Summary, aims, and scope 
+### Aims and scope 
 
 **MUnitQuest** aims to advance methods for reconstructing motor unit spike trains from high-density surface EMG (HDsEMG) through a community-driven competition by
   1. Building a diverse, high-quality, openly shared HDsEMG database with labelled spike trains
-  2. Rigorously evaluate algorithms on this benchmark in a transparent, reproducible way
+  2. Rigorously evaluating algorithms on this benchmark in a transparent, reproducible way
 
 The competition will address two distinct algorithmic challenges:
    - **Challenge 1: Isometric contractions.** Well-studied, stationary conditions for which multiple decomposition methods currently exist.
@@ -20,7 +20,7 @@ The competition will address two distinct algorithmic challenges:
 The competition is organised into three phases: 
   - **Phase 0: Archive.** Community members contribute datasets (i.e., experimental or simulated HDsEMG data together with labelled spike trains), which are automatically standardised to the [EMG-BIDS format](https://bids-specification.readthedocs.io/en/stable/modality-specific-files/electromyography.html) and assessed via a double-blind review process.
   - **Phase 1: Familiarization.** Algorithm developers are provided with training data (including labels), allowing teams to build, test, and optimize their motor unit identification frameworks.
-  - **Phase 2: Showdown.** The main competition is conducted using a previously hidden test data set (labels are hidden to competitors). Prize-eligible entries are required to share code upon the end of the competition; submissions based on proprietary code are not eligible for awards. The final leaderboard is computed from test set performance and publicly released.
+  - **Phase 2: Showdown.** The main competition is conducted using a previously hidden test data set (labels are hidden to competitors). Prize-eligible entries are required to share code at the end of the competition; submissions based on proprietary code are not eligible for awards. The final leaderboard is computed from test set performance and publicly released.
 
 ### Awards
 
@@ -38,24 +38,23 @@ Since the development of the concentric needle by Adrian and Bronk nearly 100 ye
 
 
 <p float="left">
-  <img src="Images/inperial_logo.png" width="200" />
-  <img src="Images/logo_empty.jpeg" width="30" />
-  <img src="Images/UniStuttgartLogo.png" width="200" />
-</p>  
-
+  <img src="/Images/imperial_logo.png" width="200" />
+  <img src="/Images/logo_empty.jpeg" width="30" />
+  <img src="/Images/UniStuttgartLogo.png" width="200" />
+</p>
 
 - University of Stuttgart
 - Imperial College London
 
 ### Partners and supporters
 
-- Become a partner 
+- Become a partner! Get in touch if you want to contribute to our efforts 🙏
 
 ### Core coordinators
 
-- Pranav Mamidanna
+- Pranav Mamidanna ([p.mamidanna22@imperial.ac.uk](mailto:p.mamidanna22@imperial.ac.uk), [GitHub](https://github.com/pranavm19))
 - Thomas Klotz
 - Robin Rohlen
 - Oliver Röhrle
-- Dario Farina
+- Dario Farina ([d.farina@imperial.ac.uk](mailto:d.farina@imperial.ac.uk))
 

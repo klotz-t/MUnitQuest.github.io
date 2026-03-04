@@ -20,7 +20,7 @@ guaranteeing reproducibility and downstream re-use.
 - **Raw-signal quality** – gauges whether the HDsEMG signals are “decomposition-ready”. Key metrics
 include the baseline noise of each channel, residual power-line interference at 50/60 Hz, and the
 fraction of bad channels.
-- **Label quality** – evaluates the quality and trustworthiness of the labeled motor unit spike trains. This includes the labeling approach (e.g., simulatenous invasive EMG) together with established trustworthiness measures such as the silhoeutte score or the interspike-interval variability. 
+- **Label quality** – evaluates the quality and trustworthiness of the labeled motor unit spike trains. This includes the labeling approach (e.g., simultaneous invasive EMG) together with established trustworthiness measures such as the silhouette score or the interspike-interval variability. 
 - **Diversity** – rewards datasets that expand anatomical, functional and demographic coverage. Expe-
 rienced reviewers rate the novelty of submissions in terms of recorded muscles, tasks, and recording
 configurations, including pathological as well as healthy cohorts, and balancing biological sex and age.

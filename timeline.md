@@ -6,7 +6,7 @@ feature_text:
 
 Here we summarize key dates and the competition timeline.
 
-| Date           | Event |
+| **Date**       | **Event** |
 | -------------- | ----------- |
 | 01/06/2026     | **Data submission opens** (see [Data Submission](https://munitquest.github.io/dataSubmission/)) |
 | 15/06/2026     | **Familiarization-phase starts** |
@@ -18,16 +18,16 @@ Here we summarize key dates and the competition timeline.
 | 15/01/2027     | **The leaderboard is announced** |
 
 
-### Details about Familarization-phase
+### Details about Familiarization-phase
 
-- Competitors are provided with training data (inclduing motor unit spike train labels)
+- Competitors are provided with training data (including motor unit spike train labels)
 - Development and optimization of algorithms
 - Results from baseline algorithms are provided for reference
 
 
 ### Details about Final-phase
 
-- Test data set consiting of data collected in Phase 0 (hidden labels)
+- Test data set consisting of data collected in Phase 0 (hidden labels)
 - Submission of predicted motor unit spike trains
-- To be electable for prizes, competitors need to share their code
+- To be eligible for prizes, competitors need to share their code
 

@@ -9,7 +9,7 @@ Applications and research questions using motor unit identification methods are 
 
 In short, depending on the type of data you want to contribute, a submission consists of the following parts: 
 
-![Submission Requirements](Images/submissionRequirements.jpg)
+![Submission Requirements](/Images/submissionRequirements.jpg)
 
 ### Raw Data and Metadata Submission
 We will provide all EMG data entering the competition in the standardized [EMG-BIDS](https://bids-specification.readthedocs.io/en/stable/modality-specific-files/electromyography.html) format. To make getting started with EMG-BIDS as easy as possible, we support two options for your data submission:
