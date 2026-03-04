@@ -34,8 +34,56 @@ a {
   text-decoration: none;   /* ensure no line is under the link */
 }
 
-/* Optional: adjust paragraph spacing */
+/* -------------------------
+   PARAGRAPH SPACING
+--------------------------*/
 p {
   margin-bottom: 1.0em;
+}
+
+.typeset p + ol,
+.typeset p + ul {
+  margin-top: -0.7rem;
+}
+
+.typeset p + table {
+  margin-top: -0.7rem;
+}
+
+.typeset table {
+  margin-bottom: 1.5rem;
+}
+
+/* -------------------------
+   TABLE BORDERS
+--------------------------*/
+.typeset table th,
+// .typeset table td {
+//   border: 1px solid #ccc;
+//   padding: 0.4rem 0.8rem;
+// }
+
+.typeset table thead th {
+  border-bottom: 1px solid #000000;
+}
+
+/* -------------------------
+   FIX LIST INDENTATION
+   The alembic theme's ol uses position:absolute for numbers
+   without a positioned parent, causing numbers to bleed left.
+------------------------- */
+.typeset ol,
+.typeset ul {
+  padding-left: 2rem;
+  padding-top: 0.1rem;
+  margin-bottom: 0.1rem;
+}
+
+.typeset ol li {
+  position: relative;
+}
+
+.typeset ul li {
+  list-style-type: disc;
 }
 
