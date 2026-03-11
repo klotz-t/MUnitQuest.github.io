@@ -24,7 +24,7 @@ The competition is organised into three phases:
 
 ### Awards
 
-Teams receive recognition on a permanent leaderboard (online), and the top 5 teams per challenge, as well as the top 5 dataset contributions, will be invited to share their solutions in a *special issue of the Journal of Electromyography and Kinesiology*.
+Teams receive recognition on a permanent leaderboard (online), and the top 5 teams per algorithmic challenge, as well as the top 5 dataset contributions, will be invited to share their solutions in a *special issue* of the [Journal of Electromyography and Kinesiology](https://www.sciencedirect.com/journal/journal-of-electromyography-and-kinesiology).
 
 ### Motivation and background
 

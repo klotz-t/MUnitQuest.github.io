@@ -30,7 +30,7 @@ plugins:
 url: 'https://munitquest.github.io/' #unsure where this shows
 baseurl: ''
 title: 'MUnitQuest'
-description: 'MUnitQuest Dataset Submission'
+description: 'Competition on motor unit idendification'
 permalink: pretty
 logo: "https://raw.githubusercontent.com/MUnitQuest/MUnitQuest.github.io/refs/heads/main/Images/logo_empty.jpeg" # logo in top left 
 
@@ -44,10 +44,12 @@ navigation_header:
   url: /
 - title: Timeline
   url: /timeline/
+- title: Rules
+  url: /rules/  
 - title: Data Submission
   url: /dataSubmission/
-- title: Rules
-  url: /rules/
+- title: Algorithm Submission
+  url: /algoSubmission/  
 #- title: About
 #  url: /about/
 #- title: FAQ

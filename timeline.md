@@ -25,7 +25,7 @@ Here we summarize key dates and the competition timeline.
 - Results from baseline algorithms are provided for reference
 
 
-### Details about Final-phase
+### Details about Showdown-phase
 
 - Test data set consisting of data collected in Phase 0 (hidden labels)
 - Submission of predicted motor unit spike trains

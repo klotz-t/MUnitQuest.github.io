@@ -7,7 +7,22 @@ feature_text:
 
 ### Rules of participation 
 
-The competition is open to teams worldwide, with no restriction on team size. Each team must nominate a leader responsible for coordination, submission, and prize allocation. One submission per team is allowed in Phase 2.
+The competition is open to teams worldwide, with no restriction on team size. Each team must nominate a leader responsible for coordination and submission. Each person may only belong to one team. 
+
+### Algorithm submission
+This is a prediction submission competition. You will be asked to upload, for each recording, a tabular file (*.tsv*) containing your predicted motor unit spikes (BIDS-events file). Nevertheless, to be eligible for awards, you need to openly share your code (e.g., via GitHub). 
+
+Here is a minimal example of the submission format:    
+
+| **onset** | **duration** | **sample** | **unit_id** | **event_description** |
+| --------- | ------------ | ---------- | ----------- | ----------------------|
+| 0.001     | 0            | 1          | 0           | Motor-unit-spike      |
+| 0.005     | 0            | 5          | 1           | Motor-unit-spike      |
+| 0.011     | 0            | 11         | 0           | Motor-unit-spike      |
+| 0.012     | 0            | 12         | 2           | Motor-unit-spike      |
+| 0.016     | 0            | 16         | 1           | Motor-unit-spike      |
+| ...       | ...          | ...        | ...         | Motor-unit-spike      |
+
 
 ### Data review
 
