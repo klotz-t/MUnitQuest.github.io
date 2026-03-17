@@ -23,17 +23,17 @@ Here we summarize key dates and the competition timeline.
 
 - Community members collect experimental and simulated HDsEMG data together with motor unit spike train labels
 - Datasets need to be submitted through the data submission portal (see [Data submission](https://munitquest.github.io/registration_and_submission/))
-- As part of **Challange D** an expert reviewer panel evaluates each dataset contribution
+- As part of **Challenge D**, an expert reviewer panel evaluates each dataset contribution
 - Outstanding data contributions (**top 5**, rated by an expert reviewer panel) are invited to contribute to a *special issue* in the [Journal of Electromyography and Kinesiology](https://www.sciencedirect.com/journal/journal-of-electromyography-and-kinesiology)
-- After the competition is completed, data is relesead on a open data repository (mandatory for datasets used in **Phase 2**, optional otherwise)
+- After the competition is completed, data is released on an open data repository (mandatory for datasets used in **Phase 2**, optional otherwise)
 
 ### Details about Phase 1 (Familiarization)
 
 - Runs parallel to **Phase 0**
 - Competitors are provided with training data from the [MUniverse benchmark collection](https://openreview.net/pdf?id=Slrp3l7aYo) (including motor unit spike train labels)
-- Competitors develop and optimization their algorithms 
+- Competitors develop and optimize their algorithms 
 - Participants can compete in both challenges (**A1** and **A2**) or in only one challenge
-- To qualify for **Phase 2** competitors need to upload their predictions (motor unit spike trains) through the algorithm submission portal (coming soon)
+- To qualify for **Phase 2**, competitors need to upload their predictions (motor unit spike trains) through the algorithm submission portal (coming soon)
 - Results from baseline algorithms (together with tutorials -- coming soon) are provided for reference
 - An anonymous preliminary leaderboard is provided as feedback
 
@@ -42,7 +42,7 @@ Here we summarize key dates and the competition timeline.
 
 - Finals to determine the leaderboards of **Challenge A1** and **Challenge A2**
 - Competitors are provided with the *MUnitQuest data collection* (hidden labels) consisting of anonymized recordings collected in **Phase 0** 
-- Note that the organizers may make small alterations to the test data (e.g., injected noise, cropping signals, etc.) to limit the advantage of teams also participating in **Challange D**
+- Note that the organizers may make small alterations to the test data (e.g., injected noise, cropping signals, etc.) to limit the advantage of teams also participating in **Challenge D**
 - Submission of predicted motor unit spike trains
-- To be eligible for awards, competitors need to openly share their code (e.g., using GitHub)
+- To be eligible for awards, competitors need to share their code (e.g., using GitHub) openly
 
