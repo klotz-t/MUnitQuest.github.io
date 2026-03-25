@@ -7,11 +7,11 @@ feature_text:
 
 ### Rules of participation 
 
-The competition is open to teams worldwide, with no restriction on team size. Each team must nominate a leader responsible for coordination and submission. Teams may compete in all three challenges (**A1**, **A2**, and **D**), or in a single challenge. Each person may only belong to one team per challenge. Each registered team may submit one contribution (a dataset or an algorithmic prediction) per challenge.
+The competition is open to teams worldwide, with no restriction on team size. Each team must nominate a leader responsible for coordination and submission. Teams may compete in all three challenges (**Isometric**, **Dynamic**, and **Data**), or in a single challenge. Each person may only belong to one team per challenge. Each registered team may submit one contribution (a dataset or an algorithmic prediction) per challenge.
 
 ### Data challenge: Evaluation
 
-To ensure the quality of the datasets used for the algorithmic challenges **Isometric** and **Dynamic contractions**, and to obtain the scoring of the **Data challenge**, we plan to conduct a double-blind review process by recruiting an expert panel (10-12 persons) that rates the datasets based on a set of pre-defined criteria:
+To ensure the quality of the datasets used for the algorithmic challenges **Isometric** and **Dynamic** contractions, and to obtain the scoring of the **Data challenge**, we plan to conduct a double-blind review process by recruiting an expert panel (10-12 persons) that rates the datasets based on a set of pre-defined criteria:
 
 - **Metadata and provenance** (10 percent) – verifies that submissions satisfy [CEDE](https://cede.isek.org/) reporting matrices, thereby guaranteeing reproducibility and downstream re-use.
 - **Raw-signal quality** (30 percent) – gauges whether the HDsEMG signals are “decomposition-ready”. Key metrics include the baseline noise of each channel, residual power-line interference at 50/60 Hz, and the fraction of bad channels.

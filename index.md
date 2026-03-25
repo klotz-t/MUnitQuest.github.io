@@ -16,7 +16,7 @@ This is only possible if the competition data includes reliably labeled motor un
 
 ### Who is it for
 
-  - The algorithmic challenges (**Isometric challenge** and **Dynamic challenge**) are intended for **algorithm developers** working on computational methods that can reconstruct the activity of single neurons from complex mixtures.
+  - The **Isometric and Dynamic challenges** are intended for **algorithm developers** working on computational methods that can reconstruct the activity of single neurons from complex mixtures.
   - The **Data challenge** is targeted at **experimental researchers** who use HDsEMG and **simulation scientists** developing electrophysiological models that want to apply their methods in a highly relevant field of applied neuromuscular research.       
 
 ### How does it work

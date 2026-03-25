@@ -6,6 +6,8 @@ feature_text:
 
 Here we summarize key dates and the competition timeline.
 
+<div style="max-width:100%; overflow-x:auto;">
+
 | **Date**       | **Event** |
 | -------------- | ----------- |
 | 01/06/2026     | **Phase 0:** The data submission opens |
@@ -15,9 +17,10 @@ Here we summarize key dates and the competition timeline.
 | 30/06/2026     | **Phase 1:** The submission portal for the familarization phase closes |
 | 15/10/2026     | **Data evaluation completed** |
 | 01/11/2026     | **Phase 2:** The showdown phase starts by releasing the *MUnitQuest data colletion* |
-| 31/12/2026     | **Phase 2:** The algorithm submission portal (**Isometric** and **Dynamic challenge) closes (23:59, CET) |
+| 31/12/2026     | **Phase 2:** The algorithm submission portal (**Isometric** and **Dynamic challenge**) closes (23:59, CET) |
 | 15/01/2027     | **The awards are announced and final leaderboards are published** |
 
+</div>
 
 ### Details about Phase 0 (Archive)
 
