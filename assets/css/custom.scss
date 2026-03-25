@@ -78,6 +78,14 @@ p {
 }
 
 /* -------------------------
+   SCROLABLE TABLE 
+--------------------------*/
+.table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* -------------------------
    FIX LIST INDENTATION
    The alembic theme's ol uses position:absolute for numbers
    without a positioned parent, causing numbers to bleed left.

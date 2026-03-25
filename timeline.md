@@ -6,7 +6,7 @@ feature_text:
 
 Here we summarize key dates and the competition timeline.
 
-<div style="max-width:100%; overflow-x:auto;">
+<div class="table-scroll">
 
 | **Date**       | **Event** |
 | -------------- | ----------- |
