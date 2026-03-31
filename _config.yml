@@ -49,6 +49,8 @@ navigation_header:
   url: /rules/  
 - title: Submission and Registration
   url: /registration_and_submission/
+- title: Tmp
+  url: /metadata-form/
 #- title: Algorithm Submission
 #  url: /algoSubmission/  
 #- title: About
