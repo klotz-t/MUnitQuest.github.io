@@ -28,8 +28,7 @@ plugins:
 - jekyll-remote-theme
 
 # Site settings
-#url: 'https://munitquest.github.io/' #unsure where this shows
-url: ''
+url: 'https://munitquest.github.io/' #unsure where this shows
 baseurl: ''
 title: 'MUnitQuest'
 description: 'Competition on motor unit idendification'
@@ -50,8 +49,8 @@ navigation_header:
   url: /rules/  
 - title: Submission and Registration
   url: /registration_and_submission/
-- title: BIDS generator
-  url: /metadata-form/
+#- title: Tmp
+#  url: /metadata-form/
 #- title: Algorithm Submission
 #  url: /algoSubmission/  
 #- title: About
