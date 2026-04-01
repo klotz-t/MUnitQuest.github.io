@@ -1,5 +1,6 @@
 ---
 title: Metadata Form
+feature_image: "https://raw.githubusercontent.com/MUnitQuest/MUnitQuest.github.io/refs/heads/main/Images/header2.jpeg"
 layout: page
 ---
 
@@ -248,12 +249,17 @@ layout: page
 
         <div class="mf-form-group">
             <label for="manufacturer">Manufacturer *</label>
-            <input type="text" id="manufacturer" name="manufacturer" placeholder="e.g., OT Bioelettronica" required>
+            <input type="text" id="manufacturer" name="manufacturer" placeholder="Manufacturer of your EMG amplifier." required>
         </div>
 
         <div class="mf-form-group">
             <label for="manufacturerModel">Manufacturer's Model Name *</label>
-            <input type="text" id="manufacturerModel" name="manufacturerModel" placeholder="e.g., SESSANTAQUATTRO+" required>
+            <input type="text" id="manufacturerModel" name="manufacturerModel" placeholder="Model name of your EMG amplifier." required>
+        </div>
+
+        <div class="mf-form-group">
+            <label for="softwareVersions">Software versions *</label>
+            <input type="text" id="softwareVersions" name="softwareVersions" placeholder="Version of the softwrae used for the recording" required>
         </div>
 
         <div class="mf-form-group">
@@ -272,13 +278,13 @@ layout: page
         </div>
 
         <div class="mf-form-group">
-            <label for="hardwareFilters">Hardware Filters *</label>
-            <input type="text" id="hardwareFilters" name="hardwareFilters" placeholder="e.g., 0.3-900 Hz bandpass" required>
+            <label for="highPassFilter">High-pass Filter *</label>
+            <input type="number" id="highPassFilter" name="highPassFilter" required>
         </div>
 
         <div class="mf-form-group">
-            <label for="recordingDuration">Recording Duration per Trial (seconds)</label>
-            <input type="number" id="recordingDuration" name="recordingDuration" step="0.1">
+            <label for="lowPassFilter">Low-pass Filter *</label>
+            <input type="number" id="lowPassFilter" name="lowPassFilter" required>
         </div>
 
         <h3>Electrode Configuration</h3>

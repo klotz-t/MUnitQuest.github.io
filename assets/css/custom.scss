@@ -121,8 +121,11 @@ p {
   --mf-text-muted:    #64748b;
   --mf-radius:        6px;
 
+  width: 100%;
+  /* 
   max-width: 860px;
   margin: 0 auto;
+  */
 
   /* --- Progress bar --- */
   .mf-progress-bar {

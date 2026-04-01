@@ -269,7 +269,7 @@ function generateReview() {
 function generateBIDSPreview(data) {
     const bids = {
         "Name": data.datasetName || "",
-        "BIDSVersion": "1.10.1",
+        "BIDSVersion": "1.11.1",
         "DatasetType": "raw",
         "License": data.license || "",
         "Authors": getAuthors(),
@@ -278,16 +278,26 @@ function generateBIDSPreview(data) {
         "EthicsApprovals": [data.ethicsApprovalNumber || ""],
         "InstitutionName": data.institutionName || "",
         "InstitutionAddress": data.institutionAddress || "",
-        "TaskName": data.taskName || "",
-        "TaskDescription": data.taskDescription || "",
-        "Manufacturer": data.manufacturer || "",
-        "ManufacturersModelName": data.manufacturerModel || "",
+        "GeneratedBy": [
+            {
+                "Name": "MUnitQuest BIDS-Tools",
+                "Version": "0.1.0",
+                "Description": "Assisted manual metadata annotaion"
+            }
+        ],
+        "TaskName": data.taskName || "n/a",
+        "TaskDescription": data.taskDescription || "n/a",
+        "Manufacturer": data.manufacturer || "n/a",
+        "ManufacturersModelName": data.manufacturerModel || "n/a",
         "SamplingFrequency": parseFloat(data.samplingFrequency) || null,
-        "PowerLineFrequency": data.powerLineFrequency || "",
-        "HardwareFilters": data.hardwareFilters || "",
+        "PowerLineFrequency": data.powerLineFrequency || "n/a",
+        "HardwareFilters": {
+            "HighPassFilter":  parseFloat(data.highPassFilters) || "n/a",
+            "LowPassFilter":  parseFloat(data.lowPassFilters) || "n/a"
+        },
         "EMGChannelCount": parseInt(data.emgChannelCount) || null,
-        "EMGReference": data.emgReference || "",
-        "EMGGround": data.emgGround || ""
+        "EMGReference": data.emgReference || "n/a",
+        "EMGGround": data.emgGround || "n/a"
     };
     document.getElementById('bidsMetadataPreview').textContent = JSON.stringify(bids, null, 2);
 }
@@ -354,21 +364,23 @@ function buildMetadata() {
             pathologicalConditions: data.pathologicalConditions || ""
         },
         recording: {
-            manufacturer: data.manufacturer || "",
-            manufacturerModel: data.manufacturerModel || "",
+            manufacturer: data.manufacturer || "n/a",
+            manufacturerModel: data.manufacturerModel || "n/a",
             samplingFrequency: parseFloat(data.samplingFrequency) || null,
-            powerLineFrequency: data.powerLineFrequency || "",
-            hardwareFilters: data.hardwareFilters || "",
+            powerLineFrequency: data.powerLineFrequency || "n/a",
+            hardwareFilters: data.hardwareFilters || "n/a",
+            lowPassFilter: data.lowPassFilter || "n/a",
+            lowPassFilter: data.highPassFilter || "n/a",
             recordingDuration: parseFloat(data.recordingDuration) || null,
             emgChannelCount: parseInt(data.emgChannelCount) || null,
-            electrodeMaterial: data.electrodeMaterial || "",
-            electrodeShape: data.electrodeShape || "",
+            electrodeMaterial: data.electrodeMaterial || "n/a",
+            electrodeShape: data.electrodeShape || "n/a",
             electrodeDiameter: parseFloat(data.electrodeDiameter) || null,
             interElectrodeDistance: parseFloat(data.interElectrodeDistance) || null,
-            electrodeArrayType: data.electrodeArrayType || "",
-            electrodePlacement: data.electrodePlacement || "",
-            emgReference: data.emgReference || "",
-            emgGround: data.emgGround || ""
+            electrodeArrayType: data.electrodeArrayType || "n/a",
+            electrodePlacement: data.electrodePlacement || "n/a",
+            emgReference: data.emgReference || "n/a",
+            emgGround: data.emgGround || "n/a"
         },
         task: {
             taskName: data.taskName || "",
