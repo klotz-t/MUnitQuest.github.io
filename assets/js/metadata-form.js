@@ -116,20 +116,75 @@ function toggleContractionFields() {
     document.getElementById('dynamicFields').style.display = dynamic ? 'block' : 'none';
 }
 
-// Authors management
-function addAuthor() {
-    const authorsList = document.getElementById('authorsList');
-    const newEntry = document.createElement('div');
-    newEntry.className = 'author-entry';
-    newEntry.innerHTML = `
-        <input type="text" name="authors[]" placeholder="LastName, FirstName" required>
-        <button type="button" class="mf-btn-remove" onclick="removeAuthor(this)">Remove</button>
-    `;
-    authorsList.appendChild(newEntry);
+// Generic list generator
+function addListItem(containerId, schema, className, title = null) {
+    const container = document.getElementById(containerId);
+
+    const entry = document.createElement("div");
+    entry.className = className;
+
+    let html = "";
+
+    if (title) {
+        html += `<div class="mf-subject-header">${title}</div>`;
+    }
+
+    html += `<div class="mf-fields">`;
+
+    schema.forEach(field => {
+        html += `
+            <div class="mf-field-row">
+                <input type="${field.type}"
+                       name="${field.name}[]"
+                       placeholder="${field.placeholder || ""}">
+            </div>
+        `;
+    });
+
+    html += `
+        <button type="button" class="mf-btn-remove" onclick="this.parentElement.parentElement.remove()">
+            Remove
+        </button>
+    </div>`;
+
+    entry.innerHTML = html;
+    container.appendChild(entry);
 }
 
-function removeAuthor(button) {
-    button.parentElement.remove();
+// Authors management
+const authorSchema = [
+    { name: "author", type: "text", placeholder: "LastName, FirstName" }
+];
+
+function addAuthor() {
+    addListItem("authorsList", authorSchema, "author-entry");
+}
+
+// Ethics approvals
+const ethicsSchema = [
+    { name: "ethics", type: "text", placeholder: "Institution (Approval ID)" }
+];
+
+function addEthics() {
+    addListItem("ethicsList", ethicsSchema, "ethics-entry");
+}
+
+// Funding sources
+const fundingSchema = [
+    { name: "funding", type: "text", placeholder: "Funding agency (Grant ID)" }
+];
+
+function addFunding() {
+    addListItem("fundingList", fundingSchema, "funding-entry");
+}
+
+// Funding sources
+const referenceSchema = [
+    { name: "reference", type: "text", placeholder: "e.g., your publication related to the dataset" }
+];
+
+function addReference() {
+    addListItem("referencesList", referenceSchema, "reference-entry");
 }
 
 // Subjects management
@@ -146,7 +201,7 @@ function addSubject() {
 
             <div class="mf-field-row">
                 <span class="mf-field-label">Name</span>
-                <input type="text" name="subjects_name[]" required>
+                <input type="text" name="participant_id[]" required>
             </div>
 
             <div class="mf-field-row">
@@ -205,6 +260,31 @@ function updateSubjectNumbers() {
 
         header.textContent = `Subject ${index + 1}`;
     });
+}
+
+// Subjects management
+function addMISC() {
+    const subjectsList = document.getElementById('miscList');
+
+    const newEntry = document.createElement('div');
+    newEntry.className = 'misc-entry';
+
+    newEntry.innerHTML = `
+        <div class="misc-fields">
+            <input type="text" name="description[]" placeholder="Anlke torque or requested effort trajetory" required>
+            <input type="text" name="units[]" placeholder="e.g., V or % MVC" required>
+
+            <button type="button" class="mf-btn-remove" onclick="removeMISC(this)">
+                Remove
+            </button>
+        </div>
+    `;
+
+    miscList.appendChild(newEntry);
+}
+
+function removeMISC(button) {
+    button.closest('.misc-entry').remove();
 }
 
 // Get the list of visible section numbers (data-section attributes) for navigation
@@ -338,19 +418,22 @@ function generateReview() {
     html += `<p><strong>Decomposition Method:</strong> ${data.decompositionMethod || 'N/A'}</p>`;
 
     reviewSummary.innerHTML = html;
-    generateBIDSPreview(data);
+    getBIDS_datasetJson(data);
+    getBIDS_subjectsTSV(data);
+    getBIDS_emgJson(data)
 }
 
-function generateBIDSPreview(data) {
+function getBIDS_datasetJson(data) {
     const bids = {
         "Name": data.datasetName || "",
         "BIDSVersion": "1.11.1",
         "DatasetType": "raw",
         "License": data.license || "",
-        "Authors": getAuthors(),
+        "Authors": getArrayField("author", { emptyValue: "" }),
         "Acknowledgements": data.fundingSources || "",
-        "Funding": data.fundingSources ? [data.fundingSources] : [],
-        "EthicsApprovals": [data.ethicsApprovalNumber || ""],
+        "Funding": getArrayField("funding", { emptyValue: "" }),
+        "ReferencesAndLinks": getArrayField("reference", { emptyValue: "" }),
+        "EthicsApprovals": getArrayField("ethics", { emptyValue: "" }),
         "InstitutionName": data.institutionName || "",
         "InstitutionAddress": data.institutionAddress || "",
         "GeneratedBy": [
@@ -360,29 +443,68 @@ function generateBIDSPreview(data) {
                 "Description": "Assisted manual metadata annotaion"
             }
         ],
+    };
+    document.getElementById('bidsDatasetPreview').textContent = JSON.stringify(bids, null, 2);
+}
+
+function getBIDS_emgJson(data) {
+    const bids = {
         "TaskName": data.taskName || "n/a",
         "TaskDescription": data.taskDescription || "n/a",
         "Manufacturer": data.manufacturer || "n/a",
         "ManufacturersModelName": data.manufacturerModel || "n/a",
-        "SamplingFrequency": parseFloat(data.samplingFrequency) || null,
-        "PowerLineFrequency": data.powerLineFrequency || "n/a",
+        "SamplingFrequency": parseFloat(data.samplingFrequency) || "n/a",
+        "PowerLineFrequency": parseFloat(data.powerLineFrequency) || "n/a",
         "HardwareFilters": {
-            "HighPassFilter":  parseFloat(data.highPassFilters) || "n/a",
-            "LowPassFilter":  parseFloat(data.lowPassFilters) || "n/a"
+            "HighPassFilter":  parseFloat(data.highPassFilter) || "n/a",
+            "LowPassFilter":  parseFloat(data.lowPassFilter) || "n/a"
         },
         "EMGChannelCount": parseInt(data.emgChannelCount) || null,
         "EMGReference": data.emgReference || "n/a",
         "EMGGround": data.emgGround || "n/a"
     };
-    document.getElementById('bidsMetadataPreview').textContent = JSON.stringify(bids, null, 2);
+    document.getElementById('bidsEMGPreview').textContent = JSON.stringify(bids, null, 2);
 }
 
-function getAuthors() {
-    const authors = [];
-    document.querySelectorAll('input[name="authors[]"]').forEach(input => {
-        if (input.value.trim()) authors.push(input.value.trim());
+function getBIDS_subjectsTSV(data) {
+    const participant_id = data.participant_id || [];
+    const ages = data.subjects_age || [];
+    const heights = data.subjects_height || [];
+    const weights = data.subjects_weight || [];
+
+    const length = Math.max(participant_id.length, ages.length, heights.length, weights.length);
+
+    const subjects = [];
+
+    for (let i = 0; i < length; i++) {
+        subjects.push({
+            participant_id: `sub-${participant_id[i]}` || "",
+            age: ages[i] || "n/a",
+            height: heights[i] || "n/a",
+            weight: weights[i] || "n/a"
+        });
+    }
+
+    let tsv = "participant_id\tage\theight\tweight\n";
+
+    subjects.forEach((s, index) => {
+        tsv += [
+            s.participant_id,
+            s.age,
+            s.height,
+            s.weight
+        ].join("\t") + "\n";
     });
-    return authors;
+
+    document.getElementById('bidsSubjectsPreview').textContent = tsv;
+}
+
+function getArrayField(fieldName, { emptyValue = "n/a" } = {}) {
+    return Array.from(document.querySelectorAll(`[name="${fieldName}[]"]`))
+        .map(el => {
+            const val = el.value?.trim?.() ?? el.value;
+            return val ? val : emptyValue;
+        });
 }
 
 // Collect all form data into a plain object

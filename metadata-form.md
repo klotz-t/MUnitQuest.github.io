@@ -142,29 +142,39 @@ layout: page
 
         <div class="mf-form-group">
             <label>Authors *</label>
-            <div id="authorsList">
-                <div class="mf-author-entry">
-                    <input type="text" name="authors[]" placeholder="LastName, FirstName" required>
-                    <button type="button" class="mf-btn-remove" onclick="removeAuthor(this)" style="display:none;">Remove</button>
-                </div>
-            </div>
-            <button type="button" class="mf-btn-secondary" onclick="addAuthor()">+ Add Author</button>
+            <div id="authorsList"></div>
+
+            <button type="button" class="mf-btn-secondary" onclick="addAuthor('authorsList')">
+                + Add Author
+            </button>
         </div>
 
         <div class="mf-form-group">
-            <label for="fundingSources">Funding Sources</label>
-            <textarea id="fundingSources" name="fundingSources" rows="3"></textarea>
-        </div>
+            <label>Funding sources</label>
+            <div id="fundingList"></div>
+
+            <button type="button" class="mf-btn-secondary" onclick="addFunding('fundingList')">
+                + Add Funding source
+            </button>
+        </div> 
 
         <div class="mf-form-group">
-            <label for="ethicsApprovalNumber">Ethics Approval Number *</label>
-            <input type="text" id="ethicsApprovalNumber" name="ethicsApprovalNumber" required>
-        </div>
+            <label>Ethics Approvals *</label>
+            <div id="ethicsList"></div>
+
+            <button type="button" class="mf-btn-secondary" onclick="addEthics('ethicsList')">
+                + Add Ethics approval
+            </button>
+        </div> 
 
         <div class="mf-form-group">
-            <label for="ethicsCommittee">Ethics Committee Name *</label>
-            <input type="text" id="ethicsCommittee" name="ethicsCommittee" required>
-        </div>
+            <label>References and Links</label>
+            <div id="referencesList"></div>
+
+            <button type="button" class="mf-btn-secondary" onclick="addReference('referencesList')">
+                + Add Reference
+            </button>
+        </div> 
 
         <div class="mf-form-group">
             <label for="institutionName">Institution Name *</label>
@@ -190,7 +200,7 @@ layout: page
 
                         <div class="mf-field-row">
                             <span class="mf-field-label">Name</span>
-                            <input type="text" name="subjects_name[]" placeholder="Subject Name" required>
+                            <input type="text" name="participant_id[]" placeholder="Participant ID" required>
                         </div>
 
                         <div class="mf-field-row">
@@ -338,6 +348,16 @@ layout: page
         </div>
 
         <div class="mf-form-group">
+            <label for="emgChannelUnits">Units *</label>
+            <select id="emgChannelUnits" name="emgChannelUnits">
+                <option value="">Select</option>
+                <option value="V">V</option>
+                <option value="mV">mV</option>
+                <option value="uV">uV</option>
+            </select>
+        </div>
+
+        <div class="mf-form-group">
             <label for="electrodeMaterial">Electrode Material</label>
             <select id="electrodeMaterial" name="electrodeMaterial">
                 <option value="">Select</option>
@@ -390,6 +410,33 @@ layout: page
             <label for="emgGround">EMG Ground *</label>
             <input type="text" id="emgGround" name="emgGround" placeholder="e.g., wrist, electrode on patella" required>
         </div>
+
+        <h3>MISC Channels</h3>
+
+        <div class="mf-form-group">
+            <label>MISCs *</label>
+
+            <div id="subjectsList">
+                <div class="mf-misc-entry">
+                    <div class="mf-misc-fields">
+                        <input type="text" name="description[]" placeholder="Anlke torque or requested effort trajetory" required>
+                        <input type="text" name="units[]" placeholder="e.g., V or % MVC" required>
+
+                        <button type="button"
+                                class="mf-btn-remove"
+                                onclick="removeMISC(this)"
+                                style="display:none;">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="mf-btn-secondary" onclick="addMISC()">
+                + Add MISC
+            </button>
+        </div>
+
     </section>
 
     <!-- Section 6: Task & Protocol Information -->
@@ -714,7 +761,9 @@ layout: page
             <div id="reviewSummary"></div>
 
             <h3>Generated BIDS Metadata Preview</h3>
-            <pre id="bidsMetadataPreview" class="mf-json-preview">{}</pre>
+            <pre id="bidsDatasetPreview" class="mf-json-preview">{}</pre>
+            <pre id="bidsSubjectsPreview" class="mf-json-preview">{}</pre>
+            <pre id="bidsEMGPreview" class="mf-json-preview">{}</pre>
         </div>
 
         <div class="mf-form-group">
