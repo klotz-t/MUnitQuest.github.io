@@ -274,11 +274,20 @@ layout: page
         <h3>Electrode Configuration</h3>
 
         <div class="mf-form-group">
-            <label>HDsEMG</label>
-            <div id="HDsEMGList"></div>
+            <label>Reference and Ground Electrodes</label>
+            <div id="refElectrodeList"></div>
 
-            <button type="button" class="mf-btn-secondary" onclick="addHDsEMG('HDsEMGList')">
-                + Add HDsEMG
+            <button type="button" class="mf-btn-secondary" onclick="addRefElectrode('refElectrodeList')">
+                + Add Reference Electrode
+            </button>
+        </div> 
+
+        <div class="mf-form-group">
+            <label>Surface EMG</label>
+            <div id="surfaceEMGList"></div>
+
+            <button type="button" class="mf-btn-secondary" onclick="addSurfaceEMG('surfaceEMGList')">
+                + Add surface Electrode
             </button>
         </div> 
 

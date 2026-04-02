@@ -255,9 +255,12 @@ function addReference() {
 // Subjects management
 const subjectSchema = [
     { name: "participant_id", type: "text", placeholder: "Unique subject ID, e.g., 01" },
+    { name: "sex", type: "select", options: ["female", "male", "other", "n/a"]},
     { name: "age", type: "number", placeholder: "Age in years" },
     { name: "height", type: "number", placeholder: "Height in cm" },
-    { name: "weight", type: "number", placeholder: "Weight in kg" }
+    { name: "weight", type: "number", placeholder: "Weight in kg" },
+    { name: "handedness", type: "select", options: ["left handedness", "right handedness", "n/a"]},
+    { name: "group", type: "text", placeholder: "Experimentale.g., patients or controls"}
 ];
 
 function addSubject() {
@@ -292,25 +295,46 @@ function addMISC() {
 }
 
 // HDsEMG arrays
-const HDsEMGSchema = [
+const refElectrodeSchema = [
+    { name: "name", type: "text", placeholder: "Unique electrode name, e.g. R1"},
+    { name: "type", type: "select", options: ["band", "ring", "other"]},
+    { name: "mytype", type: "text", dependsOn: { field: "type", value: ["other"]}, placeholder: "Specify the type of your electrode"} ,
+    { name: "manufacturer", type: "text", placeholder: "Electrode manufacturer, e.g., OTBioelettronica" },
+    { name: "manufacturersModelName", type: "text", placeholder: "Manufacturer's model name, e.g., GR04MM1305"},
+    { name: "material", type: "text", placeholder: "Electrode material, e.g., textile"},
+    { name: "coord_system", type: "text", placeholder: "Coordinate system used to describe elecrode position, e.g., lowerLeg"},
+    { name: "x", type: "number", placeholder: "x coordinate"},
+    { name: "y", type: "number", placeholder: "y coordinate"},
+    { name: "z", type: "number", placeholder: "z coordinate"}
+];
+
+function addRefElectrode() {
+    addListItem("refElectrodeList", refElectrodeSchema, "mf-misc-entry", "refElectrodes");
+}
+
+// HDsEMG arrays
+const surfaceEMGSchema = [
     { name: "name", type: "text", placeholder: "Unique electrode name, e.g. grid1"},
-    { name: "type", type: "select", "options": ["surface", "invasive", "reference", "ground"]},
-    { name: "montage", type: "select", dependsOn: { field: "type", value: ["surface", "invasive"] }, options: ["monopolar", "bipolar"]},
-    { name: "density", type: "select", dependsOn: { field: "type", value: ["surface", "invasive"]}, options: ["high-density", "single channel"]},
+    { name: "montage", type: "select", options: ["monopolar", "bipolar"]},
     { name: "manufacturer", type: "text", placeholder: "Electrode manufacturer, e.g., OTBioelettronica" },
     { name: "manufacturersModelName", type: "text", placeholder: "Manufacturer's model name, e.g., GR04MM1305"},
     { name: "interelectrode_distance", type: "number", min: 0, step:0.1, placeholder: "Interelectrode distance in mm"},
-    { name: "numChannels", type: "number", dependsOn: { field: "density", value: ["high-density"]}, min:1, step:1, placeholder: "Number of channels in that grid"},
+    { name: "numChannels", type: "number", min:1, step:1, placeholder: "Number of channels in that grid"},
     { name: "material", type: "text", placeholder: "Electrode material, e.g., gold or Ag/AgCl"},
-    { name: "targetMuscle", type: "text", dependsOn: { field: "type", value: ["surface", "invasive"]}, placeholder: "Muscle (or muscle group) the electrode records from, e.g., right tibialis anterior"},
+    { name: "targetMuscle", type: "text", placeholder: "Muscle (or muscle group) the electrode records from, e.g., right tibialis anterior"},
     { name: "lowCutOff", type: "number", placeholder: "Cut-off frequency of the low pass filter in Hz"},
     { name: "highCutOff", type: "number", placeholder: "Cut-off frequency of the high pass filter in Hz"},
     { name: "reference", type: "text", dependsOn: { field: "montage", value: ["monopolar"]}, placeholder: "Name of the electrode used for referencing"},
+    { name: "coord_system", type: "text", placeholder: "Coordinate system used to describe elecrode position, e.g., grid1"},
+    { name: "x", type: "text", placeholder: "list of x coordinates, e.g. 0, 4, 8, 12, 12, 8, 4, 0"},
+    { name: "y", type: "text", placeholder: "list of y coordinates, e.g. 0, 0, 0, 0, 4, 4, 4, 4"},
+    { name: "z", type: "text", placeholder: "list of z coordinates, or n/a"}
 ];
 
-function addHDsEMG() {
-    addListItem("HDsEMGList", HDsEMGSchema, "mf-misc-entry", "HDsEMG");
+function addSurfaceEMG() {
+    addListItem("surfaceEMGList", surfaceEMGSchema, "mf-misc-entry", "surfaceEMG");
 }
+
 
 // Get the list of visible section numbers (data-section attributes) for navigation
 function getVisibleSections() {
@@ -499,12 +523,14 @@ function getBIDS_subjectsTSV(data) {
     const weights = data.subjects_weight || [];
 
     const length = Math.max(participant_id.length, ages.length, heights.length, weights.length);
+    //const length = Math.max(ages.length, heights.length, weights.length);
 
     const subjects = [];
 
     for (let i = 0; i < length; i++) {
         subjects.push({
             participant_id: `sub-${participant_id[i]}` || "",
+            //participant_id: `sub-${String(i + 1).padStart(2, "0")}`,
             age: ages[i] || "n/a",
             height: heights[i] || "n/a",
             weight: weights[i] || "n/a"
