@@ -2,7 +2,7 @@
 
 // Global variables
 let currentSection = 1;
-const totalSections = 8; // sections 1-7 + review (section 8); synthetic details are inline in section 2
+const totalSections = 7; // sections 1-6 + review (section 7); synthetic details are inline in section 1
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
@@ -101,8 +101,9 @@ function updateCharCount() {
 // Handle data type change - show/hide synthetic sub-section within section 2
 function handleDataTypeChange() {
     const selectedType = document.querySelector('input[name="dataType"]:checked').value;
-    const syntheticSection = document.getElementById('syntheticDataSection');
-    syntheticSection.style.display = selectedType.startsWith('synthetic') ? 'block' : 'none';
+    const isSynthetic = selectedType.startsWith('synthetic');
+    document.getElementById('syntheticDataSection').style.display = isSynthetic ? 'block' : 'none';
+    document.getElementById('pipelineRequiredMark').style.display = 'inline';
 }
 
 function toggleContractionFields() {
@@ -137,9 +138,12 @@ function addListItem(containerId, schema, className, title = null) {
             data-depends-value='${JSON.stringify(field.dependsOn.values || field.dependsOn.value)}'`
             : "";
 
+        const labelHtml = field.label ? `<label>${field.label}</label>` : "";
+
         if (field.type === "select") {
             html += `
                 <div class="mf-field-row" data-field="${field.name}" ${dependsAttr}>
+                    ${labelHtml}
                     <select name="${field.name}[]">
                         ${field.options.map(opt => `
                             <option value="${opt}">${opt}</option>
@@ -150,6 +154,7 @@ function addListItem(containerId, schema, className, title = null) {
         } else {
             html += `
                 <div class="mf-field-row" data-field="${field.name}" ${dependsAttr}>
+                    ${labelHtml}
                     <input type="${field.type}"
                         name="${field.name}[]"
                         placeholder="${field.placeholder || ""}">
@@ -213,6 +218,29 @@ function setupConditionalFields(entry) {
     });
 
     update();
+}
+
+// Synthetic pipelines (GeneratedBy entries)
+const syntheticPipelineSchema = [
+    { name: "sim_name",        type: "text", label: "Name *",      placeholder: "e.g., NeuroMotion, MyoGen, Manual" },
+    { name: "sim_version",     type: "text", label: "Version",     placeholder: "e.g., 1.0.0" },
+    { name: "sim_description", type: "text", label: "Description", placeholder: "What this pipeline does" },
+    { name: "sim_codeUrl",     type: "text", label: "CodeURL",     placeholder: "e.g., https://github.com/..." }
+];
+
+function addSyntheticPipeline() {
+    addListItem("syntheticPipelineList", syntheticPipelineSchema, "mf-misc-entry", "Pipeline");
+}
+
+// Source datasets (SourceDatasets entries)
+const sourceDatasetSchema = [
+    { name: "src_doi",     type: "text", label: "DOI",     placeholder: "e.g., 10.18112/openneuro.ds004632.v1.0.0" },
+    { name: "src_url",     type: "text", label: "URL",     placeholder: "e.g., https://openneuro.org/datasets/ds004632" },
+    { name: "src_version", type: "text", label: "Version", placeholder: "e.g., 1.0.0" }
+];
+
+function addSourceDataset() {
+    addListItem("sourceDatasetList", sourceDatasetSchema, "mf-misc-entry", "Source Dataset");
 }
 
 // Authors management
@@ -349,8 +377,8 @@ function addTask() {
 
 // Get the list of visible section numbers (data-section attributes) for navigation
 function getVisibleSections() {
-    // Synthetic details are now an inline sub-section within section 2, not a nav step.
-    return [1, 2, 3, 4, 5, 6, 7, 8]; // section 8 = Review
+    // Synthetic details are now an inline sub-section within section 1, not a nav step.
+    return [1, 2, 3, 4, 5, 6, 7]; // section 7 = Review
 }
 
 // Form navigation
@@ -378,7 +406,7 @@ function showSection(sectionNumber) {
         updateNavigation();
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        if (sectionNumber === 8) {
+        if (sectionNumber === 7) {
             generateReview();
         }
     }
@@ -427,10 +455,26 @@ function validateSection(sectionNumber) {
         }
     }
 
-    if (sectionNumber === 2) {
-        if (!document.querySelector('input[name="dataType"]:checked')) {
+    if (sectionNumber === 1) {
+        const dataTypeEl = document.querySelector('input[name="dataType"]:checked');
+        if (!dataTypeEl) {
             alert('Please select a data type');
             return false;
+        }
+        const dataType = dataTypeEl.value;
+        if (dataType.startsWith('synthetic')) {
+            const pipelines = document.querySelectorAll('#syntheticPipelineList .mf-misc-entry');
+            if (pipelines.length === 0) {
+                alert('Please add at least one software pipeline');
+                return false;
+            }
+            for (const p of pipelines) {
+                const nameInput = p.querySelector('[name="sim_name[]"]');
+                if (!nameInput || !nameInput.value.trim()) {
+                    alert('Each pipeline entry must have a Name');
+                    return false;
+                }
+            }
         }
     }
 
@@ -453,7 +497,6 @@ function generateReview() {
     const reviewSummary = document.getElementById('reviewSummary');
 
     let html = '<h4>Dataset Information</h4>';
-    html += `<p><strong>Team:</strong> ${data.teamName || 'N/A'}</p>`;
     html += `<p><strong>Dataset:</strong> ${data.datasetName || 'N/A'}</p>`;
     html += `<p><strong>Data Type:</strong> ${data.dataType || 'N/A'}</p>`;
 
@@ -479,27 +522,60 @@ function generateReview() {
 }
 
 function getBIDS_datasetJson(data) {
+    const isSynthetic = (data.dataType || "").startsWith("synthetic");
+
+    const generatedBy = isSynthetic
+        ? buildArrayFromListFields("syntheticPipelineList", ["sim_name", "sim_version", "sim_description", "sim_codeUrl"],
+            (entry) => ({
+                "Name":        entry.sim_name        || "",
+                "Version":     entry.sim_version     || undefined,
+                "Description": entry.sim_description || undefined,
+                "CodeURL":     entry.sim_codeUrl     || undefined
+            }))
+        : [];
+
+    const sourceDatasets = isSynthetic
+        ? buildArrayFromListFields("sourceDatasetList", ["src_doi", "src_url", "src_version"],
+            (entry) => ({
+                "DOI":     entry.src_doi     || undefined,
+                "URL":     entry.src_url     || undefined,
+                "Version": entry.src_version || undefined
+            }))
+        : [];
+
     const bids = {
         "Name": data.datasetName || "",
         "BIDSVersion": "1.11.1",
         "DatasetType": "raw",
         "License": data.license || "",
         "Authors": getArrayField("author", { emptyValue: "" }),
-        "Acknowledgements": data.fundingSources || "",
         "Funding": getArrayField("funding", { emptyValue: "" }),
         "ReferencesAndLinks": getArrayField("reference", { emptyValue: "" }),
         "EthicsApprovals": getArrayField("ethics", { emptyValue: "" }),
         "InstitutionName": data.institutionName || "",
         "InstitutionAddress": data.institutionAddress || "",
-        "GeneratedBy": [
-            {
-                "Name": "MUnitQuest BIDS-Tools",
-                "Version": "0.1.0",
-                "Description": "Assisted manual metadata annotaion"
-            }
-        ],
     };
+
+    if (generatedBy.length > 0)   bids["GeneratedBy"]    = generatedBy;
+    if (sourceDatasets.length > 0) bids["SourceDatasets"] = sourceDatasets;
+
     document.getElementById('bidsDatasetPreview').textContent = JSON.stringify(bids, null, 2);
+}
+
+function buildArrayFromListFields(containerId, fieldNames, mapper) {
+    const container = document.getElementById(containerId);
+    if (!container) return [];
+    const entries = container.querySelectorAll(".mf-misc-entry");
+    return Array.from(entries).map(entry => {
+        const values = {};
+        fieldNames.forEach(name => {
+            const el = entry.querySelector(`[name="${name}[]"]`);
+            values[name] = el ? el.value.trim() : "";
+        });
+        const mapped = mapper(values);
+        // strip undefined keys
+        return Object.fromEntries(Object.entries(mapped).filter(([, v]) => v !== undefined && v !== ""));
+    }).filter(obj => Object.keys(obj).length > 0);
 }
 
 function getBIDS_emgJson(data) {
@@ -614,12 +690,6 @@ function getFormData() {
 function buildMetadata() {
     const data = getFormData();
     return {
-        submissionInfo: {
-            teamName: data.teamName || "",
-            teamLeaderName: data.teamLeaderName || "",
-            teamLeaderEmail: data.teamLeaderEmail || "",
-            submittedAt: new Date().toISOString()
-        },
         dataset: {
             name: data.datasetName || "",
             description: data.datasetDescription || "",
@@ -702,48 +772,24 @@ function buildMetadata() {
             numMotorUnits: parseInt(data.numMotorUnits) || null
         },
         synthetic: (data.dataType || "").startsWith('synthetic') ? {
-            simulationSoftware: data.simulationSoftware || "",
-            simulationMethod: data.simulationMethod || "",
-            numMotorUnitsSimulated: parseInt(data.numMotorUnitsSimulated) || null,
-            recruitmentModel: data.recruitmentModel || "",
-            rateCodingModel: data.rateCodingModel || "",
-            tissueLayers: data.tissueLayers || "",
-            conductivityValues: data.conductivityValues || "",
-            noiseThermal: data.noiseThermal === 'on',
-            noiseMotion: data.noiseMotion === 'on',
-            noiseCrosstalk: data.noiseCrosstalk === 'on',
-            snrRange: data.snrRange || ""
-        } : null,
-        bidsDatasetDescription: {
-            Name: data.datasetName || "",
-            BIDSVersion: "1.10.1",
-            DatasetType: "raw",
-            License: data.license === 'other' ? (data.otherLicense || "") : (data.license || ""),
-            Authors: getArrayField("author", { emptyValue: "" }),
-            Funding: data.fundingSources ? [data.fundingSources] : [],
-            EthicsApprovals: [data.ethicsApprovalNumber || ""],
-            InstitutionName: data.institutionName || "",
-            TaskName: data.taskName || "",
-            Manufacturer: data.manufacturer || "",
-            ManufacturersModelName: data.manufacturerModel || "",
-            SamplingFrequency: parseFloat(data.samplingFrequency) || null,
-            PowerLineFrequency: data.powerLineFrequency || "",
-            HardwareFilters: data.hardwareFilters || "",
-            EMGChannelCount: parseInt(data.emgChannelCount) || null,
-            EMGReference: data.emgReference || "",
-            EMGGround: data.emgGround || ""
-        }
+            generatedBy: buildArrayFromListFields("syntheticPipelineList",
+                ["sim_name", "sim_version", "sim_description", "sim_codeUrl"],
+                (e) => ({ Name: e.sim_name, Version: e.sim_version, Description: e.sim_description, CodeURL: e.sim_codeUrl })),
+            sourceDatasets: buildArrayFromListFields("sourceDatasetList",
+                ["src_doi", "src_url", "src_version"],
+                (e) => ({ DOI: e.src_doi, URL: e.src_url, Version: e.src_version }))
+        } : null
     };
 }
 
 // Download metadata as JSON
 function downloadMetadata(metadata) {
-    const teamName = (metadata.submissionInfo.teamName || 'metadata').replace(/[^a-zA-Z0-9_-]/g, '_');
+    const datasetName = (metadata.dataset.name || 'metadata').replace(/[^a-zA-Z0-9_-]/g, '_');
     const json = JSON.stringify(metadata, null, 2);
     const blob = new Blob([json], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `${teamName}_metadata.json`;
+    a.download = `${datasetName}_metadata.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

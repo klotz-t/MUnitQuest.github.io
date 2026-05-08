@@ -4,82 +4,45 @@ feature_image: "/Images/header.jpeg"
 layout: page
 ---
 
-<p>Fill in the fields below to describe your dataset. When you reach the final step, click <strong>Download metadata.json</strong> — a JSON file will be saved to your computer. Upload this file alongside your data ZIP to the shared drive. Your progress is saved automatically in your browser.</p>
+<p>Fill in the fields below to describe your dataset. When you reach the final step, click <strong>Download metadata.zip</strong> — a ZIP file containing all metadata files will be saved to your computer. Upload this file alongside your data ZIP to the shared drive. Your progress is saved automatically in your browser.</p>
 
 <div class="metadata-form">
 
 <div class="mf-progress-bar">
     <div class="mf-progress-step active" data-step="1">
         <div class="mf-step-number">1</div>
-        <div class="mf-step-label">Team Info</div>
+        <div class="mf-step-label">Data Type</div>
     </div>
     <div class="mf-progress-step" data-step="2">
         <div class="mf-step-number">2</div>
-        <div class="mf-step-label">Data Type</div>
+        <div class="mf-step-label">Dataset Info</div>
     </div>
     <div class="mf-progress-step" data-step="3">
         <div class="mf-step-number">3</div>
-        <div class="mf-step-label">Dataset Info</div>
+        <div class="mf-step-label">Participants</div>
     </div>
     <div class="mf-progress-step" data-step="4">
         <div class="mf-step-number">4</div>
-        <div class="mf-step-label">Participants</div>
+        <div class="mf-step-label">Recording</div>
     </div>
     <div class="mf-progress-step" data-step="5">
         <div class="mf-step-number">5</div>
-        <div class="mf-step-label">Recording</div>
+        <div class="mf-step-label">Task Protocol</div>
     </div>
     <div class="mf-progress-step" data-step="6">
         <div class="mf-step-number">6</div>
-        <div class="mf-step-label">Task Protocol</div>
+        <div class="mf-step-label">Labeling</div>
     </div>
     <div class="mf-progress-step" data-step="7">
         <div class="mf-step-number">7</div>
-        <div class="mf-step-label">Labeling</div>
-    </div>
-    <div class="mf-progress-step" data-step="8">
-        <div class="mf-step-number">8</div>
         <div class="mf-step-label">Review</div>
     </div>
 </div>
 
 <form id="submissionForm" class="mf-submission-form">
 
-    <!-- Section 1: Team & Dataset Information -->
+    <!-- Section 1: Data Type Selection -->
     <section class="form-section active" data-section="1">
-        <h2>Team &amp; Dataset Information</h2>
-
-        <div class="mf-form-group">
-            <label for="teamName">Team Name *</label>
-            <input type="text" id="teamName" name="teamName" required>
-            <small>This will be your identifier in the competition</small>
-        </div>
-
-        <div class="mf-form-group">
-            <label for="teamLeaderName">Team Leader Name *</label>
-            <input type="text" id="teamLeaderName" name="teamLeaderName" required>
-        </div>
-
-        <div class="mf-form-group">
-            <label for="teamLeaderEmail">Team Leader Email *</label>
-            <input type="email" id="teamLeaderEmail" name="teamLeaderEmail" required>
-        </div>
-
-        <div class="mf-form-group">
-            <label for="datasetName">Dataset Name *</label>
-            <input type="text" id="datasetName" name="datasetName" required>
-            <small>Short identifier (e.g., "TibAnt_Isometric_2025")</small>
-        </div>
-
-        <div class="mf-form-group">
-            <label for="datasetDescription">Dataset Description</label>
-            <textarea id="datasetDescription" name="datasetDescription" rows="4" maxlength="500"></textarea>
-            <small class="char-count">0 / 500 characters</small>
-        </div>
-    </section>
-
-    <!-- Section 2: Data Type Selection -->
-    <section class="form-section" data-section="2">
         <h2>Data Type Selection</h2>
 
         <div class="mf-form-group">
@@ -124,75 +87,40 @@ layout: page
             <h3>Synthetic Data Details</h3>
 
             <div class="mf-form-group">
-                <label for="simulationSoftware">Simulation Software *</label>
-                <input type="text" id="simulationSoftware" name="simulationSoftware">
+                <label>Software pipeline(s) used to generate the dataset <span id="pipelineRequiredMark" style="display:none;">*</span></label>
+                <small>Add one entry per pipeline step, in processing order.</small>
+                <div id="syntheticPipelineList"></div>
+                <button type="button" class="mf-btn-secondary" onclick="addSyntheticPipeline()">
+                    + Add Pipeline
+                </button>
             </div>
 
             <div class="mf-form-group">
-                <label for="simulationMethod">Simulation Method *</label>
-                <textarea id="simulationMethod" name="simulationMethod" rows="4" maxlength="500"></textarea>
-                <small class="char-count">0 / 500 characters</small>
-            </div>
-
-            <h4>Motor Neuron Pool Model</h4>
-
-            <div class="mf-form-group">
-                <label for="numMotorUnitsSimulated">Number of Motor Units Simulated</label>
-                <input type="number" id="numMotorUnitsSimulated" name="numMotorUnitsSimulated">
-            </div>
-
-            <div class="mf-form-group">
-                <label for="recruitmentModel">Recruitment Model</label>
-                <input type="text" id="recruitmentModel" name="recruitmentModel" placeholder="e.g., size principle, Fuglevand">
-            </div>
-
-            <div class="mf-form-group">
-                <label for="rateCodingModel">Rate Coding Model</label>
-                <input type="text" id="rateCodingModel" name="rateCodingModel">
-            </div>
-
-            <h4>Volume Conductor Model</h4>
-
-            <div class="mf-form-group">
-                <label for="tissueLayers">Tissue Layers</label>
-                <input type="text" id="tissueLayers" name="tissueLayers" placeholder="e.g., muscle, fat, skin">
-            </div>
-
-            <div class="mf-form-group">
-                <label for="conductivityValues">Conductivity Values</label>
-                <input type="text" id="conductivityValues" name="conductivityValues">
-            </div>
-
-            <h4>Noise Model</h4>
-
-            <div class="mf-form-group">
-                <label>Noise Types (check all that apply)</label>
-                <div class="mf-checkbox-group">
-                    <label>
-                        <input type="checkbox" name="noiseThermal">
-                        Thermal noise
-                    </label>
-                    <label>
-                        <input type="checkbox" name="noiseMotion">
-                        Motion artifact
-                    </label>
-                    <label>
-                        <input type="checkbox" name="noiseCrosstalk">
-                        Crosstalk
-                    </label>
-                </div>
-            </div>
-
-            <div class="mf-form-group">
-                <label for="snrRange">SNR Range</label>
-                <input type="text" id="snrRange" name="snrRange" placeholder="e.g., 20-40 dB">
+                <label>Source Datasets</label>
+                <small>Datasets from which any experimental data (e.g., MUAPs) were derived.</small>
+                <div id="sourceDatasetList"></div>
+                <button type="button" class="mf-btn-secondary" onclick="addSourceDataset()">
+                    + Add Source Dataset
+                </button>
             </div>
         </div>
     </section>
 
-    <!-- Section 3: General Dataset Metadata -->
-    <section class="form-section" data-section="3">
+    <!-- Section 2: General Dataset Metadata -->
+    <section class="form-section" data-section="2">
         <h2>General Dataset Metadata</h2>
+
+        <div class="mf-form-group">
+            <label for="datasetName">Dataset Name *</label>
+            <input type="text" id="datasetName" name="datasetName" required>
+            <small>Short identifier used as the root folder name (e.g., "TibAnt_Isometric_2025")</small>
+        </div>
+
+        <div class="mf-form-group">
+            <label for="datasetDescription">Dataset Description</label>
+            <textarea id="datasetDescription" name="datasetDescription" rows="4" maxlength="500"></textarea>
+            <small class="char-count">0 / 500 characters</small>
+        </div>
 
         <div class="mf-form-group">
             <label for="license">License *</label>
@@ -257,8 +185,8 @@ layout: page
         </div>
     </section>
 
-    <!-- Section 4: Participant Information -->
-    <section class="form-section" data-section="4">
+    <!-- Section 3: Participant Information -->
+    <section class="form-section" data-section="3">
         <h2>Participant Information</h2>
 
         <div class="mf-form-group">
@@ -272,8 +200,8 @@ layout: page
 
     </section>
 
-    <!-- Section 5: Recording Information -->
-    <section class="form-section" data-section="5">
+    <!-- Section 4: Recording Information -->
+    <section class="form-section" data-section="4">
         <h2>Recording Information</h2>
 
         <h3>Hardware &amp; Acquisition</h3>
@@ -441,8 +369,8 @@ layout: page
 
     </section>
 
-    <!-- Section 6: Task & Protocol Information -->
-    <section class="form-section" data-section="6">
+    <!-- Section 5: Task & Protocol Information -->
+    <section class="form-section" data-section="5">
  
         <h2>Task &amp; Protocol Information</h2>
 
@@ -457,8 +385,8 @@ layout: page
 
     </section>
 
-    <!-- Section 7: Motor Unit Labeling -->
-    <section class="form-section" data-section="7">
+    <!-- Section 6: Motor Unit Labeling -->
+    <section class="form-section" data-section="6">
         <h2>Motor Unit Labeling</h2>
 
         <div class="mf-form-group">
@@ -534,8 +462,8 @@ layout: page
         </div>
     </section>
 
-    <!-- Section 8: Review & Download -->
-    <section class="form-section" data-section="8">
+    <!-- Section 7: Review & Download -->
+    <section class="form-section" data-section="7">
         <h2>Review &amp; Download</h2>
 
         <div class="mf-review-container">
@@ -578,7 +506,7 @@ layout: page
         <button type="button" class="mf-btn-secondary" id="prevBtn" onclick="navigateForm(-1)" style="display:none;">Previous</button>
         <button type="button" class="mf-btn-secondary" id="saveDraftBtn" onclick="saveDraft()">Save Draft</button>
         <button type="button" class="mf-btn-primary" id="nextBtn" onclick="navigateForm(1)">Next</button>
-        <button type="button" class="mf-btn-primary" id="downloadBtn" style="display:none;">Download metadata.json</button>
+        <button type="button" class="mf-btn-primary" id="downloadBtn" style="display:none;">Download metadata.zip</button>
     </div>
 
 </form>
