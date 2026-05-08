@@ -328,6 +328,16 @@ p {
     color: #fff;
   }
 
+  .mf-progress-step.invalid .mf-step-number {
+    background-color: #e11d48;
+    color: #fff;
+  }
+
+  .mf-progress-step.invalid .mf-step-label {
+    color: #e11d48;
+    font-weight: 600;
+  }
+
   .mf-step-label {
     font-size: 0.7rem;
     text-align: center;
@@ -519,6 +529,17 @@ p {
     white-space: nowrap;
 
     &:hover { background: #dc2626; }
+  }
+
+  /* --- Participants upload validation --- */
+  .mf-participants-msg {
+    margin-top: 8px;
+    font-size: 0.875rem;
+    line-height: 1.6;
+
+    &.mf-participants-ok      { color: #16a34a; }
+    &.mf-participants-warning { color: #b45309; }
+    &.mf-participants-error   { color: var(--mf-error); }
   }
 
   /* --- Range inputs --- */

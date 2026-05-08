@@ -190,13 +190,22 @@ layout: page
         <h2>Participant Information</h2>
 
         <div class="mf-form-group">
-            <label>Subjects</label>
-            <div id="subjectsList"></div>
+            <label>Step 1 — Download the template and fill it in</label>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <span>template_participants.csv</span>
+                <a href="/assets/files/template_participants.csv" download title="Download template" style="color:var(--mf-text-muted); line-height:0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </a>
+            </div>
+            <small>Columns: <code>participant_id, sex, age, height, weight, handedness, group</code></small>
+        </div>
 
-            <button type="button" class="mf-btn-secondary" onclick="addSubject('subjectsList')">
-                + Add Subject
-            </button>
-        </div>         
+        <div class="mf-form-group">
+            <label for="participantsFile">Step 2 — Upload your completed file *</label>
+            <input type="file" id="participantsFile" name="participantsFile" accept=".csv"
+                onchange="handleParticipantsUpload(this)">
+            <div id="participantsValidationMsg"></div>
+        </div>
 
     </section>
 

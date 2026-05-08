@@ -280,18 +280,58 @@ function addReference() {
 }
 
 // Subjects management
-const subjectSchema = [
-    { name: "participant_id", type: "text", placeholder: "Unique subject ID, e.g., 01" },
-    { name: "sex", type: "select", options: ["female", "male", "other", "n/a"]},
-    { name: "age", type: "number", placeholder: "Age in years" },
-    { name: "height", type: "number", placeholder: "Height in cm" },
-    { name: "weight", type: "number", placeholder: "Weight in kg" },
-    { name: "handedness", type: "select", options: ["left handedness", "right handedness", "n/a"]},
-    { name: "group", type: "text", placeholder: "Experimentale.g., patients or controls"}
-];
+// Participants CSV upload
+let participantsData = [];
+const PARTICIPANT_COLS = ['participant_id', 'sex', 'age', 'height', 'weight', 'handedness', 'group'];
 
-function addSubject() {
-    addListItem("subjectsList", subjectSchema, "mf-subject-entry", "Subject");
+function handleParticipantsUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => validateAndParseParticipants(e.target.result);
+    reader.readAsText(file);
+}
+
+function validateAndParseParticipants(csvText) {
+    const msgEl = document.getElementById('participantsValidationMsg');
+    const lines = csvText.trim().split(/\r?\n/).filter(l => l.trim());
+
+    if (lines.length === 0) {
+        showParticipantMsg(msgEl, ['File is empty.'], 'error');
+        participantsData = [];
+        return;
+    }
+
+    const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+    const dataRows = lines.slice(1);
+
+    const unexpected = headers.filter(h => !PARTICIPANT_COLS.includes(h));
+    const missing    = PARTICIPANT_COLS.filter(c => !headers.includes(c));
+    const warnings   = [];
+
+    if (missing.length)    warnings.push(`Missing expected columns: ${missing.join(', ')}`);
+    if (unexpected.length) warnings.push(`Unexpected columns will be ignored: ${unexpected.join(', ')}`);
+    if (dataRows.length === 0) warnings.push('No participant rows found.');
+    if (dataRows.length > 1000) warnings.push(`${dataRows.length} rows — maximum is 1000.`);
+
+    participantsData = dataRows.map(line => {
+        const vals = line.split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+        const obj = {};
+        headers.forEach((h, i) => { obj[h] = vals[i] || ''; });
+        return obj;
+    });
+
+    if (warnings.length) {
+        showParticipantMsg(msgEl, warnings, 'warning');
+    } else {
+        showParticipantMsg(msgEl, [`${dataRows.length} participant(s) loaded.`], 'ok');
+    }
+}
+
+function showParticipantMsg(el, messages, type) {
+    const icons = { ok: '✓', warning: '⚠', error: '✕' };
+    el.className = `mf-participants-msg mf-participants-${type}`;
+    el.innerHTML = messages.map(m => `${icons[type]} ${m}`).join('<br>');
 }
 
 // Coordinate systems
@@ -383,9 +423,8 @@ function getVisibleSections() {
 
 // Form navigation
 function navigateForm(direction) {
-    if (direction === 1 && !validateSection(currentSection)) {
-        return;
-    }
+    sectionValidState[currentSection] = checkSection(currentSection);
+    updateProgressBar();
 
     const visible = getVisibleSections();
     const idx = visible.indexOf(currentSection);
@@ -412,20 +451,20 @@ function showSection(sectionNumber) {
     }
 }
 
+const sectionValidState = {};
+
 function updateProgressBar() {
     const visible = getVisibleSections();
-    const currentIdx = visible.indexOf(currentSection); // 0-based position
+    const currentIdx = visible.indexOf(currentSection);
 
     document.querySelectorAll('.mf-progress-step').forEach((step, index) => {
-        // Progress steps are always 1..N in order; map them to visible sections
-        if (index < currentIdx) {
-            step.classList.add('completed');
-            step.classList.remove('active');
-        } else if (index === currentIdx) {
+        const sectionNum = visible[index];
+        step.classList.remove('active', 'completed', 'invalid');
+
+        if (index === currentIdx) {
             step.classList.add('active');
-            step.classList.remove('completed');
-        } else {
-            step.classList.remove('active', 'completed');
+        } else if (sectionNum in sectionValidState) {
+            step.classList.add(sectionValidState[sectionNum] ? 'completed' : 'invalid');
         }
     });
 }
@@ -442,53 +481,39 @@ function updateNavigation() {
 }
 
 // Validation
-function validateSection(sectionNumber) {
+function checkSection(sectionNumber) {
     const section = document.querySelector(`.form-section[data-section="${sectionNumber}"]`);
     const inputs = section.querySelectorAll('input[required], select[required], textarea[required]');
-    let isValid = true;
-
     for (const input of inputs) {
-        if (!input.checkValidity()) {
-            isValid = false;
-            input.reportValidity();
-            break;
-        }
+        if (!input.checkValidity()) return false;
     }
-
+    if (sectionNumber === 3) {
+        if (participantsData.length === 0) return false;
+    }
     if (sectionNumber === 1) {
         const dataTypeEl = document.querySelector('input[name="dataType"]:checked');
-        if (!dataTypeEl) {
-            alert('Please select a data type');
-            return false;
-        }
+        if (!dataTypeEl) return false;
         const dataType = dataTypeEl.value;
         if (dataType.startsWith('synthetic')) {
             const pipelines = document.querySelectorAll('#syntheticPipelineList .mf-misc-entry');
-            if (pipelines.length === 0) {
-                alert('Please add at least one software pipeline');
-                return false;
-            }
+            if (pipelines.length === 0) return false;
             for (const p of pipelines) {
                 const nameInput = p.querySelector('[name="sim_name[]"]');
-                if (!nameInput || !nameInput.value.trim()) {
-                    alert('Each pipeline entry must have a Name');
-                    return false;
-                }
+                if (!nameInput || !nameInput.value.trim()) return false;
             }
         }
     }
+    return true;
+}
 
-    //if (sectionNumber === 6) {
-    //    const contractionChecked = document.querySelector(
-    //        '#contractionIsometric:checked, #contractionConcentric:checked, #contractionEccentric:checked, #contractionMixed:checked'
-    //    );
-    //    if (!contractionChecked) {
-    //        alert('Please select at least one contraction type');
-    //        return false;
-    //    }
-    //}
-
-    return isValid;
+function validateSection(sectionNumber) {
+    const valid = checkSection(sectionNumber);
+    if (!valid) {
+        const section = document.querySelector(`.form-section[data-section="${sectionNumber}"]`);
+        const firstInvalid = section.querySelector('input[required]:invalid, select[required]:invalid, textarea[required]:invalid');
+        if (firstInvalid) firstInvalid.reportValidity();
+    }
+    return valid;
 }
 
 // Generate review summary
@@ -501,7 +526,7 @@ function generateReview() {
     html += `<p><strong>Data Type:</strong> ${data.dataType || 'N/A'}</p>`;
 
     html += '<h4>Recording Details</h4>';
-    html += `<p><strong>Participants:</strong> ${data.numParticipants || 'N/A'}</p>`;
+    html += `<p><strong>Participants:</strong> ${participantsData.length || 'none uploaded'}</p>`;
     html += `<p><strong>EMG Channels:</strong> ${data.emgChannelCount || 'N/A'}</p>`;
     html += `<p><strong>Sampling Frequency:</strong> ${data.samplingFrequency || 'N/A'} Hz</p>`;
     html += `<p><strong>Manufacturer:</strong> ${data.manufacturer || 'N/A'} ${data.manufacturerModel || ''}</p>`;
@@ -598,37 +623,13 @@ function getBIDS_emgJson(data) {
 }
 
 function getBIDS_subjectsTSV(data) {
-    const participant_id = data.participant_id || [];
-    const ages = data.subjects_age || [];
-    const heights = data.subjects_height || [];
-    const weights = data.subjects_weight || [];
-
-    const length = Math.max(participant_id.length, ages.length, heights.length, weights.length);
-    //const length = Math.max(ages.length, heights.length, weights.length);
-
-    const subjects = [];
-
-    for (let i = 0; i < length; i++) {
-        subjects.push({
-            participant_id: `sub-${participant_id[i]}` || "",
-            age: ages[i] || "n/a",
-            height: heights[i] || "n/a",
-            weight: weights[i] || "n/a"
-        });
+    if (participantsData.length === 0) {
+        document.getElementById('bidsSubjectsPreview').textContent = '(no participants file uploaded)';
+        return;
     }
-
-    let tsv = "participant_id\tage\theight\tweight\n";
-
-    subjects.forEach((s, index) => {
-        tsv += [
-            s.participant_id,
-            s.age,
-            s.height,
-            s.weight
-        ].join("\t") + "\n";
-    });
-
-    document.getElementById('bidsSubjectsPreview').textContent = tsv;
+    const headers = Object.keys(participantsData[0]);
+    const lines = participantsData.map(row => headers.map(h => row[h] || '').join('\t'));
+    document.getElementById('bidsSubjectsPreview').textContent = [headers.join('\t'), ...lines].join('\n');
 }
 
 function getBIDS_channelsTSV(data) {
@@ -702,19 +703,7 @@ function buildMetadata() {
             institutionName: data.institutionName || "",
             institutionAddress: data.institutionAddress || ""
         },
-        participants: {
-            numParticipants: parseInt(data.numParticipants) || null,
-            ageMin: parseInt(data.ageMin) || null,
-            ageMax: parseInt(data.ageMax) || null,
-            sexFemale: data.sexFemale === 'on',
-            femaleCount: parseInt(data.femaleCount) || null,
-            sexMale: data.sexMale === 'on',
-            maleCount: parseInt(data.maleCount) || null,
-            sexOther: data.sexOther === 'on',
-            otherCount: parseInt(data.otherCount) || null,
-            healthStatus: data.healthStatus || "",
-            pathologicalConditions: data.pathologicalConditions || ""
-        },
+        participants: participantsData,
         recording: {
             manufacturer: data.manufacturer || "n/a",
             manufacturerModel: data.manufacturerModel || "n/a",
@@ -799,7 +788,11 @@ function downloadMetadata(metadata) {
 function handleDownload(e) {
     e.preventDefault();
 
-    if (!validateSection(currentSection)) {
+    const visible = getVisibleSections().filter(n => n !== 7); // exclude review
+    visible.forEach(n => { sectionValidState[n] = checkSection(n); });
+    updateProgressBar();
+    if (visible.some(n => !sectionValidState[n])) {
+        alert('Some sections are incomplete. Please check the highlighted steps in the progress bar.');
         return;
     }
 
