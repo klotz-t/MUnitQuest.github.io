@@ -1,0 +1,3 @@
+sub, ses, task_name, repetition, path_to_emg_file, path_to_labels_file
+01, 01, tibialisIsometricTrapezoid10percentmvc, ./sub1/recording1.edf, ./sub1/recording1_decomposed_data.tsv
+01, 01, tibialisIsometricTrapezoid15percentmvc, ./sub1/recording2.edf, ./sub1/recording2_decomposed_data.tsv
