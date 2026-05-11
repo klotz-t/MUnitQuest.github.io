@@ -15,6 +15,9 @@ feature_image: "/Images/header.jpeg"
 
 **Data Challenge:** We believe that the Algorithm Challenge can only be successful with access to data with reliable spike train labels. Therefore, the Data Challenge calls for a community-driven effort to build a diverse, high-quality collection of experimental and simulated HDsEMG datasets with reliably labeled motor unit spike trains. Submissions are assessed by a double-blind expert review panel and released on an open data repository. These datasets form the foundation of the Showdown Phase of the Algorithm Challenge. Learn more at the [Data Challenge](/data-challenge/) page!
 
+To participate, register on [Codabench](https://www.codabench.org/) then navigate to the [Data challenge](https://www.codabench.org/competitions/15762/) and [Algorithm challenge](https://www.codabench.org/competitions/15749/)!
+
+
 ### Who is it for
 
   - The Algorithm Challenge is intended for **algorithm developers** working on computational methods that can reconstruct the activity of single neurons from complex mixtures.
@@ -36,7 +39,7 @@ Since the development of the concentric needle by Adrian and Bronk nearly 100 ye
 ### Partners 
 
 <p float="left">
-  <img src="/Images/isek_logo.png" width="150"/>
+  <a href="https://isek.org/" target="_blank"><img src="/Images/isek_logo.png" width="150"/></a>
 </p>
 
 With support from the International Society of Electrophysiology and Kinesiology (ISEK).

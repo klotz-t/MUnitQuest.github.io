@@ -6,8 +6,7 @@ feature_text:
 ---
 
 
-Both the **Data Challenge** and the **Algorithm Challenge** are hosted on [Codabench](https://www.codabench.org/). To participate in the competition, you need to create an account and follow the provided instructions.  
-
+Both the **Data Challenge** and the **Algorithm Challenge** are hosted on [Codabench](https://www.codabench.org/). To participate, register on Codabench, then navigate to the [Data challenge](https://www.codabench.org/competitions/15762/) and [Algorithm challenge](https://www.codabench.org/competitions/15749/)!
 
 ## Data Challenge
 

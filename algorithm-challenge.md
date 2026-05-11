@@ -9,6 +9,8 @@ feature_text:
 
 The **Algorithm Challenge** is a competition to advance methods that reconstruct motor unit spike trains from high-density surface EMG (HDsEMG). It consists of two independent **tasks** and two sequential **phases**.
 
+To participate, register on [Codabench](https://www.codabench.org/) then navigate to the [Algorithm challenge](https://www.codabench.org/competitions/15749/) page!
+
 ### Tasks
 
 Competitors may participate in one or both tasks:
@@ -47,4 +49,5 @@ The scoring system for both tasks will be announced soon.
 
 ### Awards
 
-All teams receive recognition on a permanent leaderboard (per task). The **top 5 teams per task** (Isometric and Dynamic) will be invited to share their solutions in a *special issue* of the [Journal of Electromyography and Kinesiology](https://www.sciencedirect.com/journal/journal-of-electromyography-and-kinesiology).
+All teams receive recognition on a permanent leaderboard (per task). The **top 5 teams per task** (Isometric and Dynamic) will be invited to share their solutions in a *special issue* of the [Journal of Electromyography and Kinesiology](https://www.sciencedirect.com/journal/journal-of-electromyography-and-kinesiology). All winning teams will also be invited to share their work in a collaborative benchmarking paper in the same special issue!
+

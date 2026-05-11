@@ -9,6 +9,8 @@ feature_text:
 
 The **Data Challenge** is a community-driven effort to build a diverse, high-quality collection of experimental and simulated HDsEMG datasets with reliably labeled motor unit spike trains. These datasets form the foundation of the Showdown Phase of the **Algorithm Challenge**.
 
+To participate, register on [Codabench](https://www.codabench.org/) then navigate to the [Data challenge](https://www.codabench.org/competitions/15762/) page!
+
 ### Who is it for
 
 The Data Challenge is targeted at **experimental researchers** who use HDsEMG and **simulation scientists** developing electrophysiological models who want to apply their methods in a highly relevant field of applied neuromuscular research.
@@ -34,4 +36,4 @@ Each dataset is rated by the expert panel on the following criteria:
 
 ### Awards
 
-All data contributions will be published according to the FAIR (Findable, Accessible, Interoperable, Reusable) principles in an open data repository. The **top 5** dataset contributions will be invited to share their work in a *special issue* of the [Journal of Electromyography and Kinesiology](https://www.sciencedirect.com/journal/journal-of-electromyography-and-kinesiology).
+All accepted data contributions will be published according to the FAIR (Findable, Accessible, Interoperable, Reusable) principles in an open data repository. All accepted dataset contributions will also be invited to share their work in a collaborative data paper in a special issue of the [Journal of Electromyography and Kinesiology](https://www.sciencedirect.com/journal/journal-of-electromyography-and-kinesiology).
