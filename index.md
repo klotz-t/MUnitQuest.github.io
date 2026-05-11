@@ -44,12 +44,17 @@ Since the development of the concentric needle by Adrian and Bronk nearly 100 ye
 
 With support from the International Society of Electrophysiology and Kinesiology (ISEK).
 
-### Organizing Institutions
-
+### Supporters
 
 <p float="left">
-  <img src="/Images/imperial_logo.png" width="200" />
-  <img src="/Images/uni_stuttgart_logo.png" width="200" style="margin-left: 20px;" />
+  <a href="https://otbioelettronica.it/en/" target="_blank"><img src="/Images/ot_black.png" width="150"/></a>
+</p>
+
+### Organizing Institutions
+
+<p float="left">
+  <a href="https://www.imperial.ac.uk/neuromechanics-rehabilitation-technology/" target="_blank"><img src="/Images/imperial_logo.png" width="200"/></a>
+  <a href="https://www.imsb.uni-stuttgart.de/" target="_blank"><img src="/Images/uni_stuttgart_logo.png" width="200"/></a>
 </p>
 
 - Institute for Modelling and Simulation of Biomechanical Systems, University of Stuttgart
