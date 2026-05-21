@@ -65,7 +65,7 @@ With support from the International Society of Electrophysiology and Kinesiology
 <div style="
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 1.5rem;
   margin-top: 1rem;
 ">
@@ -125,5 +125,15 @@ With support from the International Society of Electrophysiology and Kinesiology
 </div>
 
 ### Contributors
+
+<div style="display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 1.5rem; margin-top: 1rem;">
+
+  <div>
+    <div class="team-photo"><img src="/Images/contributors/simon_avrillon.jpeg"></div>
+    <div class="team-name">Simon Avrillon</div>
+    <div class="team-institute">Nantes Université</div>
+  </div>
+
+</div>
 
 - Become a supporter! Get in touch ([📧](mailto:MUnitQuest@outlook.com)) if you want to contribute to our efforts 🙏

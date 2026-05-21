@@ -245,11 +245,13 @@ table.submission-req {
   margin-top: 0.5rem;
   font-size: 0.9rem;
   font-weight: 600;
+  text-align: center;
 }
 
 .team-institute {
   font-size: 0.8rem;
   color: #666;
+  text-align: center;
 }
 
 /* -------------------------
@@ -391,8 +393,8 @@ table.submission-req {
     }
 
     &.active {
-      color: var(--color-cherry-rose);
-      border-left-color: var(--color-cherry-rose);
+      color: var(--color-slate-blue);
+      border-left-color: var(--color-slate-blue);
       font-weight: 600;
       background-image: none !important;
     }
