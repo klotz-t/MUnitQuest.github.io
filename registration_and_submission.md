@@ -8,17 +8,18 @@ feature_text:
 
 Both the **Data Challenge** and the **Algorithm Challenge** are hosted on [Codabench](https://www.codabench.org/). To participate, register on Codabench, then navigate to the [Data challenge](https://www.codabench.org/competitions/15762/) and [Algorithm challenge](https://www.codabench.org/competitions/15749/)!
 
-## Data Challenge
+### Data Challenge
 
-### Dataset submissions
+#### Dataset submissions
 
 To obtain a diverse data collection for MUnitQuest that balances realism and label quality, we invite submissions of both experimental and simulated data. In short, depending on the type of data you want to contribute, a submission consists of the following parts: 
 
+<div class="table-scroll">
 <table class="submission-req">
   <colgroup>
-    <col style="width: 30%">
-    <col style="width: 40%">
-    <col style="width: 30%">
+    <col style="width: 25%">
+    <col style="width: 37%">
+    <col style="width: 38%">
   </colgroup>
   <thead>
     <tr>
@@ -29,18 +30,18 @@ To obtain a diverse data collection for MUnitQuest that balances realism and lab
   </thead>
   <tbody>
     <tr>
-      <td style="border-bottom: 1px solid #ccc;">Experimental HDsEMG</td>
+      <td>Experimental HDsEMG</td>
       <td rowspan="3">
         1. Raw EMG signals<br>
         2. Labelled motor unit spike trains<br>
         3. Force and/or kinematics data<br>
         4. Metadata and provenance
       </td>
-      <td style="border-bottom: 1px solid #ccc;">Labelling approach (2-page PDF)</td>
+      <td>Labelling approach (2-page PDF)</td>
     </tr>
     <tr>
-      <td style="border-bottom: 1px solid #ccc;">Experimental HDsEMG + concurrent iEMG</td>
-      <td style="border-bottom: 1px solid #ccc;">Raw iEMG signals must be provided; Labelling approach (2-page PDF)</td>
+      <td>Experimental HDsEMG + concurrent iEMG</td>
+      <td>Raw iEMG signals must be provided; Labelling approach (2-page PDF)</td>
     </tr>
     <tr>
       <td>Synthetic (end-to-end, or hybrid)</td>
@@ -48,6 +49,7 @@ To obtain a diverse data collection for MUnitQuest that balances realism and lab
     </tr>
   </tbody>
 </table>
+</div>
 
 **EMG data and metadata:** Data needs to be submitted in the standardized [EMG-BIDS](https://bids-specification.readthedocs.io/en/stable/modality-specific-files/electromyography.html) format. To make getting started with EMG-BIDS as easy as possible, we provide
 - tutorials (coming soon) that you can adopt according to your specific recording setup
@@ -59,14 +61,14 @@ To obtain a diverse data collection for MUnitQuest that balances realism and lab
 
 Further details are coming soon.    
 
-## Algorithm Challenge
+### Algorithm Challenge
 
-### Algorithm submission
+#### Algorithm submission
 
 This is a prediction submission competition. During both the **Familiarization Phase** and the **Showdown Phase**, you will be asked to upload, for each recording, a tabular file (`recordingName_events.tsv`) containing your predicted motor unit spikes (BIDS-events file) together with a log file (`recordingName_log.json`) describing essential process metadata (further details to be announced). Submissions apply to both tasks (**Isometric** and **Dynamic**) independently. To be eligible for awards, you need to share your code openly (e.g., on GitHub) upon the completion of the competition.
 
 
-### Example: how to report motor unit spike trains
+#### Example: how to report motor unit spike trains
 
 Here is a minimal example of the format ([BIDS-event file](https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files/events.html)) used for submitting motor unit spike trains (both for labels and algorithm predictions):    
 
