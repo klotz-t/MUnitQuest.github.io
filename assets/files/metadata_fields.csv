@@ -1,0 +1,65 @@
+ , Metadata file    , Field                          , Req. level , Specified in                , Inferred/ Filled, Changes per recording?, Notes
+1, _emg.json        , EMGPlacementScheme             , REQUIRED   , setup.csv                   , Filled/ List    , Yes                   , "Channel-specific/ measured/ other"
+ ,                  , EMGPlacementSchemeDescription  ,            ,                             ,                 ,                       ,
+ ,                  , EMGReference                   , REQUIRED   , setup.csv                   , Filled/ List    , Maybe                 , "Monopolar/ bipolar/ channel-specific"
+ ,                  , SamplingFrequency              , REQUIRED   , setup.csv                   , Filled          , Maybe                 ,
+ ,                  , PowerLineFrequency             , REQUIRED   , setup.csv                   , Filled          , Maybe                 ,
+ ,                  , RecordingType                  , REQUIRED   , setup.csv                   ,                 ,                       , Always continuous for our purposes
+ ,                  , SoftwareFilters                , REQUIRED   , setup.csv                   , Filled          ,                       ,
+ ,                  , TaskName                       , REQUIRED   , recordings.csv              , Filled          , Yes                   ,
+ ,                  , EMGChannelCount                , RECOMMENDED, setup.csv                   , Filled          , Maybe                 , Derived by counting EMG-type channels per setup
+ ,                  , HardwareFilters                , RECOMMENDED, setup.csv                   , Filled          ,                       ,
+ ,                  , RecordingDuration              , RECOMMENDED,                             ,                 ,                       , "Could be inferred, but need to read data for doing so"
+ ,                  , Manufacturer                   , RECOMMENDED, setup.csv                   , Filled          ,                       ,
+ ,                  , ManufacturersModelName         , RECOMMENDED, setup.csv                   , Filled          ,                       ,
+ ,                  , SoftwareVersions               , RECOMMENDED,                             , Filled          ,                       ,
+ ,                  , DeviceSerialNumber             , RECOMMENDED,                             , Filled          ,                       ,
+ ,                  , ElectrodeManufacturer          , RECOMMENDED, setup.csv                   , Filled          ,                       ,
+ ,                  , ElectrodeManufacturersModelName, RECOMMENDED, setup.csv                   , Filled          ,                       ,
+ ,                  , TaskDescription                , RECOMMENDED, setup.csv                   , Filled          ,                       ,
+ ,                  , Instructions                   , RECOMMENDED, setup.csv                   , Filled          ,                       ,
+ ,                  , InstitutionName                , RECOMMENDED, form                        , Filled          ,                       , Dataset-level field; same across all recordings
+ ,                  , InstitutionAddress             , RECOMMENDED, form                        , Filled          ,                       , Dataset-level field; same across all recordings
+ ,                  , InstitutionalDepartmentName    , RECOMMENDED, form                        , Filled          ,                       , Dataset-level field; same across all recordings
+ ,                  , ElectrodeMaterial              , OPTIONAL   ,                             , Filled          ,                       ,
+ ,                  , ElectrodeType                  , OPTIONAL   ,                             , Filled          ,                       ,
+ ,                  , EMGGround                      , OPTIONAL   ,                             , Filled          ,                       ,
+ ,                  , EpochLength                    ,            ,                             ,                 ,                       ,
+ ,                  , Gain                           , OPTIONAL   ,                             , Filled          ,                       ,
+ ,                  , InterelectrodeDistance         , OPTIONAL   ,                             , Filled          ,                       ,
+ ,                  , Preamplification               , OPTIONAL   ,                             , Filled          ,                       ,
+ ,                  , SkinPreparation                , OPTIONAL   ,                             , Filled          ,                       ,
+ ,                  , SubjectArtefactDescription     , OPTIONAL   ,                             , Filled          ,                       ,
+ ,                  , TriggerChannelCount            , OPTIONAL   ,                             , Inferred        ,                       , Derived by counting TRIG-type channels per setup
+2, _channels.tsv    , name                           , REQUIRED   , channels_electrodes.csv     ,                 ,                       , Maps to channel_name column
+ ,                  , type                           , REQUIRED   , channels_electrodes.csv     ,                 ,                       ,
+ ,                  , units                          , REQUIRED   , channels_electrodes.csv     ,                 ,                       ,
+ ,                  , Description                    , OPTIONAL   ,                             ,                 ,                       ,
+ ,                  , sampling_frequency             , OPTIONAL   ,                             ,                 ,                       ,
+ ,                  , signal_electrode               , RECOMMENDED, channels_electrodes.csv     ,                 ,                       , Maps to electrode_name column
+ ,                  , reference                      , RECOMMENDED, channels_electrodes.csv     ,                 ,                       ,
+ ,                  , group                          , RECOMMENDED, channels_electrodes.csv     ,                 ,                       ,
+ ,                  , target_muscle                  , RECOMMENDED, channels_electrodes.csv     ,                 ,                       ,
+ ,                  , placement_scheme               , RECOMMENDED,                             ,                 ,                       ,
+ ,                  , placement_description          , RECOMMENDED,                             ,                 ,                       ,
+ ,                  , interelectrode_distance        , RECOMMENDED,                             ,                 ,                       ,
+ ,                  , low_cutoff                     , OPTIONAL   ,                             ,                 ,                       ,
+ ,                  , high_cutoff                    , OPTIONAL   ,                             ,                 ,                       ,
+ ,                  , notch                          , OPTIONAL   ,                             ,                 ,                       ,
+ ,                  , status                         , OPTIONAL   ,                             ,                 ,                       ,
+ ,                  , status_description             , OPTIONAL   ,                             ,                 ,                       ,
+3, _electrodes.tsv  , name                           , REQUIRED   , channels_electrodes.csv     ,                 ,                       , Maps to electrode_name column; deduplicated
+ ,                  , x                              , REQUIRED   , channels_electrodes.csv     ,                 ,                       ,
+ ,                  , y                              , REQUIRED   , channels_electrodes.csv     ,                 ,                       ,
+ ,                  , z                              , OPTIONAL   ,                             ,                 ,                       ,
+ ,                  , coordinate_system              , RECOMMENDED, channels_electrodes.csv     ,                 ,                       ,
+ ,                  , type                           , RECOMMENDED, channels_electrodes.csv     ,                 ,                       ,
+ ,                  , material                       , RECOMMENDED, channels_electrodes.csv     ,                 ,                       ,
+ ,                  , impedance                      , RECOMMENDED, channels_electrodes.csv     ,                 ,                       ,
+ ,                  , group                          , RECOMMENDED, channels_electrodes.csv     ,                 ,                       ,
+4, _coordsystem.json, EMGCoordinateSystem            , REQUIRED   , coordsystems.csv            ,                 ,                       , From the row where type=anatomical
+ ,                  , EMGCoordinateUnits             , REQUIRED   , coordsystems.csv            ,                 ,                       , From the row where type=anatomical
+ ,                  , EMGCoordinateSystemDescription ,            , coordsystems.csv            ,                 ,                       , From the row where type=anatomical
+ ,                  , ParentCoordinateSystem         , OPTIONAL   , coordsystems.csv            ,                 ,                       , From grid rows; links grid frame to anatomical frame
+ ,                  , AnchorCoordinates              ,            , coordsystems.csv            ,                 ,                       , anchor_x/ anchor_y from grid rows
+ ,                  , AnchorElectrode                ,            , coordsystems.csv            ,                 ,                       , From grid rows

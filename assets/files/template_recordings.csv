@@ -1,8 +1,8 @@
 sub,ses,task_name,run,setup,path_to_emg_file,path_to_labels_file
-01,,rest,1,VL_3x4,sub1/vl_trial1.otb+,sub1/vl_trial1_mu.mat
-01,,isometric30percentMVC,1,VL_3x4,sub1/vl_trial2.otb+,sub1/vl_trial2_mu.mat
-01,,isometric50percentMVC,1,VL_3x4,sub1/vl_trial3.otb+,sub1/vl_trial3_mu.mat
-01,,isometric50percentMVC,2,VL_3x4,sub1/vl_trial4.otb+,sub1/vl_trial4_mu.mat
+01,,rest,1,VL_3x4s_1i,sub1/vl_trial1.otb+,sub1/vl_trial1_mu.mat
+01,,isometric30percentMVC,1,VL_3x4s_1i,sub1/vl_trial2.otb+,sub1/vl_trial2_mu.mat
+01,,isometric50percentMVC,1,VL_3x4s_1i,sub1/vl_trial3.otb+,sub1/vl_trial3_mu.mat
+01,,isometric50percentMVC,2,VL_3x4s_1i,sub1/vl_trial4.otb+,sub1/vl_trial4_mu.mat
 02,01,rest,1,TA_dual_3x3,sub2/ta_2grids_trial1.otb+,sub2/ta_2grids_trial1_mu.mat
 02,01,isometric30percentMVC,1,TA_dual_3x3,sub2/ta_2grids_trial2.otb+,sub2/ta_2grids_trial2_mu.mat
 02,01,isometric30percentMVC,2,TA_dual_3x3,sub2/ta_2grids_trial3.otb+,sub2/ta_2grids_trial3_mu.mat

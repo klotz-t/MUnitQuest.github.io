@@ -9,9 +9,7 @@ layout: page
 
 This tutorial walks you through preparing a real HD-EMG dataset for sharing using the [EMG-BIDS](https://bids-specification.readthedocs.io/en/stable/modality-specific-files/electromyography.html) standard. By the end, you will have a complete set of BIDS-compliant metadata files ready to accompany your recordings.
 
-The process has two stages: first, you fill in five simple CSV files that capture everything BIDS needs to know about your participants, recordings, hardware, electrode layout, and coordinate systems. Second, you upload those CSVs into the MUnitQuest metadata tool — along with a short online form for dataset-level details — and download a ZIP containing all the generated metadata files.
-
-No programming is required. The CSVs are plain spreadsheets; the tool runs entirely in your browser.
+The process has two stages: first, we fill in five simple CSV files that capture everything BIDS needs to know about the dataset - participants, recordings, hardware, electrode layout, and coordinate systems. Second, we upload those CSVs into the [MUnitQuest metadata tool](/metadata-form/) — along with a short online form for dataset-level details — and download a ZIP containing all the generated metadata files.
 
 #### Prerequisites
 
@@ -22,7 +20,7 @@ No programming is required. The CSVs are plain spreadsheets; the tool runs entir
 #### Example dataset
 
 We will walk through preparing a dataset with 2 subjects and 10 recordings in total, where
-- Subject 1 took part in a single experimental session, during which we recorded HD-EMG signals from the right vastus lateralis using a 3 × 4 electrode grid. Four repetitions of an isometric contraction task were collected.
+- Subject 1 took part in a single experimental session, during which we recorded HD-EMG signals from the right vastus lateralis using a 3 × 4 electrode grid. A single intramuscular wire electrode was also inserted into the vastus lateralis to provide a concurrent reference for surface decomposition. Four repetitions of an isometric contraction task were collected.
 - Subject 2 took part in two separate sessions. In the first session, two 3 × 3 grids were placed simultaneously over proximal and distal regions of the right tibialis anterior, yielding three recordings with 18 channels each. In the second session, a single 4 × 4 grid was placed over the right tibialis anterior, and three more recordings were collected.
 
 Before we begin, the dataset sits in a flat folder structure as the acquisition software and experimenter left it:
@@ -131,7 +129,7 @@ This file contains one row per subject. The `group` column is optional but usefu
 
 #### `recordings.csv`
 
-This file contains one row per recording file. The `setup` column links each recording to its hardware and electrode configuration. In our dataset, as we indicated before, three distinct setups appear: `VL_3x4`, `TA_dual_3x3`, and `TA_4x4`. Each will generate its own set of BIDS metadata files.
+This file contains one row per recording file. The `setup` column links each recording to its hardware and electrode configuration. In our dataset, as we indicated before, three distinct setups appear: `VL_3x4s_1i`, `TA_dual_3x3`, and `TA_4x4`. Each will generate its own set of BIDS metadata files.
 
 Subject 1 has only a single session, so `ses` field is left blank. Subject 2's three recordings from each session reference different setups because the grid configuration changed between sessions.
 
@@ -139,10 +137,10 @@ Subject 1 has only a single session, so `ses` field is left blank. Subject 2's t
 
 | sub | ses | task_name | run | setup | path_to_emg_file | path_to_labels_file |
 |-----|-----|-----------|-----|-------|------------------|---------------------|
-| 01 | | rest | 1 | VL_3x4 | sub1/vl_trial1.otb+ | sub1/vl_trial1_mu.mat |
-| 01 | | isometric30percentMVC | 1 | VL_3x4 | sub1/vl_trial2.otb+ | sub1/vl_trial2_mu.mat |
-| 01 | | isometric50percentMVC | 1 | VL_3x4 | sub1/vl_trial3.otb+ | sub1/vl_trial3_mu.mat |
-| 01 | | isometric50percentMVC | 2 | VL_3x4 | sub1/vl_trial4.otb+ | sub1/vl_trial4_mu.mat |
+| 01 | | rest | 1 | VL_3x4s_1i | sub1/vl_trial1.otb+ | sub1/vl_trial1_mu.mat |
+| 01 | | isometric30percentMVC | 1 | VL_3x4s_1i | sub1/vl_trial2.otb+ | sub1/vl_trial2_mu.mat |
+| 01 | | isometric50percentMVC | 1 | VL_3x4s_1i | sub1/vl_trial3.otb+ | sub1/vl_trial3_mu.mat |
+| 01 | | isometric50percentMVC | 2 | VL_3x4s_1i | sub1/vl_trial4.otb+ | sub1/vl_trial4_mu.mat |
 | 02 | 01 | rest | 1 | TA_dual_3x3 | sub2/ta_2grids_trial1.otb+ | sub2/ta_2grids_trial1_mu.mat |
 | 02 | 01 | isometric30percentMVC | 1 | TA_dual_3x3 | sub2/ta_2grids_trial2.otb+ | sub2/ta_2grids_trial2_mu.mat |
 | 02 | 01 | isometric30percentMVC | 2 | TA_dual_3x3 | sub2/ta_2grids_trial3.otb+ | sub2/ta_2grids_trial3_mu.mat |
@@ -158,19 +156,21 @@ With the index files in place, we now describe the three recording configuration
 
 #### `setup.csv`
 
-(1) Amplifier and electrode columns:
+(1) Amplifier columns:
 
-| setup_name | Manufacturer | ManufacturersModelName | ElectrodeManufacturer | ElectrodeManufacturersModelName |
-|------------|--------------|------------------------|-----------------------|---------------------------------|
-| VL_3x4 | OTBioelettronica | Quattrocento | OTBioelettronica | HD08MM0304 |
-| TA_dual_3x3 | OTBioelettronica | Quattrocento | OTBioelettronica | HD08MM0303 |
-| TA_4x4 | OTBioelettronica | Quattrocento | OTBioelettronica | HD08MM0404 |
+| setup_name | Manufacturer | ManufacturersModelName |
+|------------|--------------|------------------------|
+| VL_3x4s_1i | OTBioelettronica | Quattrocento |
+| TA_dual_3x3 | OTBioelettronica | Quattrocento |
+| TA_4x4 | OTBioelettronica | Quattrocento |
+
+`ElectrodeManufacturer` and `ElectrodeManufacturersModelName` have been moved to `channels_electrodes.csv`. This allows different electrode models within the same setup — as is the case for `VL_3x4s_1i`, where the surface grid (OTBioelettronica HD08MM0304) and the intramuscular wire (Natus Medical WE-DN1.5) are different products — to each carry their own provenance.
 
 (2) Acquisition settings columns:
 
 | setup_name | SamplingFrequency | PowerLineFrequency | RecordingType | SoftwareHighPassHz | SoftwareLowPassHz | HardwareHighPassHz | HardwareLowPassHz | EMGChannelCount | EMGReference | EMGPlacementScheme |
 |------------|-------------------|--------------------|---------------|--------------------|-------------------|--------------------|-------------------|-----------------|--------------|---------------------|
-| VL_3x4 | 2048 | 50 | continuous | 10 | 900 | 10 | 900 | 12 | monopolar | measured |
+| VL_3x4s_1i | 2048 | 50 | continuous | 10 | 900 | 10 | 900 | 13 | monopolar | measured |
 | TA_dual_3x3 | 2048 | 50 | continuous | 10 | 900 | 10 | 900 | 18 | monopolar | measured |
 | TA_4x4 | 2048 | 50 | continuous | 10 | 900 | 10 | 900 | 16 | monopolar | measured |
 
@@ -178,11 +178,11 @@ With the index files in place, we now describe the three recording configuration
 
 | setup_name | TaskDescription | Instructions |
 |------------|-----------------|--------------|
-| VL_3x4 | Isometric knee extension at 90 deg of hip flexion and 60 deg of knee flexion. Participants matched force profiles displayed on a screen. | Sit upright in the dynamometer chair. Keep your thigh flat on the seat and follow the force trace on the screen. |
+| VL_3x4s_1i | Isometric knee extension at 90 deg of hip flexion and 60 deg of knee flexion. Concurrent HD-sEMG (3×4 grid) and intramuscular (single wire) recordings from the right vastus lateralis. Participants matched force profiles displayed on a screen. | Sit upright in the dynamometer chair. Keep your thigh flat on the seat and follow the force trace on the screen. |
 | TA_dual_3x3 | Isometric dorsiflexion at fixed ankle angle (90 deg). Two simultaneous 3x3 grids over proximal and distal right tibialis anterior. Participants matched force profiles displayed on a screen. | Sit with your leg relaxed. Keep your ankle at 90 degrees and follow the force trace on the screen as accurately as you can. |
 | TA_4x4 | Isometric dorsiflexion at fixed ankle angle (90 deg). Single 4x4 grid over right tibialis anterior. Participants matched force profiles displayed on a screen. | Sit with your leg relaxed. Keep your ankle at 90 degrees and follow the force trace on the screen as accurately as you can. |
 
-The `EMGChannelCount` reflects only EMG-type channels: 12 for the 3 × 4 grid, 18 for the two simultaneous 3 × 3 grids, and 16 for the 4 × 4 grid. Reference and auxiliary channels (e.g. `Torque`, `R1`) are not counted here — they appear in `channels_electrodes.csv` with their own channel types.
+The `EMGChannelCount` reflects all EMG-type channels: 13 for `VL_3x4s_1i` (12 surface + 1 intramuscular), 18 for the two simultaneous 3 × 3 grids, and 16 for the 4 × 4 grid. Reference and auxiliary channels (e.g. `Torque`, `R1`) are not counted here — they appear in `channels_electrodes.csv` with their own channel types, alongside the `ElectrodeManufacturer` and `ElectrodeManufacturersModelName` columns that now live there.
 
 ---
 
@@ -190,13 +190,15 @@ The `EMGChannelCount` reflects only EMG-type channels: 12 for the 3 × 4 grid, 1
 
 With the index files in place, we now turn to the three *setup* configurations. Each setup helps produce the `_emg.json`, `_channels.tsv`, `_electrodes.tsv`, and `_coordsystem.json` files *per recording*. We fill in `coordsystems.csv` and `channels_electrodes.csv` — one block of rows per setup.
 
-#### Setup VL_3x4 — sub-01's 3 × 4 grid on right vastus lateralis
+#### Setup VL_3x4s_1i — sub-01's 3 × 4 surface grid + 1 intramuscular wire on right vastus lateralis
 
-The electrode grid was placed over the right vastus lateralis, located by palpating the quadriceps group and centering the grid over the muscle belly. At the end of the recording session, a tape measure was used to locate electrode E1 — the top-left corner of the grid — relative to the greater trochanter: 55 mm lateral, 175 mm distal along the femoral shaft. This single measurement, the *anchor point*, is all we need: because the grid geometry is regular and known (3 × 4 layout, 8 mm spacing), the positions of every other electrode follow automatically.
+The electrode grid was placed over the right vastus lateralis, located by palpating the quadriceps group and centering the grid over the muscle belly. A single intramuscular fine wire electrode (E_im) was inserted approximately midway across the grid, between E6 and E7. At the end of the recording session, a tape measure was used to locate electrode E1 — the top-left corner of the grid — relative to the greater trochanter: 55 mm lateral, 175 mm distal along the femoral shaft. This single measurement, the *anchor point*, is all we need for the surface electrodes: because the grid geometry is regular and known (3 × 4 layout, 8 mm spacing), the positions of every other surface electrode follow automatically.
+
+For the intramuscular wire, we reuse the `grid1` coordinate system. Its x and y coordinates give the skin insertion point in the grid frame (x=12, y=8 — between columns 2 and 3, second row), and z gives the insertion depth into the muscle (12 mm). The `grid1` coordsystem description is extended to state that z represents insertion depth for intramuscular entries.
 
 > **What if you did not measure the anchor?** The EMG-BIDS spec allows omitting `ParentCoordinateSystem`, `AnchorElectrode`, and `AnchorCoordinates` from `_coordsystem.json`. Your `_electrodes.tsv` will still contain valid grid-internal coordinates (each electrode's position relative to E1), but they will not be tied to any anatomical frame — the positions describe electrode geometry relative to one another, not where on the body the grid sat. Note that if you *do* include a `ParentCoordinateSystem`, the spec then requires both `AnchorElectrode` and `AnchorCoordinates`.
 
-A single grid with 3 rows and 4 columns, 8 mm inter-electrode distance. Channels are labelled EMG001–EMG012 in row-major order.
+A single grid with 3 rows and 4 columns, 8 mm inter-electrode distance. Surface channels are labelled EMG001–EMG012 in row-major order; the intramuscular wire is EMG013.
 
 Grid layout — electrode labels (x along columns, y along rows):
 
@@ -207,30 +209,31 @@ E9     E10    E11    E12     (y = 16 mm)
 x=0    x=8    x=16   x=24
 ```
 
+The intramuscular wire (E_im) was inserted between E6 and E7, approximately at x=12, y=8 in the grid frame, to a depth of 12 mm.
+
 Correspondingly, our `coordsystems.csv` and `channels_electrodes.csv` rows look like this:
 
 `coordsystems.csv`:
 
 | setup | name | type | units | description | parent_coord_system | anchor_electrode | anchor_x | anchor_y |
 |-------|------|------|-------|-------------|---------------------|------------------|----------|----------|
-| VL_3x4 | thigh | anatomical | mm | Origin at the greater trochanter. x-axis points distally along the femoral shaft. y-axis points anteriorly. z-axis points medially. | | | | |
-| VL_3x4 | grid1 | grid | mm | 3x4 grid over right vastus lateralis. Origin at electrode E1 (top-left corner). x-axis points distally, y-axis points laterally. | thigh | E1 | 55 | 175 |
+| VL_3x4s_1i | thigh | anatomical | mm | Origin at the greater trochanter. x-axis points distally along the femoral shaft. y-axis points anteriorly. z-axis points medially. | | | | |
+| VL_3x4s_1i | grid1 | grid | mm | 3x4 grid over right vastus lateralis. Origin at electrode E1 (top-left corner). x-axis points distally, y-axis points laterally. For intramuscular entries, z represents insertion depth positive into the muscle. | thigh | E1 | 55 | 175 |
 
 `channels_electrodes.csv`:
 
-| setup | channel_name | type | units | electrode_name | x | y | z | coordinate_system | reference | group | target_muscle | material | impedance | low_cutoff | high_cutoff |
-|-------|--------------|------|-------|----------------|---|---|---|-------------------|-----------|-------|---------------|----------|-----------|------------|-------------|
-| VL_3x4 | EMG001 | EMG | uV | E1 | 0 | 0 | 0 | grid1 | R1 | grid1 | right vastus lateralis | Ag/AgCl | n/a | 10 | 900 |
-| VL_3x4 | EMG002 | EMG | uV | E2 | 8 | 0 | 0 | grid1 | R1 | grid1 | right vastus lateralis | Ag/AgCl | n/a | 10 | 900 |
-| VL_3x4 | EMG003 | EMG | uV | E3 | 16 | 0 | 0 | grid1 | R1 | grid1 | right vastus lateralis | Ag/AgCl | n/a | 10 | 900 |
-| VL_3x4 | … | EMG | uV | … | … | … | 0 | grid1 | R1 | grid1 | right vastus lateralis | Ag/AgCl | n/a | 10 | 900 |
-| VL_3x4 | EMG012 | EMG | uV | E12 | 24 | 16 | 0 | grid1 | R1 | grid1 | right vastus lateralis | Ag/AgCl | n/a | 10 | 900 |
-| VL_3x4 | Torque | MISC | Nm | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
-| VL_3x4 | R1 | REF | n/a | R1 | n/a | n/a | n/a | n/a | n/a | n/a | n/a | Ag/AgCl | n/a | n/a | n/a |
+| setup | channel_name | type | units | electrode_name | x | y | z | coordinate_system | reference | group | target_muscle | material | ElectrodeManufacturer | ElectrodeManufacturersModelName | impedance | low_cutoff | high_cutoff |
+|-------|--------------|------|-------|----------------|---|---|---|-------------------|-----------|-------|---------------|----------|-----------------------|--------------------------------|-----------|------------|-------------|
+| VL_3x4s_1i | EMG001 | EMG | uV | E1 | 0 | 0 | 0 | grid1 | R1 | grid1 | right vastus lateralis | Ag/AgCl | OTBioelettronica | HD08MM0304 | n/a | 10 | 900 |
+| VL_3x4s_1i | … | EMG | uV | … | … | … | 0 | grid1 | R1 | grid1 | right vastus lateralis | Ag/AgCl | OTBioelettronica | HD08MM0304 | n/a | 10 | 900 |
+| VL_3x4s_1i | EMG012 | EMG | uV | E12 | 24 | 16 | 0 | grid1 | R1 | grid1 | right vastus lateralis | Ag/AgCl | OTBioelettronica | HD08MM0304 | n/a | 10 | 900 |
+| VL_3x4s_1i | EMG013 | EMG | uV | E_im | 12 | 8 | 12 | grid1 | R1 | intramuscular | right vastus lateralis | stainless steel | OTBioelettronica | Fi-Wi2 | n/a | 10 | 900 |
+| VL_3x4s_1i | Torque | MISC | Nm | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
+| VL_3x4s_1i | R1 | REF | n/a | R1 | n/a | n/a | n/a | n/a | n/a | n/a | n/a | Ag/AgCl | OTBioelettronica | n/a | n/a | n/a | n/a |
 
-<p class="wt-table-note">EMG004–EMG011 follow the same pattern: x cycles through 0, 8, 16, 24 mm across each column, y increments by 8 mm per row.</p>
+<p class="wt-table-note">EMG002–EMG011 follow the same pattern as EMG001: x cycles through 0, 8, 16, 24 mm across each column, y increments by 8 mm per row, z=0. EMG013 is the only channel with a non-zero z value.</p>
+> **Note:** the grid layout above shows physical electrode labels (E1, E2, …, E_im) — the actual objects attached to or inserted into the tissue. The `channels_electrodes.csv` file specifies how each physical electrode maps to a stored data channel on disk: E1 → EMG001, …, E12 → EMG012, E_im → EMG013. Surface electrodes all sit at z=0 in the grid frame while the intramuscular wire is at z=12 (12 mm insertion depth). The reference electrode R1 appears as a REF channel with no spatial coordinates, since its position is not part of the EMG array.
 
-> **Notice the distinction:** the grid layout above shows physical electrode labels (E1, E2, …) — the actual objects attached to the skin. The `channels_electrodes.csv` file specifies how each physical electrode maps to a stored data channel on disk: E1 is recorded as channel EMG001, E2 as EMG002, and so on. The reference electrode R1 appears as a REF channel with no spatial coordinates, since its position is not part of the EMG array.
 
 ---
 
@@ -325,9 +328,220 @@ With all five CSV files prepared, head to the MUnitQuest metadata form. The last
 
 For our tutorial dataset, the generated files produce the following BIDS layout:
 
-#### Uploading the data files
+### Uploading the data files
 
-#TODO: The last step would be to upload the data files. For this step you will need to convert your recordings to EDF format — this can be done programmatically and will be covered in a separate tutorial.
+Your recording files must be in **EDF (European Data Format)** to accompany the BIDS metadata. The scripts below read the two CSV files you have already filled in (`recordings.csv` and `channels_electrodes.csv`), look up the correct channel names for each setup automatically, and assemble the full BIDS folder in one call — including extracting `metadata.zip`.
+
+The only assumption is that your original acquisition files (`.otb+` or similar) have been exported to language-native arrays: `.npy` / `.npz` for Python, `.mat` for MATLAB, each with shape **n_channels × n_samples** (Python) or **n_samples × n_channels** (MATLAB).
+
+<div class="code-tabs">
+<div class="tab-pane" data-label="Python">
+<pre><code class="language-python">import numpy as np
+import pandas as pd
+import pyedflib
+import zipfile
+from pathlib import Path
+
+
+def get_channel_names(channels_csv, setup):
+    """Return ordered channel names for a given setup from channels_electrodes.csv.
+
+    Excludes REF electrodes (those with channel_name == "n/a").
+    """
+    ch = pd.read_csv(channels_csv, keep_default_na=False, na_values=[""])
+    mask = (ch["setup"] == setup) & ch["channel_name"].notna() & (ch["channel_name"].str.strip() != "n/a")
+    return ch.loc[mask, "channel_name"].str.strip().tolist()
+
+
+def write_edf(out_path, data, channel_names, fs):
+    """Write data to EDF. data: np.ndarray, shape (n_channels, n_samples)."""
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with pyedflib.EdfWriter(str(out_path), len(channel_names)) as f:
+        headers = [
+            {
+                "label":            ch,
+                "sample_frequency": fs,
+                "physical_min":     float(data[i].min()),
+                "physical_max":     float(data[i].max()),
+                "digital_min":      -32768,
+                "digital_max":       32767,
+                "dimension": "", "transducer": "", "prefilter": "",
+            }
+            for i, ch in enumerate(channel_names)
+        ]
+        f.setSignalHeaders(headers)
+        f.writeSamples(data)
+
+
+def assemble_bids_dataset(recordings_csv, channels_csv, metadata_zip,
+                           data_dir, output_dir, fs):
+    """
+    Build a complete BIDS dataset folder.
+
+    recordings_csv -- path to your filled-in recordings.csv
+    channels_csv   -- path to your filled-in channels_electrodes.csv
+    metadata_zip   -- path to metadata.zip downloaded from the MUnitQuest tool
+    data_dir       -- root folder; path_to_emg_file values are relative to this
+                      (.npy: shape n_channels x n_samples;
+                       .npz: same array stored under key "data")
+    output_dir     -- destination folder (created if needed)
+    fs             -- sampling frequency in Hz
+    """
+    output_dir = Path(output_dir)
+
+    # 1. Unpack BIDS sidecar files
+    with zipfile.ZipFile(metadata_zip) as zf:
+        zf.extractall(output_dir)
+
+    # 2. Write one EDF per recording
+    recs = pd.read_csv(recordings_csv, dtype=str).fillna("")
+    for _, row in recs.iterrows():
+        sub   = f"sub-{int(row['sub']):02d}"
+        ses   = row.get("ses", "").strip()
+        task  = row["task_name"].strip()
+        run   = row.get("run", "").strip()
+        setup = row["setup"].strip()
+
+        parts = [sub]
+        if ses:  parts.append(f"ses-{int(ses):02d}")
+        parts.append(f"task-{task}")
+        if run:  parts.append(f"run-{int(run):02d}")
+        bids_name = "_".join(parts) + "_emg.edf"
+
+        subdir = output_dir / sub / (f"ses-{int(ses):02d}" if ses else "")
+        out_path = subdir / "emg" / bids_name
+
+        src = Path(data_dir) / row["path_to_emg_file"].strip()
+        data = np.load(src)["data"] if src.suffix == ".npz" else np.load(src)
+
+        channel_names = get_channel_names(channels_csv, setup)
+        write_edf(out_path, data, channel_names, fs)
+        print(f"  wrote {out_path.relative_to(output_dir)}")
+
+    print(f"\nDone. BIDS dataset at: {output_dir}")
+
+
+# --- Run ---
+assemble_bids_dataset(
+    recordings_csv = "recordings.csv",
+    channels_csv   = "channels_electrodes.csv",
+    metadata_zip   = "metadata.zip",
+    data_dir       = "my_dataset/",
+    output_dir     = "bids_dataset/",
+    fs             = 2048,
+)</code></pre>
+</div>
+<div class="tab-pane" data-label="MATLAB">
+<pre><code class="language-matlab">% Requires R2020b+ for edfwrite.
+% Save each function in its own .m file, or paste all three into a script
+% and call assembleBidsDataset at the bottom.
+
+
+function channelNames = getChannelNames(channelsCsv, setupName)
+    % Return ordered channel names for a given setup from channels_electrodes.csv.
+    t = readtable(channelsCsv, "TextType", "string");
+    rows = t(t.setup == setupName, :);
+    channelNames = cellstr(rows.channel_name);
+end
+
+
+function writeEdf(outPath, data, channelNames, fs)
+    % data: [n_samples x n_channels]
+    outDir = fileparts(outPath);
+    if ~isfolder(outDir), mkdir(outDir); end
+    tt = array2timetable(data, "SampleRate", fs, "VariableNames", channelNames);
+    edfwrite(outPath, tt);
+end
+
+
+function assembleBidsDataset(recordingsCsv, channelsCsv, metadataZip, ...
+                              dataDir, outputDir, fs)
+    % Build a complete BIDS dataset folder.
+    %
+    % recordingsCsv -- path to your filled-in recordings.csv
+    % channelsCsv   -- path to your filled-in channels_electrodes.csv
+    % metadataZip   -- path to metadata.zip downloaded from the MUnitQuest tool
+    % dataDir       -- root folder; path_to_emg_file values are relative to this
+    %                  (.mat files must contain a single variable [n_samples x n_channels])
+    % outputDir     -- destination folder
+    % fs            -- sampling frequency in Hz
+
+    % 1. Unpack BIDS sidecar files
+    unzip(metadataZip, outputDir);
+
+    % 2. Write one EDF per recording
+    recs = readtable(recordingsCsv, "TextType", "string");
+    for i = 1:height(recs)
+        row   = recs(i, :);
+        sub   = sprintf("sub-%02d", str2double(row.sub{1}));
+        ses   = strtrim(row.ses{1});   hasSes = ses ~= "" && ~ismissing(ses);
+        task  = strtrim(row.task_name{1});
+        run   = row.run;               hasRun = ~ismissing(run);
+        setup = strtrim(row.setup{1});
+
+        sesPart = ""; runPart = "";
+        if hasSes, sesPart = sprintf("ses-%02d_", str2double(ses)); end
+        if hasRun, runPart = sprintf("_run-%02d", run); end
+        bidsName = sprintf("%s_%stask-%s%s_emg.edf", sub, sesPart, task, runPart);
+
+        if hasSes
+            outPath = fullfile(outputDir, sub, sprintf("ses-%02d", str2double(ses)), "emg", bidsName);
+        else
+            outPath = fullfile(outputDir, sub, "emg", bidsName);
+        end
+
+        loaded = load(fullfile(dataDir, row.path_to_emg_file{1}));
+        fields = fieldnames(loaded);
+        data   = loaded.(fields{1});   % [n_samples x n_channels]
+
+        channelNames = getChannelNames(channelsCsv, setup);
+        writeEdf(outPath, data, channelNames, fs);
+        fprintf("  wrote %s\n", strrep(outPath, outputDir, ""));
+    end
+    fprintf("\nDone. BIDS dataset at: %s\n", outputDir);
+end
+
+
+% --- Run ---
+assembleBidsDataset( ...
+    "recordings.csv", ...
+    "channels_electrodes.csv", ...
+    "metadata.zip", ...
+    "my_dataset/", ...
+    "bids_dataset/", ...
+    2048 ...
+);</code></pre>
+</div>
+</div>
+
+---
+
+### Spike-train event files
+
+Motor-unit decomposition results are stored as BIDS events files under a `derivatives/` subfolder. Each spike train becomes a set of rows with `onset` (seconds from recording start), `duration` (0), and `trial_type` (motor-unit label):
+
+```python
+def write_events_tsv(out_path: Path, spike_trains: dict, fs: float) -> None:
+    """Write BIDS events.tsv from a dict of {mu_label: sample_index_array}."""
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    rows = []
+    for mu_label in sorted(spike_trains.keys()):
+        for sample in spike_trains[mu_label]:
+            rows.append({"onset": round(float(sample) / fs, 6), "duration": 0.0, "trial_type": mu_label})
+    df = pd.DataFrame(rows, columns=["onset", "duration", "trial_type"])
+    df.sort_values("onset").reset_index(drop=True).to_csv(out_path, sep="\t", index=False)
+```
+
+Events files mirror the raw folder structure under `derivatives/<pipeline-name>/`, with a `desc-decomposition` entity inserted before the suffix:
+
+```
+derivatives/motor-unit-decomposition/
+    sub-01/emg/sub-01_task-rest_run-01_desc-decomposition_events.tsv
+    ...
+```
+
+The pipeline folder also needs its own `dataset_description.json` with `"DatasetType": "derivative"`. A `.bidsignore` file at the dataset root (containing `derivatives/`) tells the BIDS validator to skip the derivatives subtree when validating the raw dataset.
 
 ---
 
@@ -337,15 +551,18 @@ After uploading the five CSV files into the tool and downloading `metadata.zip`,
 
 ```
 dataset/
+├── .bidsignore
 ├── dataset_description.json
 ├── participants.tsv
 ├── participants.json
+├── derivatives/
+│   └── motor-unit-decomposition/  (spike-train events + dataset_description.json)
 │
 ├── sub-01/
 │   └── emg/
-│       ├── sub-01_electrodes.tsv                               ← inherited: one per subject
-│       ├── sub-01_space-thigh_coordsystem.json                 ← inherited: anatomical frame
-│       ├── sub-01_space-grid1_coordsystem.json                 ← inherited: grid frame (anchored to thigh)
+│       ├── sub-01_electrodes.tsv
+│       ├── sub-01_space-thigh_coordsystem.json
+│       ├── sub-01_space-grid1_coordsystem.json
 │       ├── sub-01_task-rest_run-01_emg.edf
 │       ├── sub-01_task-rest_run-01_emg.json
 │       ├── sub-01_task-rest_run-01_channels.tsv
@@ -362,10 +579,10 @@ dataset/
 └── sub-02/
     ├── ses-01/
     │   └── emg/
-    │       ├── sub-02_ses-01_electrodes.tsv                    ← inherited
-    │       ├── sub-02_ses-01_space-lowerLeg_coordsystem.json   ← inherited: anatomical frame
-    │       ├── sub-02_ses-01_space-grid1_coordsystem.json      ← inherited: proximal grid
-    │       ├── sub-02_ses-01_space-grid2_coordsystem.json      ← inherited: distal grid
+    │       ├── sub-02_ses-01_electrodes.tsv
+    │       ├── sub-02_ses-01_space-lowerLeg_coordsystem.json
+    │       ├── sub-02_ses-01_space-grid1_coordsystem.json
+    │       ├── sub-02_ses-01_space-grid2_coordsystem.json
     │       ├── sub-02_ses-01_task-rest_run-01_emg.edf
     │       ├── sub-02_ses-01_task-rest_run-01_emg.json
     │       ├── sub-02_ses-01_task-rest_run-01_channels.tsv
@@ -377,8 +594,8 @@ dataset/
     │       └── sub-02_ses-01_task-isometric30percentMVC_run-02_channels.tsv
     └── ses-02/
         └── emg/
-            ├── sub-02_ses-02_electrodes.tsv                    ← inherited
-            ├── sub-02_ses-02_space-grid1_coordsystem.json      ← inherited: grid only, no anatomical
+            ├── sub-02_ses-02_electrodes.tsv
+            ├── sub-02_ses-02_space-grid1_coordsystem.json
             ├── sub-02_ses-02_task-isometric30percentMVC_run-01_emg.edf
             ├── sub-02_ses-02_task-isometric30percentMVC_run-01_emg.json
             ├── sub-02_ses-02_task-isometric30percentMVC_run-01_channels.tsv

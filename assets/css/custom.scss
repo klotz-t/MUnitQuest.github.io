@@ -306,6 +306,7 @@ table.submission-req {
       margin-top: -2rem;
       margin-bottom: 1rem;
       font-style: italic;
+      line-height: 1.5;
     }
 
     blockquote p {
@@ -319,6 +320,85 @@ table.submission-req {
     }
   }
 }
+
+// Tabbed code blocks
+.code-tabs {
+  margin: 1.25rem 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+
+  .tab-labels {
+    display: flex;
+    background: #f3f4f6;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .tab-label {
+    padding: 0.45rem 1rem;
+    font-size: 0.8rem;
+    font-family: monospace;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: #6b7280;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s;
+
+    &.active {
+      color: #111827;
+      border-bottom-color: #4f46e5;
+      font-weight: 600;
+      background: #fff;
+    }
+
+    &:hover:not(.active) { color: #374151; }
+  }
+
+  .tab-pane {
+    display: none;
+
+    &.active { display: block; }
+
+    pre {
+      margin: 0 !important;
+      border-radius: 0 !important;
+      border: none !important;
+      background: #f6f8fa !important; // match github hljs theme
+
+      code { font-size: 0.78rem; }
+    }
+  }
+
+  .code-copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.6rem;
+    padding: 0.2rem 0.55rem;
+    font-size: 0.72rem;
+    font-family: monospace;
+    background: #e5e7eb;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s, background 0.15s;
+
+    &.copied {
+      background: #d1fae5;
+      color: #065f46;
+      border-color: #6ee7b7;
+    }
+  }
+
+  &:hover .code-copy-btn,
+  .code-copy-btn:focus { opacity: 1; }
+}
+
+// Smaller font for all pre code blocks in the walkthrough (file trees, etc.)
+#wt-wrapper article pre code { font-size: 0.78rem; }
 
 // Smaller, denser table text scoped to the walkthrough
 #wt-wrapper .wt-table-scroll {

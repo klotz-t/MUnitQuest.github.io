@@ -105,4 +105,48 @@ document.addEventListener('DOMContentLoaded', function () {
   }, { rootMargin: '-5% 0px -80% 0px' });
 
   headings.forEach(function (h) { observer.observe(h); });
+
+  // Tabbed code blocks
+  article.querySelectorAll('.code-tabs').forEach(function (tabs) {
+    var panes = tabs.querySelectorAll('.tab-pane');
+    var labelBar = document.createElement('div');
+    labelBar.className = 'tab-labels';
+    panes.forEach(function (pane, i) {
+      var btn = document.createElement('button');
+      btn.className = 'tab-label' + (i === 0 ? ' active' : '');
+      btn.textContent = pane.getAttribute('data-label');
+      btn.addEventListener('click', function () {
+        panes.forEach(function (p) { p.classList.remove('active'); });
+        labelBar.querySelectorAll('.tab-label').forEach(function (b) { b.classList.remove('active'); });
+        pane.classList.add('active');
+        btn.classList.add('active');
+      });
+      labelBar.appendChild(btn);
+      if (i === 0) pane.classList.add('active');
+
+      // Syntax highlighting (scoped — avoids re-processing Rouge blocks)
+      var codeEl = pane.querySelector('code');
+      if (codeEl && typeof hljs !== 'undefined') hljs.highlightElement(codeEl);
+
+      // Copy button
+      var copyBtn = document.createElement('button');
+      copyBtn.className = 'code-copy-btn';
+      copyBtn.textContent = 'Copy';
+      copyBtn.addEventListener('click', function () {
+        var code = pane.querySelector('code');
+        if (!code) return;
+        navigator.clipboard.writeText(code.innerText).then(function () {
+          copyBtn.textContent = 'Copied!';
+          copyBtn.classList.add('copied');
+          setTimeout(function () {
+            copyBtn.textContent = 'Copy';
+            copyBtn.classList.remove('copied');
+          }, 2000);
+        });
+      });
+      pane.style.position = 'relative';
+      pane.appendChild(copyBtn);
+    });
+    tabs.insertBefore(labelBar, tabs.firstChild);
+  });
 });
