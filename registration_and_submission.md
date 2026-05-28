@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Registration and submissions
+title: "Participate in MUnitQuest!"
 feature_image: "/Images/header.jpeg"
 feature_text: 
 ---
@@ -51,15 +51,19 @@ To obtain a diverse data collection for MUnitQuest that balances realism and lab
 </table>
 </div>
 
-**EMG data and metadata:** Data needs to be submitted in the standardized [EMG-BIDS](https://bids-specification.readthedocs.io/en/stable/modality-specific-files/electromyography.html) format. To make getting started with EMG-BIDS as easy as possible, we provide
-- a [step-by-step tutorial](/walkthrough) that walks through preparing a real HD-EMG dataset for sharing
-- a [web-based metadata tool](/metadata-form) for the assisted generation of BIDS-compliant metadata files
+#### How to prepare your submission
 
-**Labeled motor unit spike trains:** A key requirement for a competition on motor unit identification methods is the availability of labeled ground truth spikes. Thus, we additionally require submitting:
-- for each recording, a *.tsv* file (BIDS-events file, see example below) containing the labeled motor unit spike trains 
-- a short description (2-page PDF) of the utilized labelling approach (for experimental EMG data) or the utilized simulation model (for synthetic EMG data)
+**Step 1 — Prepare your EMG data in EMG-BIDS format**
+Data must be submitted in the standardized [EMG-BIDS](https://bids-specification.readthedocs.io/en/stable/modality-specific-files/electromyography.html) format. To make getting started as easy as possible, we provide a [step-by-step tutorial](/walkthrough) and a [web-based metadata tool](/metadata-form) for the assisted generation of BIDS-compliant metadata files.
 
-Further details are coming soon.    
+**Step 2 — Prepare your labeled spike trains**
+For each recording, provide a `*_events.tsv` file (BIDS-events file) containing the labeled motor unit spike trains. See the [example below](#example-how-to-report-motor-unit-spike-trains) for the required format.
+
+**Step 3 — Write a 2-page PDF**
+Include a short description of your labelling approach (for experimental data) or simulation model (for synthetic data). For concurrent iEMG submissions, describe how the invasive reference was used.
+
+**Step 4 — Upload to Codabench**
+Once Steps 1–3 are complete, upload your submission to the [Data Challenge on Codabench](https://www.codabench.org/competitions/15762/).
 
 ### Algorithm Challenge
 
