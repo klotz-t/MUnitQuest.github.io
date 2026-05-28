@@ -207,6 +207,7 @@ function buildParticipantsJSON() {
         handedness:     { Description: 'Handedness as reported by participant' },
         weight:         { Description: 'Body weight of the participant', Unit: 'kg' },
         height:         { Description: 'Body height of the participant', Unit: 'm' },
+        group:          { Description: 'Experimental group the participant belongs to' },
     };
 }
 
