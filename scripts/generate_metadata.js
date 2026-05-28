@@ -1,48 +1,68 @@
 #!/usr/bin/env node
 /**
  * generate_metadata.js
- * Reads form_inputs.json + the five template CSVs and writes a full BIDS folder to ./output/
+ * Reads form_inputs.json + the five CSV files and writes a metadata.zip.
  *
- * Usage:
+ * Usage (defaults):
  *   node scripts/generate_metadata.js
  *
- * Edit assets/files/form_inputs.json to supply values that would otherwise come from the web form.
+ *   Reads  : assets/files/form_inputs.json  +  assets/files/template_*.csv
+ *   Writes : tutorial/source_data/metadata.zip
  *
- * Output structure (metadata-only — actual .edf files are not generated):
+ * Usage (custom source dir):
+ *   node scripts/generate_metadata.js --source-dir tutorial/source_data
  *
- *   output/{datasetName}/
- *   ├── dataset_description.json
- *   ├── README.md
- *   ├── participants.tsv
- *   ├── participants.json
- *   └── sub-XX/
- *       └── [ses-XX/]
- *           └── emg/
- *               ├── sub-XX_[ses-XX_]channels.tsv          ← inherited (one per sub/ses)
- *               ├── sub-XX_[ses-XX_]electrodes.tsv        ← inherited
- *               ├── sub-XX_[ses-XX_]space-{coord}_coordsystem.json  ← inherited
- *               ├── sub-XX_[ses-XX_]task-AA_run-01_emg.json  ← per recording
- *               ├── sub-XX_[ses-XX_]task-BB_run-01_emg.json
- *               └── ...
+ *   Reads  : <source-dir>/form_inputs.json + <source-dir>/{recordings,participants,setup,coordsystems,channels_electrodes}.csv
+ *   Writes : <source-dir>/metadata.zip
+ *
+ * The zip contains the BIDS sidecar folder structure (no .edf files):
+ *   dataset_description.json
+ *   README.md
+ *   participants.tsv / participants.json
+ *   sub-XX/[ses-XX/]emg/  ...channels.tsv, electrodes.tsv, coordsystem.json, emg.json
  */
 
-const fs   = require('fs');
-const path = require('path');
+const fs            = require('fs');
+const path          = require('path');
+const { execSync }  = require('child_process');
+const os            = require('os');
 
 // ---------------------------------------------------------------------------
-// Paths
+// Paths — honour optional --source-dir argument
 // ---------------------------------------------------------------------------
 const SCRIPT_DIR = __dirname;
 const REPO_ROOT  = path.join(SCRIPT_DIR, '..');
+
+const srcArgIdx = process.argv.indexOf('--source-dir');
+const SOURCE_DIR = srcArgIdx !== -1
+    ? path.resolve(process.argv[srcArgIdx + 1])
+    : null;
+
 const FILES_DIR  = path.join(REPO_ROOT, 'assets', 'files');
 
-const FORM = JSON.parse(
-    fs.readFileSync(path.join(FILES_DIR, 'form_inputs.json'), 'utf8')
-);
+// form_inputs.json: prefer source dir, fall back to assets/files
+const formPath = SOURCE_DIR
+    ? path.join(SOURCE_DIR, 'form_inputs.json')
+    : path.join(FILES_DIR, 'form_inputs.json');
+const FORM = JSON.parse(fs.readFileSync(formPath, 'utf8'));
 
-const datasetName = (FORM.dataset.name || 'bids_dataset')
-    .replace(/[^a-zA-Z0-9_-]/g, '_');
-const OUT = path.join(REPO_ROOT, 'output', datasetName);
+// CSV loader: tries source dir first, then assets/files (template_ prefix)
+function load(baseName) {
+    if (SOURCE_DIR) {
+        const p = path.join(SOURCE_DIR, baseName + '.csv');
+        if (fs.existsSync(p)) return parseCSV(fs.readFileSync(p, 'utf8'));
+    }
+    return parseCSV(fs.readFileSync(path.join(FILES_DIR, 'template_' + baseName + '.csv'), 'utf8'));
+}
+
+// Output: temp dir for file tree, then zip to source dir or tutorial/
+const TEMP_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'mq_metadata_'));
+const ZIP_OUT  = SOURCE_DIR
+    ? path.join(SOURCE_DIR, 'metadata.zip')
+    : path.join(REPO_ROOT, 'tutorial', 'metadata.zip');
+
+// OUT is now the temp staging dir (not used externally)
+const OUT = TEMP_DIR;
 
 // ---------------------------------------------------------------------------
 // CSV parser (handles quoted fields with embedded commas)
@@ -77,15 +97,11 @@ function parseCSV(text) {
     });
 }
 
-function load(name) {
-    return parseCSV(fs.readFileSync(path.join(FILES_DIR, name), 'utf8'));
-}
-
-const participantsData       = load('template_participants.csv');
-const recordingsData         = load('template_recordings.csv');
-const setupData              = load('template_setup.csv');
-const coordsystemsData       = load('template_coordsystems.csv');
-const channelsElectrodesData = load('template_channels_electrodes.csv');
+const participantsData       = load('participants');
+const recordingsData         = load('recordings');
+const setupData              = load('setup');
+const coordsystemsData       = load('coordsystems');
+const channelsElectrodesData = load('channels_electrodes');
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -137,7 +153,7 @@ function buildDatasetJson() {
             if (p.codeUrl)     entry.CodeURL     = p.codeUrl;
             generatedBy.push(entry);
         });
-    } else if (dec.method && dec.method !== 'simulation') {
+    } else if (dec.method) {
         (dec.pipelines || []).forEach(p => {
             const entry = { Name: p.name || '' };
             if (p.version)     entry.Version     = p.version;
@@ -173,7 +189,13 @@ function buildDatasetJson() {
 function buildParticipantsTSV() {
     if (participantsData.length === 0) return null;
     const headers = Object.keys(participantsData[0]);
-    const lines = participantsData.map(row => headers.map(h => row[h] || 'n/a').join('\t'));
+    const lines = participantsData.map(row => headers.map(h => {
+        if (h === 'participant_id') {
+            const v = row[h] || '';
+            return v.startsWith('sub-') ? v : `sub-${v}`;
+        }
+        return row[h] || 'n/a';
+    }).join('\t'));
     return [headers.join('\t'), ...lines].join('\n');
 }
 
@@ -181,10 +203,11 @@ function buildParticipantsJSON() {
     return {
         participant_id: { Description: 'Unique subject identifier' },
         age:            { Description: 'Age of the participant at time of testing', Unit: 'years' },
-        sex:            { Description: 'Biological sex of the participant', Levels: { F: 'female', M: 'male', O: 'other' } },
-        handedness:     { Description: 'Handedness as reported by participant', Levels: { L: 'left', R: 'right' } },
+        sex:            { Description: 'Biological sex of the participant' },
+        handedness:     { Description: 'Handedness as reported by participant' },
         weight:         { Description: 'Body weight of the participant', Unit: 'kg' },
         height:         { Description: 'Body height of the participant', Unit: 'm' },
+        group:          { Description: 'Experimental group the participant belongs to' },
     };
 }
 
@@ -228,7 +251,7 @@ function buildEMGJson(rec, setupRow) {
         ElectrodeManufacturer:           def(setupRow.ElectrodeManufacturer),
         ElectrodeManufacturersModelName: def(setupRow.ElectrodeManufacturersModelName),
         EMGReference:        def(setupRow.EMGReference)       || 'n/a',
-        EMGPlacementScheme:  def(setupRow.EMGPlacementScheme) || 'n/a',
+        EMGPlacementScheme:  (() => { const v = def(setupRow.EMGPlacementScheme); return v ? v.charAt(0).toUpperCase() + v.slice(1) : 'n/a'; })(),
         EMGChannelCount:     defInt(setupRow.EMGChannelCount),
         TaskDescription:     def(setupRow.TaskDescription),
         Instructions:        def(setupRow.Instructions),
@@ -344,11 +367,15 @@ for (const [key, recs] of Object.entries(groups)) {
     // Per-recording emg.json + channels.tsv
     for (const rec of recs) {
         let recPrefix = `${prefix}_task-${rec.task_name}`;
-        if (rec.run && rec.run !== '') recPrefix += `_run-${rec.run}`;
+        if (rec.run && rec.run !== '') recPrefix += `_run-${String(parseInt(rec.run)).padStart(2, '0')}`;
         writeJSON(`${folder}${recPrefix}_emg.json`, buildEMGJson(rec, setupRow));
         const chTSV = buildChannelsTSV(setupName);
         if (chTSV) write(`${folder}${recPrefix}_channels.tsv`, chTSV);
     }
 }
 
-console.log('\nDone. Output in ./output/' + datasetName + '/\n');
+// Zip the staged files and clean up
+if (fs.existsSync(ZIP_OUT)) fs.rmSync(ZIP_OUT);
+execSync(`cd "${TEMP_DIR}" && zip -r "${ZIP_OUT}" .`, { stdio: 'pipe' });
+fs.rmSync(TEMP_DIR, { recursive: true });
+console.log(`\nDone. Metadata zip: ${ZIP_OUT}\n`);

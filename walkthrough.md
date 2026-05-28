@@ -7,13 +7,15 @@ layout: page
 
 ### Getting Started
 
-This tutorial walks you through preparing a real HD-EMG dataset for sharing using the [EMG-BIDS](https://bids-specification.readthedocs.io/en/stable/modality-specific-files/electromyography.html) standard. By the end, you will have a complete set of BIDS-compliant metadata files ready to accompany your recordings.
+This tutorial covers how to prepare an HD-EMG dataset in [EMG-BIDS](https://bids-specification.readthedocs.io/en/stable/modality-specific-files/electromyography.html) format and organise your labeled spike trains. It covers **Steps 1 and 2** of the [MUnitQuest dataset submission process](/registration_and_submission/).
 
-The process has two stages: first, we fill in five simple CSV files that capture everything BIDS needs to know about the dataset - participants, recordings, hardware, electrode layout, and coordinate systems. Second, we upload those CSVs into the [MUnitQuest metadata tool](/metadata-form/) — along with a short online form for dataset-level details — and download a ZIP containing all the generated metadata files.
+The process has two stages: first, we fill in five simple CSV files that capture everything BIDS needs to know about the dataset — participants, recordings, hardware, electrode layout, and coordinate systems. Second, we upload those CSVs into the [MUnitQuest Metadata tool](/metadata-form/) — along with a short online form for dataset-level details — and download a ZIP containing all the generated metadata files.
+
+> **Follow along on GitHub!** The CSV files, the source data files and the python scripts used to assemble the BIDS data are available in this [MUnitQuest_Tutorial](https://github.com/MUnitQuest/MUnitQuest_tutorials/tree/main/emg_bids_tutorial1) repository!
 
 #### Prerequisites
 
-- A version of the dataset you would like to share or archive
+- A version of the dataset you would like to submit (or archive for your own purposes!)
 - Some familiarity with MATLAB or Python
 - Some familiarity with how your EMG acquisition device stores data
 
@@ -104,15 +106,15 @@ In our example dataset, three setups arise naturally across the ten recordings.
 
 ### Part 1 — Dataset, participants and recordings
 
-The dataset-level fields — name, authors, licence, BIDS version — are filled in via the online form. For our tutorial dataset the resulting `dataset_description.json` looks like this:
+The dataset-level fields — name, authors, licence, BIDS version — are filled in via our [EMG-BIDS Metadata Tool](/metadata-form.md). For our tutorial dataset the resulting `dataset_description.json` looks like this:
 
 ```json
 {
-  "Name": "EMG-BIDS MUnitQuest tutorial dataset",
-  "BIDSVersion": "1.11.0",
+  "Name": "MUnitQuest Example Dataset",
+  "BIDSVersion": "1.11.1",
+  "DatasetType": "raw",
   "License": "CC0",
-  "Authors": ["MUnitQuest Team"],
-  "DatasetType": "raw"
+  "Authors": ["MUnitQuest"],
 }
 ```
 
@@ -135,24 +137,28 @@ Subject 1 has only a single session, so `ses` field is left blank. Subject 2's t
 
 > **Note:** the keyword `ses` is also used to identify any change to the experimental setup of a single subject. E.g., if the electrodes were removed and repositioned, we would count this as a separate session, even though the setup remained identical.
 
-| sub | ses | task_name | run | setup | path_to_emg_file | path_to_labels_file |
-|-----|-----|-----------|-----|-------|------------------|---------------------|
-| 01 | | rest | 1 | VL_3x4s_1i | sub1/vl_trial1.otb+ | sub1/vl_trial1_mu.mat |
-| 01 | | isometric30percentMVC | 1 | VL_3x4s_1i | sub1/vl_trial2.otb+ | sub1/vl_trial2_mu.mat |
-| 01 | | isometric50percentMVC | 1 | VL_3x4s_1i | sub1/vl_trial3.otb+ | sub1/vl_trial3_mu.mat |
-| 01 | | isometric50percentMVC | 2 | VL_3x4s_1i | sub1/vl_trial4.otb+ | sub1/vl_trial4_mu.mat |
-| 02 | 01 | rest | 1 | TA_dual_3x3 | sub2/ta_2grids_trial1.otb+ | sub2/ta_2grids_trial1_mu.mat |
-| 02 | 01 | isometric30percentMVC | 1 | TA_dual_3x3 | sub2/ta_2grids_trial2.otb+ | sub2/ta_2grids_trial2_mu.mat |
-| 02 | 01 | isometric30percentMVC | 2 | TA_dual_3x3 | sub2/ta_2grids_trial3.otb+ | sub2/ta_2grids_trial3_mu.mat |
-| 02 | 02 | isometric30percentMVC | 1 | TA_4x4 | sub2/ta_1grid_trial1.otb+ | sub2/ta_1grid_trial1_mu.mat |
-| 02 | 02 | isometric30percentMVC | 2 | TA_4x4 | sub2/ta_1grid_trial2.otb+ | sub2/ta_1grid_trial2_mu.mat |
-| 02 | 02 | isometric30percentMVC | 3 | TA_4x4 | sub2/ta_1grid_trial3.otb+ | sub2/ta_1grid_trial3_mu.mat |
+| sub | ses | task_name | run | setup | path_to_emg_file | path_to_labels_file | path_to_events_file |
+|-----|-----|-----------|-----|-------|------------------|---------------------|---------------------|
+| 01 | | rest | 1 | VL_3x4s_1i | sub1/vl_trial1.npy | sub1/vl_trial1_mu.mat | |
+| 01 | | isometric30percentMVC | 1 | VL_3x4s_1i | sub1/vl_trial2.npy | sub1/vl_trial2_mu.mat | sub1/vl_trial2_events.csv |
+| 01 | | isometric50percentMVC | 1 | VL_3x4s_1i | sub1/vl_trial3.npy | sub1/vl_trial3_mu.mat | sub1/vl_trial3_events.csv |
+| 01 | | isometric50percentMVC | 2 | VL_3x4s_1i | sub1/vl_trial4.npy | sub1/vl_trial4_mu.mat | sub1/vl_trial4_events.csv |
+| 02 | 01 | rest | 1 | TA_dual_3x3 | sub2/ta_2grids_trial1.npy | sub2/ta_2grids_trial1_mu.mat | |
+| 02 | 01 | isometric30percentMVC | 1 | TA_dual_3x3 | sub2/ta_2grids_trial2.npy | sub2/ta_2grids_trial2_mu.mat | sub2/ta_2grids_trial2_events.csv |
+| 02 | 01 | isometric30percentMVC | 2 | TA_dual_3x3 | sub2/ta_2grids_trial3.npy | sub2/ta_2grids_trial3_mu.mat | sub2/ta_2grids_trial3_events.csv |
+| 02 | 02 | isometric30percentMVC | 1 | TA_4x4 | sub2/ta_1grid_trial1.npy | sub2/ta_1grid_trial1_mu.mat | sub2/ta_1grid_trial1_events.csv |
+| 02 | 02 | isometric30percentMVC | 2 | TA_4x4 | sub2/ta_1grid_trial2.npy | sub2/ta_1grid_trial2_mu.mat | sub2/ta_1grid_trial2_events.csv |
+| 02 | 02 | isometric30percentMVC | 3 | TA_4x4 | sub2/ta_1grid_trial3.npy | sub2/ta_1grid_trial3_mu.mat | sub2/ta_1grid_trial3_events.csv |
+
+Each row points to three data files that together constitute a complete recording: the raw HD-sEMG signal (`path_to_emg_file`), the decomposed spike trains after manual curation (`path_to_labels_file`), and the behavioural event annotations (`path_to_events_file`). These files do not come directly from your acquisition software — you need to export and convert them into the formats the assembly script expects before filling in the paths above.
+
+> **Before filling in these paths**, convert your original acquisition files: `path_to_emg_file` should point to an array file (`.npy` / `.npz` for Python, `.mat` for MATLAB) with shape **n_channels × n_samples**; `path_to_labels_file` to your decomposed spike trains in the same format; and `path_to_events_file` to a behavioural events CSV. Rest recordings with no task structure can leave `path_to_events_file` blank. See [Part 4](#part-4----recorded-data-annotated-events-and-decomposed-spike-trains) for the expected file formats and events CSV column layout.
 
 ---
 
 ### Part 2 — Describing hardware setups
 
-With the index files in place, we now describe the three recording configurations in `setup.csv`. Each row names a setup and bundles together the amplifier model, electrode model, acquisition settings, and a short description of the task. Any recording in `recordings.csv` that references a setup name will inherit all of these fields in its `_emg.json` sidecar.
+With the index files in place, we now describe the three recording configurations in `setup.csv`. Each row names a setup and bundles together the amplifier model, electrode model, acquisition settings, and a short description of the task. Any recording in `recordings.csv` that references a setup name will inherit all of these fields in its `_emg.json` sidecar. While the fields below are largely self-explanatory, please refer to the [EMG-BIDS Specifications](https://bids-specification.readthedocs.io/en/stable/modality-specific-files/electromyography.html#sidecar-json-_emgjson) for further information on the `_emg.json` file.
 
 #### `setup.csv`
 
@@ -163,8 +169,6 @@ With the index files in place, we now describe the three recording configuration
 | VL_3x4s_1i | OTBioelettronica | Quattrocento |
 | TA_dual_3x3 | OTBioelettronica | Quattrocento |
 | TA_4x4 | OTBioelettronica | Quattrocento |
-
-`ElectrodeManufacturer` and `ElectrodeManufacturersModelName` have been moved to `channels_electrodes.csv`. This allows different electrode models within the same setup — as is the case for `VL_3x4s_1i`, where the surface grid (OTBioelettronica HD08MM0304) and the intramuscular wire (Natus Medical WE-DN1.5) are different products — to each carry their own provenance.
 
 (2) Acquisition settings columns:
 
@@ -182,25 +186,23 @@ With the index files in place, we now describe the three recording configuration
 | TA_dual_3x3 | Isometric dorsiflexion at fixed ankle angle (90 deg). Two simultaneous 3x3 grids over proximal and distal right tibialis anterior. Participants matched force profiles displayed on a screen. | Sit with your leg relaxed. Keep your ankle at 90 degrees and follow the force trace on the screen as accurately as you can. |
 | TA_4x4 | Isometric dorsiflexion at fixed ankle angle (90 deg). Single 4x4 grid over right tibialis anterior. Participants matched force profiles displayed on a screen. | Sit with your leg relaxed. Keep your ankle at 90 degrees and follow the force trace on the screen as accurately as you can. |
 
-The `EMGChannelCount` reflects all EMG-type channels: 13 for `VL_3x4s_1i` (12 surface + 1 intramuscular), 18 for the two simultaneous 3 × 3 grids, and 16 for the 4 × 4 grid. Reference and auxiliary channels (e.g. `Torque`, `R1`) are not counted here — they appear in `channels_electrodes.csv` with their own channel types, alongside the `ElectrodeManufacturer` and `ElectrodeManufacturersModelName` columns that now live there.
+> **Note:** The `EMGChannelCount` reflects all EMG-type channels: 13 for `VL_3x4s_1i` (12 surface + 1 intramuscular), 18 for the two simultaneous 3 × 3 grids, and 16 for the 4 × 4 grid. 
 
 ---
 
 ### Part 3 — Coordinate systems and electrode channel maps
 
-With the index files in place, we now turn to the three *setup* configurations. Each setup helps produce the `_emg.json`, `_channels.tsv`, `_electrodes.tsv`, and `_coordsystem.json` files *per recording*. We fill in `coordsystems.csv` and `channels_electrodes.csv` — one block of rows per setup.
+Let's now turn to describing the three *setup* configurations. Each setup helps produce the `_emg.json`, `_channels.tsv`, `_electrodes.tsv`, and `_coordsystem.json` files *per recording*. We fill in `coordsystems.csv` and `channels_electrodes.csv` — one block of rows per setup. For more information on the fields we will fill below, refer to the [EMG-BIDS Specification](https://bids-specification.readthedocs.io/en/stable/modality-specific-files/electromyography.html#channels-description-_channelstsv).
 
 #### Setup VL_3x4s_1i — sub-01's 3 × 4 surface grid + 1 intramuscular wire on right vastus lateralis
 
-The electrode grid was placed over the right vastus lateralis, located by palpating the quadriceps group and centering the grid over the muscle belly. A single intramuscular fine wire electrode (E_im) was inserted approximately midway across the grid, between E6 and E7. At the end of the recording session, a tape measure was used to locate electrode E1 — the top-left corner of the grid — relative to the greater trochanter: 55 mm lateral, 175 mm distal along the femoral shaft. This single measurement, the *anchor point*, is all we need for the surface electrodes: because the grid geometry is regular and known (3 × 4 layout, 8 mm spacing), the positions of every other surface electrode follow automatically.
+In this setup, the electrode grid was placed over the right vastus lateralis, located by palpating the quadriceps group and centering the grid over the muscle belly. A single intramuscular fine wire electrode (E_im) was inserted approximately midway across the grid, between E6 and E7. At the end of the recording session, a tape measure was used to locate electrode E1 — the top-left corner of the grid — relative to the greater trochanter: 55 mm lateral, 175 mm distal along the femoral shaft. This single measurement, the *anchor point*, is all we need for the surface electrodes: because the grid geometry is regular and known (3 × 4 layout, 8 mm spacing), the positions of every other surface electrode follow automatically. Correspondingly, this setup uses two coordinate systems: an anatomical one (`thigh`) that places the grid anchor point in the body frame, and a grid coordinate system (`grid1`) that specifies each electrode’s position relative to the grid’s own origin.
 
-For the intramuscular wire, we reuse the `grid1` coordinate system. Its x and y coordinates give the skin insertion point in the grid frame (x=12, y=8 — between columns 2 and 3, second row), and z gives the insertion depth into the muscle (12 mm). The `grid1` coordsystem description is extended to state that z represents insertion depth for intramuscular entries.
+For the intramuscular wire, we reuse the `grid1` coordinate system. Its x and y coordinates give the skin insertion point in the grid frame (x=12, y=8 — between columns 2 and 3, second row), and z gives the insertion depth into the muscle (12 mm). 
 
 > **What if you did not measure the anchor?** The EMG-BIDS spec allows omitting `ParentCoordinateSystem`, `AnchorElectrode`, and `AnchorCoordinates` from `_coordsystem.json`. Your `_electrodes.tsv` will still contain valid grid-internal coordinates (each electrode's position relative to E1), but they will not be tied to any anatomical frame — the positions describe electrode geometry relative to one another, not where on the body the grid sat. Note that if you *do* include a `ParentCoordinateSystem`, the spec then requires both `AnchorElectrode` and `AnchorCoordinates`.
 
-A single grid with 3 rows and 4 columns, 8 mm inter-electrode distance. Surface channels are labelled EMG001–EMG012 in row-major order; the intramuscular wire is EMG013.
-
-Grid layout — electrode labels (x along columns, y along rows):
+*Grid layout:* single grid with 3 rows and 4 columns, 8 mm inter-electrode distance. Surface channels are labelled EMG001–EMG012 in row-major order; the intramuscular wire is EMG013. 
 
 ```
 E1     E2     E3     E4      (y = 0 mm)
@@ -229,19 +231,21 @@ Correspondingly, our `coordsystems.csv` and `channels_electrodes.csv` rows look 
 | VL_3x4s_1i | EMG012 | EMG | uV | E12 | 24 | 16 | 0 | grid1 | R1 | grid1 | right vastus lateralis | Ag/AgCl | OTBioelettronica | HD08MM0304 | n/a | 10 | 900 |
 | VL_3x4s_1i | EMG013 | EMG | uV | E_im | 12 | 8 | 12 | grid1 | R1 | intramuscular | right vastus lateralis | stainless steel | OTBioelettronica | Fi-Wi2 | n/a | 10 | 900 |
 | VL_3x4s_1i | Torque | MISC | Nm | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
-| VL_3x4s_1i | R1 | REF | n/a | R1 | n/a | n/a | n/a | n/a | n/a | n/a | n/a | Ag/AgCl | OTBioelettronica | n/a | n/a | n/a | n/a |
+| VL_3x4s_1i | R1 | REF | n/a | R1 | 370 | 0 | 0 | thigh | n/a | n/a | n/a | Ag/AgCl | OTBioelettronica | n/a | n/a | n/a | n/a |
 
 <p class="wt-table-note">EMG002–EMG011 follow the same pattern as EMG001: x cycles through 0, 8, 16, 24 mm across each column, y increments by 8 mm per row, z=0. EMG013 is the only channel with a non-zero z value.</p>
-> **Note:** the grid layout above shows physical electrode labels (E1, E2, …, E_im) — the actual objects attached to or inserted into the tissue. The `channels_electrodes.csv` file specifies how each physical electrode maps to a stored data channel on disk: E1 → EMG001, …, E12 → EMG012, E_im → EMG013. Surface electrodes all sit at z=0 in the grid frame while the intramuscular wire is at z=12 (12 mm insertion depth). The reference electrode R1 appears as a REF channel with no spatial coordinates, since its position is not part of the EMG array.
 
+> **Note:** the grid layout above shows physical electrode labels (E1, E2, …, E_im) — the actual objects attached to or inserted into the tissue. The `channels_electrodes.csv` file specifies how each physical electrode maps to a stored data channel on disk: E1 → EMG001, …, E12 → EMG012, E_im → EMG013. Surface electrodes all sit at z=0 in the grid frame while the intramuscular wire is at z=12 (12 mm insertion depth). The reference electrode R1 is placed on the patella; its position (370, 0, 0) is expressed in the `thigh` anatomical frame (370 mm distal from the greater trochanter along the femoral shaft).
+
+> **Intramuscular EMG — simplified treatment and ongoing spec work.** The approach above (reusing the surface grid coordinate system, encoding insertion depth as z) works for a single concurrent wire electrode but is a deliberate simplification. Datasets with intramuscular grids, fine wires, or concentric needles involve dedicated coordinate systems, additional physical parameters (wire diameter, tip length, cannula dimensions), and richer electrode type vocabulary that go beyond what this walkthrough covers. Critically, **the EMG-BIDS specification for invasive EMG is still under active development** — see [this open pull request](https://github.com/neuromechanist/bids-examples/pull/5) for the current state of the discussion. For a more complete worked example covering thin-film HD-iEMG grids, fine wires, and concentric needles alongside surface grids, see the [MUnitQuest fictional dataset tutorial](https://github.com/MUnitQuest/MUnitQuest_tutorials/blob/main/fictionalDatasetExample_to_bids.ipynb).
 
 ---
 
 #### Setup TA_dual_3x3 — sub-02 session 1, two simultaneous 3 × 3 grids on right tibialis anterior
 
-Both grids are on the same muscle — one placed over the proximal region, one over the distal region — recorded simultaneously into a single file per trial. Because both grids are on the same body segment, they share one anatomical coordinate system (`lowerLeg`) but each gets its own grid coordinate system (`grid1`, `grid2`), anchored to a different reference electrode.
+Here, both grids are on the same muscle — one placed over the proximal region, one over the distal region — recorded simultaneously into a single file per trial. Because both grids are on the same body segment, they share one anatomical coordinate system (`lowerLeg`) but each gets its own grid coordinate system (`grid1`, `grid2`), anchored to a different reference electrode.
 
-Grid 1 (proximal TA), channels EMG001–EMG009:
+Grid 1 (proximal TA), channels EMG001–EMG009, anchored to E1:
 
 ```
 E1    E2    E3     (y = 0 mm)
@@ -250,7 +254,7 @@ E7    E8    E9     (y = 16 mm)
 x=0   x=8   x=16
 ```
 
-Grid 2 (distal TA), channels EMG010–EMG018:
+Grid 2 (distal TA), channels EMG010–EMG018, anchored to E10:
 
 ```
 E10   E11   E12    (y = 0 mm)
@@ -280,8 +284,8 @@ x=0   x=8   x=16
 | TA_dual_3x3 | … | EMG | uV | … | … | … | 0 | grid2 | R2 | grid2 | right tibialis anterior | Ag/AgCl | n/a | 10 | 900 |
 | TA_dual_3x3 | EMG018 | EMG | uV | E18 | 16 | 16 | 0 | grid2 | R2 | grid2 | right tibialis anterior | Ag/AgCl | n/a | 10 | 900 |
 | TA_dual_3x3 | Torque | MISC | Nm | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
-| TA_dual_3x3 | R1 | REF | n/a | R1 | n/a | n/a | n/a | n/a | n/a | n/a | n/a | Ag/AgCl | n/a | n/a | n/a |
-| TA_dual_3x3 | R2 | REF | n/a | R2 | n/a | n/a | n/a | n/a | n/a | n/a | n/a | Ag/AgCl | n/a | n/a | n/a |
+| TA_dual_3x3 | R1 | REF | n/a | R1 | 0 | 0 | 0 | lowerLeg | n/a | n/a | n/a | Ag/AgCl | n/a | n/a | n/a |
+| TA_dual_3x3 | R2 | REF | n/a | R2 | 0 | 0 | 0 | lowerLeg | n/a | n/a | n/a | Ag/AgCl | n/a | n/a | n/a |
 
 <p class="wt-table-note">EMG001–EMG009 are in <code>grid1</code>, EMG010–EMG018 in <code>grid2</code>. Each grid resets to x=0, y=0 at its own origin — grid2 coordinates are not a continuation of grid1's.</p>
 
@@ -289,7 +293,7 @@ x=0   x=8   x=16
 
 #### Setup TA_4x4 — sub-02 session 2, single 4 × 4 grid on right tibialis anterior
 
-In this setup, a single grid with 4 rows and 4 columns, 8 mm inter-electrode distance. Channels EMG001–EMG016 in row-major order. However, the electrode position relative to anatomical landmarks was not recorded, so no anatomical row appears in `coordsystems.csv`. The grid-internal positions are still fully specified — they describe electrode geometry relative to E1 — but they are not tied to any body landmark. This produces a single `space-grid1_coordsystem.json` for this setup/ session, with no `ParentCoordinateSystem`, `AnchorElectrode`, or `AnchorCoordinates` fields.
+Finally, in this setup, we use a single grid with 4 rows and 4 columns, 8 mm inter-electrode distance. Channels EMG001–EMG016 in row-major order. The electrode position relative to anatomical landmarks was not recorded, so the grid coordinate system has no parent anchor — the grid-internal positions describe electrode geometry relative to E1 but are not tied to a body landmark. We still include a `lowerLeg` anatomical frame so the reference electrode R1 (at the ankle, 0, 0, 0) has a valid coordinate system.
 
 Grid layout — electrode labels:
 
@@ -305,6 +309,7 @@ x=0    x=8    x=16   x=24
 
 | setup | name | type | units | description | parent_coord_system | anchor_electrode | anchor_x | anchor_y |
 |-------|------|------|-------|-------------|---------------------|------------------|----------|----------|
+| TA_4x4 | lowerLeg | anatomical | mm | Origin at the medial malleolus. x-axis points proximally along the tibial shaft. y-axis points laterally. z-axis points anteriorly. | | | | |
 | TA_4x4 | grid1 | grid | mm | 4x4 grid over right tibialis anterior. Origin at electrode E1 (top-left corner). x-axis points distally, y-axis points laterally. No anatomical landmark measures available. | | | | |
 
 `channels_electrodes.csv`:
@@ -316,7 +321,7 @@ x=0    x=8    x=16   x=24
 | TA_4x4 | … | EMG | uV | … | … | … | 0 | grid1 | R1 | grid1 | right tibialis anterior | Ag/AgCl | n/a | 10 | 900 |
 | TA_4x4 | EMG016 | EMG | uV | E16 | 24 | 24 | 0 | grid1 | R1 | grid1 | right tibialis anterior | Ag/AgCl | n/a | 10 | 900 |
 | TA_4x4 | Torque | MISC | Nm | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
-| TA_4x4 | R1 | REF | n/a | R1 | n/a | n/a | n/a | n/a | n/a | n/a | n/a | Ag/AgCl | n/a | n/a | n/a |
+| TA_4x4 | R1 | REF | n/a | R1 | 0 | 0 | 0 | lowerLeg | n/a | n/a | n/a | Ag/AgCl | n/a | n/a | n/a |
 
 <p class="wt-table-note">EMG003–EMG015 follow the same pattern as VL_3x4 above: x cycles 0 → 8 → 16 → 24 mm across columns, y increments by 8 mm per row.</p>
 
@@ -324,24 +329,34 @@ x=0    x=8    x=16   x=24
 
 ### Generating EMG-BIDS Metadata
 
-With all five CSV files prepared, head to the MUnitQuest metadata form. The last step of the form asks you to upload your CSVs and fill in a few dataset-level fields (dataset name, authors, licence, institution). Click **Generate & Download** and the tool will produce a `metadata.zip` containing the full set of BIDS sidecar files — one `_emg.json`, `_channels.tsv`, `_electrodes.tsv`, and `_coordsystem.json` per recording, plus `dataset_description.json`, `participants.tsv`, and `participants.json` at the dataset root.
+With all five CSV files prepared, head to the [MUnitQuest EMG-BIDS Metadata Tool](/metadata-form). The last step of the form asks you to upload your CSVs and fill in a few dataset-level fields (dataset name, authors, licence, institution). Click **Generate & Download** and the tool will produce a `metadata.zip` containing the full set of BIDS sidecar files — one `_emg.json`, `_channels.tsv`, `_electrodes.tsv`, and `_coordsystem.json` per recording, plus `dataset_description.json`, `participants.tsv`, and `participants.json` at the dataset root.
 
-For our tutorial dataset, the generated files produce the following BIDS layout:
+We will use the generated `metadata.zip` file and insert the data files where necessary as shown next.
 
-### Uploading the data files
+### Part 4 — Recorded data, annotated events and decomposed spike trains
 
-Your recording files must be in **EDF (European Data Format)** to accompany the BIDS metadata. The scripts below read the two CSV files you have already filled in (`recordings.csv` and `channels_electrodes.csv`), look up the correct channel names for each setup automatically, and assemble the full BIDS folder in one call — including extracting `metadata.zip`.
+Each recording must be accompanied by three types of data files:
 
-The only assumption is that your original acquisition files (`.otb+` or similar) have been exported to language-native arrays: `.npy` / `.npz` for Python, `.mat` for MATLAB, each with shape **n_channels × n_samples** (Python) or **n_samples × n_channels** (MATLAB).
+- **The recording itself** — the raw HD-sEMG or iEMG signals, kinematics or force measurements etc. in `.edf` or `.bdf` format.
+- **Behavioural event annotations** — a `_events.tsv` file (and a shared `_events.json` sidecar) that annotate what behaviour was performed.
+- **Decomposed spike trains** — one `_events.tsv` per recording, placed under `derivatives/`, listing the discharge times of each identified motor unit after decomposition and manual curation.
+
+All three must be present for every recording before the dataset can be submitted.
+
+---
+
+#### Recorded HD-sEMG Signals
+
+EMG-BIDS requires our recording files to be in **EDF (European Data Format) or BDF (Biosemi Data Format)** . Here, we assume that your original acquisition files (`.otb+` or similar) have been exported to language-native arrays: `.npy` / `.npz` for Python, `.mat` for MATLAB, each with shape **n_channels × n_samples** (Python) or **n_samples × n_channels** (MATLAB).
+
+The helpers below convert a single recording array to EDF. `get_channel_names` reads `channels_electrodes.csv` to return the ordered list of channel labels for a given setup; `write_edf` writes them to disk. Part 5 calls these inside the full assembly loop.
 
 <div class="code-tabs">
 <div class="tab-pane" data-label="Python">
 <pre><code class="language-python">import numpy as np
 import pandas as pd
 import pyedflib
-import zipfile
 from pathlib import Path
-
 
 def get_channel_names(channels_csv, setup):
     """Return ordered channel names for a given setup from channels_electrodes.csv.
@@ -362,81 +377,14 @@ def write_edf(out_path, data, channel_names, fs):
             {
                 "label":            ch,
                 "sample_frequency": fs,
-                "physical_min":     float(data[i].min()),
-                "physical_max":     float(data[i].max()),
-                "digital_min":      -32768,
-                "digital_max":       32767,
-                "dimension": "", "transducer": "", "prefilter": "",
             }
             for i, ch in enumerate(channel_names)
         ]
         f.setSignalHeaders(headers)
-        f.writeSamples(data)
-
-
-def assemble_bids_dataset(recordings_csv, channels_csv, metadata_zip,
-                           data_dir, output_dir, fs):
-    """
-    Build a complete BIDS dataset folder.
-
-    recordings_csv -- path to your filled-in recordings.csv
-    channels_csv   -- path to your filled-in channels_electrodes.csv
-    metadata_zip   -- path to metadata.zip downloaded from the MUnitQuest tool
-    data_dir       -- root folder; path_to_emg_file values are relative to this
-                      (.npy: shape n_channels x n_samples;
-                       .npz: same array stored under key "data")
-    output_dir     -- destination folder (created if needed)
-    fs             -- sampling frequency in Hz
-    """
-    output_dir = Path(output_dir)
-
-    # 1. Unpack BIDS sidecar files
-    with zipfile.ZipFile(metadata_zip) as zf:
-        zf.extractall(output_dir)
-
-    # 2. Write one EDF per recording
-    recs = pd.read_csv(recordings_csv, dtype=str).fillna("")
-    for _, row in recs.iterrows():
-        sub   = f"sub-{int(row['sub']):02d}"
-        ses   = row.get("ses", "").strip()
-        task  = row["task_name"].strip()
-        run   = row.get("run", "").strip()
-        setup = row["setup"].strip()
-
-        parts = [sub]
-        if ses:  parts.append(f"ses-{int(ses):02d}")
-        parts.append(f"task-{task}")
-        if run:  parts.append(f"run-{int(run):02d}")
-        bids_name = "_".join(parts) + "_emg.edf"
-
-        subdir = output_dir / sub / (f"ses-{int(ses):02d}" if ses else "")
-        out_path = subdir / "emg" / bids_name
-
-        src = Path(data_dir) / row["path_to_emg_file"].strip()
-        data = np.load(src)["data"] if src.suffix == ".npz" else np.load(src)
-
-        channel_names = get_channel_names(channels_csv, setup)
-        write_edf(out_path, data, channel_names, fs)
-        print(f"  wrote {out_path.relative_to(output_dir)}")
-
-    print(f"\nDone. BIDS dataset at: {output_dir}")
-
-
-# --- Run ---
-assemble_bids_dataset(
-    recordings_csv = "recordings.csv",
-    channels_csv   = "channels_electrodes.csv",
-    metadata_zip   = "metadata.zip",
-    data_dir       = "my_dataset/",
-    output_dir     = "bids_dataset/",
-    fs             = 2048,
-)</code></pre>
+        f.writeSamples(data)</code></pre>
 </div>
 <div class="tab-pane" data-label="MATLAB">
 <pre><code class="language-matlab">% Requires R2020b+ for edfwrite.
-% Save each function in its own .m file, or paste all three into a script
-% and call assembleBidsDataset at the bottom.
-
 
 function channelNames = getChannelNames(channelsCsv, setupName)
     % Return ordered channel names for a given setup from channels_electrodes.csv.
@@ -452,53 +400,325 @@ function writeEdf(outPath, data, channelNames, fs)
     if ~isfolder(outDir), mkdir(outDir); end
     tt = array2timetable(data, "SampleRate", fs, "VariableNames", channelNames);
     edfwrite(outPath, tt);
-end
+end</code></pre>
+</div>
+</div>
 
+---
+
+#### Annotated behavioural events
+
+Each recording that involves a task protocol should be accompanied by a `_events.tsv` file that marks the onset and duration of each phase of the trial. This gives context to the EMG signal, such that one could extract e.g. the hold phase of an isometric ramp-and-hold contraction to decompose. 
+
+An example for a standard ramp–hold–ramp isometric protocol at 30% MVC (sampling rate 2048 Hz) maybe annotated as:
+
+`sub-01_ses-01_task-isometric30percentMVC_run-01_events.tsv`:
+
+| onset | duration | sample | mvc_level | event_type | description |
+|-------|----------|--------|-----------|------------|-------------|
+| 5.0 | 0.0 | 10240 | n/a | muscle_on | Start of voluntary contraction |
+| 5.0 | 10.0 | 10240 | 0.0 | linear_ramp | Ramp up to 30% MVC at 6% MVC/s |
+| 10.0 | 30.0 | 20480 | 30.0 | steady_hold | Steady isometric contraction at 30% MVC |
+| 30.0 | 5.0 | 61440 | 30.0 | linear_ramp | Ramp down from 30% MVC at –6% MVC/s |
+| 35.0 | 0.0 | 71680 | 0.0 | muscle_off | End of voluntary contraction |
+
+`onset` and `duration` are always in seconds. `sample` is the corresponding integer sample index (onset × fs). For rest recordings with no task structure, omit the events file entirely.
+
+> **Important:** For submissions to MUnitQuest, we require that the "muscle_on" and "muscle_off" events be always annotated such that we can easily separate signal portions from rest. Any other annotations, e.g., mvc_level, descriptions of task phases etc. are welcome!
+
+Given our dataset contains only simple isometric tasks, we have included the following dataset-level `_events.json` sidecar that describes the how we annotate the task in the `_events.tsv` file above. By placing this at the top-level directory, it is inherited by all recordings!
+
+`events.json`:
+```json
+{
+  "onset": {
+    "Description": "Event onset in seconds from the start of the recording.",
+    "Units": "s"
+  },
+  "duration": {
+    "Description": "Duration of the event in seconds. 0 for instantaneous events.",
+    "Units": "s"
+  },
+  "sample": {
+    "Description": "Sample index corresponding to the event onset.",
+    "Units": "samples"
+  },
+  "mvc_level": {
+    "Description": "Target force level at the start of the event, as a percentage of maximum voluntary contraction. n/a for non-force events.",
+    "Units": "%MVC"
+  },
+  "event_type": {
+    "Description": "Category of the event.",
+    "Levels": {
+      "muscle_on":   "Onset of voluntary muscle activation.",
+      "muscle_off":  "End of voluntary muscle activation.",
+      "linear_ramp": "Linear force ramp between two target levels.",
+      "steady_hold": "Steady isometric contraction at a fixed target level."
+    }
+  },
+  "description": {
+    "Description": "Human-readable description of the event."
+  }
+}
+```
+
+---
+
+#### Spike-train event files
+
+Finally, motor-unit decomposition results are stored as BIDS events files under a `derivatives/` subfolder. Each spike train becomes a set of rows with `onset` (seconds from recording start), `duration` (0) etc. and all spike trains for a given recording are combined into an events file, such as:
+
+`sub-01_ses-01_task-isometric30percentMVC_run-01_desc-decomposition_events.tsv`:
+
+| onset | duration | sample | unit_id | description |
+| ----- | -------- | ------ | ------- | ----------- |
+| 0.001 | 0 | 1 | 0 | motor-unit-spike |
+| 0.005 | 0 | 5 | 1 | motor-unit-spike |
+| 0.011 | 0 | 11 | 0 | motor-unit-spike |
+| 0.012 | 0 | 12 | 2 | motor-unit-spike |
+| 0.016 | 0 | 16 | 1 | motor-unit-spike |
+| ... | ... | ... | ... | ... |
+
+Which can easily produced by the following code, given you have arranged the decomposed spike trains into a `dict` or `cellArray`.
+
+<div class="code-tabs">
+<div class="tab-pane" data-label="Python">
+<pre><code class="language-python">def write_events_tsv(out_path: Path, spike_trains: dict, fs: float) -> None:
+    """Write BIDS events.tsv from a dict of {mu_label: sample_index_array}."""
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    rows = []
+    for mu_label in sorted(spike_trains.keys()):
+        for sample in spike_trains[mu_label]:
+            rows.append({"onset": round(float(sample) / fs, 6), "duration": 0.0, "trial_type": mu_label})
+    df = pd.DataFrame(rows, columns=["onset", "duration", "trial_type"])
+    df.sort_values("onset").reset_index(drop=True).to_csv(out_path, sep="\t", index=False)</code></pre>
+</div>
+<div class="tab-pane" data-label="MATLAB">
+<pre><code class="language-matlab">function writeEventsTsv(outPath, spikeTrains, fs)
+    % outPath    -- full path to the output _events.tsv file
+    % spikeTrains -- containers.Map: mu_label -> sample index array
+    % fs         -- sampling frequency in Hz
+    outDir = fileparts(outPath);
+    if ~isempty(outDir) && ~isfolder(outDir), mkdir(outDir); end
+
+    muLabels = sort(keys(spikeTrains));
+    onset = []; duration = []; trialType = {};
+    for i = 1:numel(muLabels)
+        label   = muLabels{i};
+        samples = spikeTrains(label);
+        for s = samples(:)'
+            onset(end+1,1)     = round(double(s) / fs, 6); %#ok
+            duration(end+1,1)  = 0; %#ok
+            trialType{end+1,1} = label; %#ok
+        end
+    end
+
+    t = table(onset, duration, trialType, 'VariableNames', {'onset','duration','trial_type'});
+    t = sortrows(t, 'onset');
+    writetable(t, outPath, 'Delimiter', '\t', 'FileType', 'text');
+end</code></pre>
+</div>
+</div>
+
+The pipeline folder also needs its own `dataset_description.json` with `"DatasetType": "derivative"`. And a `.bidsignore` file at the dataset root (containing `derivatives/`) tells the BIDS validator to skip the derivatives subtree when validating the raw dataset.
+
+---
+
+### Part 5 — Assembling the dataset
+
+With the five CSVs filled in, `metadata.zip` downloaded from the MUnitQuest tool, and your recordings and events files ready, you can assemble the full BIDS folder in one call:
+
+1. Unpack `metadata.zip` into the output folder (all sidecar JSON files land in the right places)
+2. For each recording: write the EDF, copy the behavioural events TSV, and write spike-train events into `derivatives/`
+3. Write `derivatives/dataset_description.json` (required by the BIDS validator)
+
+<div class="code-tabs">
+<div class="tab-pane" data-label="Python">
+<pre><code class="language-python">import json
+import numpy as np
+import pandas as pd
+import zipfile
+from pathlib import Path
+
+
+PIPELINE_NAME = "motor-unit-decomposition"
+
+
+def assemble_bids_dataset(recordings_csv, channels_csv, metadata_zip,
+                           data_dir, output_dir, fs):
+    """
+    Build a BIDS dataset folder.
+
+    recordings_csv -- path to your filled-in recordings.csv
+    channels_csv   -- path to your filled-in channels_electrodes.csv
+    metadata_zip   -- path to metadata.zip downloaded from the MUnitQuest tool
+    data_dir       -- root folder; path_to_* values in recordings.csv are relative to this
+    output_dir     -- destination folder (created if needed)
+    fs             -- sampling frequency in Hz
+    """
+    output_dir = Path(output_dir)
+
+    # 1. Unpack BIDS sidecar files
+    with zipfile.ZipFile(metadata_zip) as zf:
+        zf.extractall(output_dir)
+
+    recs = pd.read_csv(recordings_csv, dtype=str).fillna("")
+    has_derivatives = False
+
+    for _, row in recs.iterrows():
+        sub   = f"sub-{int(row['sub']):02d}"
+        ses   = row.get("ses", "").strip()
+        task  = row["task_name"].strip()
+        run   = row.get("run", "").strip()
+        setup = row["setup"].strip()
+
+        parts = [sub]
+        if ses:  parts.append(f"ses-{int(ses):02d}")
+        parts.append(f"task-{task}")
+        if run:  parts.append(f"run-{int(run):02d}")
+        bids_stem  = "_".join(parts)
+        ses_folder = f"ses-{int(ses):02d}" if ses else ""
+        subdir     = output_dir / sub / ses_folder
+
+        # 2a. Write EDF
+        src  = Path(data_dir) / row["path_to_emg_file"].strip()
+        data = np.load(src)["data"] if src.suffix == ".npz" else np.load(src)
+        channel_names = get_channel_names(channels_csv, setup)
+        write_edf(subdir / "emg" / (bids_stem + "_emg.edf"),
+                  data.astype(np.float32), channel_names, fs)
+
+        # 2b. Write behavioural events TSV
+        events_rel = row.get("path_to_events_file", "").strip()
+        if events_rel:
+            evts = pd.read_csv(Path(data_dir) / events_rel)
+            out  = subdir / "emg" / (bids_stem + "_events.tsv")
+            out.parent.mkdir(parents=True, exist_ok=True)
+            evts.to_csv(out, sep="\t", index=False)
+
+        # 2c. Write spike-train events to derivatives/
+        labels_rel = row.get("path_to_labels_file", "").strip()
+        if labels_rel:
+            deriv_dir = output_dir / "derivatives" / PIPELINE_NAME / sub / ses_folder
+            npz = np.load(Path(data_dir) / labels_rel)
+            write_events_tsv(
+                deriv_dir / "emg" / (bids_stem + "_desc-decomposition_events.tsv"),
+                {k: npz[k] for k in npz.files},
+                fs,
+            )
+            has_derivatives = True
+
+    # 3. Write derivatives/dataset_description.json
+    if has_derivatives:
+        deriv_root = output_dir / "derivatives" / PIPELINE_NAME
+        deriv_root.mkdir(parents=True, exist_ok=True)
+        (deriv_root / "dataset_description.json").write_text(json.dumps({
+            "Name": PIPELINE_NAME, "BIDSVersion": "1.11.1",
+            "DatasetType": "derivative",
+            "GeneratedBy": [{"Name": PIPELINE_NAME}],
+        }, indent=2))
+
+    (output_dir / ".bidsignore").write_text("derivatives/\n")
+    print(f"\nDone. BIDS dataset at: {output_dir}")
+
+
+# --- Run ---
+assemble_bids_dataset(
+    recordings_csv = "recordings.csv",
+    channels_csv   = "channels_electrodes.csv",
+    metadata_zip   = "metadata.zip",
+    data_dir       = "my_dataset/",
+    output_dir     = "bids_dataset/",
+    fs             = 2048,
+)</code></pre>
+</div>
+<div class="tab-pane" data-label="MATLAB">
+<pre><code class="language-matlab">% Requires R2020b+ for edfwrite, R2021a+ for jsonencode PrettyPrint.
 
 function assembleBidsDataset(recordingsCsv, channelsCsv, metadataZip, ...
                               dataDir, outputDir, fs)
-    % Build a complete BIDS dataset folder.
-    %
-    % recordingsCsv -- path to your filled-in recordings.csv
-    % channelsCsv   -- path to your filled-in channels_electrodes.csv
-    % metadataZip   -- path to metadata.zip downloaded from the MUnitQuest tool
-    % dataDir       -- root folder; path_to_emg_file values are relative to this
-    %                  (.mat files must contain a single variable [n_samples x n_channels])
-    % outputDir     -- destination folder
-    % fs            -- sampling frequency in Hz
+    pipelineName = "motor-unit-decomposition";
 
     % 1. Unpack BIDS sidecar files
     unzip(metadataZip, outputDir);
 
-    % 2. Write one EDF per recording
     recs = readtable(recordingsCsv, "TextType", "string");
+    hasDerivatives = false;
+
     for i = 1:height(recs)
         row   = recs(i, :);
         sub   = sprintf("sub-%02d", str2double(row.sub{1}));
-        ses   = strtrim(row.ses{1});   hasSes = ses ~= "" && ~ismissing(ses);
+        ses   = strtrim(row.ses{1});   hasSes = ~ismissing(ses) && ses ~= "";
         task  = strtrim(row.task_name{1});
-        run   = row.run;               hasRun = ~ismissing(run);
+        run   = strtrim(row.run{1});   hasRun = ~ismissing(run) && run ~= "";
         setup = strtrim(row.setup{1});
 
         sesPart = ""; runPart = "";
         if hasSes, sesPart = sprintf("ses-%02d_", str2double(ses)); end
-        if hasRun, runPart = sprintf("_run-%02d", run); end
-        bidsName = sprintf("%s_%stask-%s%s_emg.edf", sub, sesPart, task, runPart);
+        if hasRun, runPart = sprintf("_run-%02d", str2double(run)); end
+        bidsStem = sprintf("%s_%stask-%s%s", sub, sesPart, task, runPart);
 
         if hasSes
-            outPath = fullfile(outputDir, sub, sprintf("ses-%02d", str2double(ses)), "emg", bidsName);
+            subdir = fullfile(outputDir, sub, sprintf("ses-%02d", str2double(ses)));
         else
-            outPath = fullfile(outputDir, sub, "emg", bidsName);
+            subdir = fullfile(outputDir, sub);
         end
 
+        % 2a. Write EDF
+        % .mat file must contain one variable of shape [n_samples x n_channels]
         loaded = load(fullfile(dataDir, row.path_to_emg_file{1}));
-        fields = fieldnames(loaded);
-        data   = loaded.(fields{1});   % [n_samples x n_channels]
-
+        data   = loaded.(fieldnames(loaded){1});
         channelNames = getChannelNames(channelsCsv, setup);
-        writeEdf(outPath, data, channelNames, fs);
-        fprintf("  wrote %s\n", strrep(outPath, outputDir, ""));
+        writeEdf(fullfile(subdir, "emg", bidsStem + "_emg.edf"), data, channelNames, fs);
+
+        % 2b. Write behavioural events TSV
+        if ismember("path_to_events_file", recs.Properties.VariableNames)
+            eventsRel = strtrim(row.path_to_events_file{1});
+            if ~ismissing(eventsRel) && eventsRel ~= ""
+                evts     = readtable(fullfile(dataDir, eventsRel), "TextType", "string");
+                eventsOut = fullfile(subdir, "emg", bidsStem + "_events.tsv");
+                if ~isfolder(fileparts(eventsOut)), mkdir(fileparts(eventsOut)); end
+                writetable(evts, eventsOut, "Delimiter", "\t", "FileType", "text");
+            end
+        end
+
+        % 2c. Write spike-train events to derivatives/
+        if ismember("path_to_labels_file", recs.Properties.VariableNames)
+            labelsRel = strtrim(row.path_to_labels_file{1});
+            if ~ismissing(labelsRel) && labelsRel ~= ""
+                % .mat file must contain one struct field per MU (MU_00, MU_01, ...)
+                % each field is a numeric vector of spike sample indices
+                spikes = load(fullfile(dataDir, labelsRel));
+                muFields = fieldnames(spikes);
+                spikeMap = containers.Map(muFields, ...
+                    cellfun(@(f) spikes.(f), muFields, "UniformOutput", false));
+                if hasSes
+                    derivSubdir = fullfile(outputDir, "derivatives", pipelineName, sub, ...
+                                           sprintf("ses-%02d", str2double(ses)));
+                else
+                    derivSubdir = fullfile(outputDir, "derivatives", pipelineName, sub);
+                end
+                writeEventsTsv(fullfile(derivSubdir, "emg", ...
+                    bidsStem + "_desc-decomposition_events.tsv"), spikeMap, fs);
+                hasDerivatives = true;
+            end
+        end
     end
+
+    % 3. Write derivatives/dataset_description.json
+    if hasDerivatives
+        derivRoot = fullfile(outputDir, "derivatives", pipelineName);
+        if ~isfolder(derivRoot), mkdir(derivRoot); end
+        desc = struct("Name", pipelineName, "BIDSVersion", "1.11.1", ...
+                      "DatasetType", "derivative", ...
+                      "GeneratedBy", {{struct("Name", pipelineName)}});
+        fid = fopen(fullfile(derivRoot, "dataset_description.json"), "w");
+        fprintf(fid, "%s", jsonencode(desc, "PrettyPrint", true));
+        fclose(fid);
+    end
+
+    fid = fopen(fullfile(outputDir, ".bidsignore"), "w");
+    fprintf(fid, "derivatives/\n");
+    fclose(fid);
     fprintf("\nDone. BIDS dataset at: %s\n", outputDir);
 end
 
@@ -517,37 +737,9 @@ assembleBidsDataset( ...
 
 ---
 
-### Spike-train event files
-
-Motor-unit decomposition results are stored as BIDS events files under a `derivatives/` subfolder. Each spike train becomes a set of rows with `onset` (seconds from recording start), `duration` (0), and `trial_type` (motor-unit label):
-
-```python
-def write_events_tsv(out_path: Path, spike_trains: dict, fs: float) -> None:
-    """Write BIDS events.tsv from a dict of {mu_label: sample_index_array}."""
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    rows = []
-    for mu_label in sorted(spike_trains.keys()):
-        for sample in spike_trains[mu_label]:
-            rows.append({"onset": round(float(sample) / fs, 6), "duration": 0.0, "trial_type": mu_label})
-    df = pd.DataFrame(rows, columns=["onset", "duration", "trial_type"])
-    df.sort_values("onset").reset_index(drop=True).to_csv(out_path, sep="\t", index=False)
-```
-
-Events files mirror the raw folder structure under `derivatives/<pipeline-name>/`, with a `desc-decomposition` entity inserted before the suffix:
-
-```
-derivatives/motor-unit-decomposition/
-    sub-01/emg/sub-01_task-rest_run-01_desc-decomposition_events.tsv
-    ...
-```
-
-The pipeline folder also needs its own `dataset_description.json` with `"DatasetType": "derivative"`. A `.bidsignore` file at the dataset root (containing `derivatives/`) tells the BIDS validator to skip the derivatives subtree when validating the raw dataset.
-
----
-
 ### Conclusion
 
-After uploading the five CSV files into the tool and downloading `metadata.zip`, the generated files — combined with the converted recording files — produce the following BIDS layout:
+Running the assembly script with the five CSVs, `metadata.zip`, and source data files produces the following BIDS layout:
 
 ```
 dataset/
@@ -555,8 +747,6 @@ dataset/
 ├── dataset_description.json
 ├── participants.tsv
 ├── participants.json
-├── derivatives/
-│   └── motor-unit-decomposition/  (spike-train events + dataset_description.json)
 │
 ├── sub-01/
 │   └── emg/
@@ -569,44 +759,47 @@ dataset/
 │       ├── sub-01_task-isometric30percentMVC_run-01_emg.edf
 │       ├── sub-01_task-isometric30percentMVC_run-01_emg.json
 │       ├── sub-01_task-isometric30percentMVC_run-01_channels.tsv
-│       ├── sub-01_task-isometric50percentMVC_run-01_emg.edf
-│       ├── sub-01_task-isometric50percentMVC_run-01_emg.json
-│       ├── sub-01_task-isometric50percentMVC_run-01_channels.tsv
-│       ├── sub-01_task-isometric50percentMVC_run-02_emg.edf
-│       ├── sub-01_task-isometric50percentMVC_run-02_emg.json
-│       └── sub-01_task-isometric50percentMVC_run-02_channels.tsv
+│       ├── sub-01_task-isometric30percentMVC_run-01_events.tsv
+│       └── ...  (isometric50percentMVC runs follow the same pattern)
 │
-└── sub-02/
-    ├── ses-01/
-    │   └── emg/
-    │       ├── sub-02_ses-01_electrodes.tsv
-    │       ├── sub-02_ses-01_space-lowerLeg_coordsystem.json
-    │       ├── sub-02_ses-01_space-grid1_coordsystem.json
-    │       ├── sub-02_ses-01_space-grid2_coordsystem.json
-    │       ├── sub-02_ses-01_task-rest_run-01_emg.edf
-    │       ├── sub-02_ses-01_task-rest_run-01_emg.json
-    │       ├── sub-02_ses-01_task-rest_run-01_channels.tsv
-    │       ├── sub-02_ses-01_task-isometric30percentMVC_run-01_emg.edf
-    │       ├── sub-02_ses-01_task-isometric30percentMVC_run-01_emg.json
-    │       ├── sub-02_ses-01_task-isometric30percentMVC_run-01_channels.tsv
-    │       ├── sub-02_ses-01_task-isometric30percentMVC_run-02_emg.edf
-    │       ├── sub-02_ses-01_task-isometric30percentMVC_run-02_emg.json
-    │       └── sub-02_ses-01_task-isometric30percentMVC_run-02_channels.tsv
-    └── ses-02/
-        └── emg/
-            ├── sub-02_ses-02_electrodes.tsv
-            ├── sub-02_ses-02_space-grid1_coordsystem.json
-            ├── sub-02_ses-02_task-isometric30percentMVC_run-01_emg.edf
-            ├── sub-02_ses-02_task-isometric30percentMVC_run-01_emg.json
-            ├── sub-02_ses-02_task-isometric30percentMVC_run-01_channels.tsv
-            ├── sub-02_ses-02_task-isometric30percentMVC_run-02_emg.edf
-            ├── sub-02_ses-02_task-isometric30percentMVC_run-02_emg.json
-            ├── sub-02_ses-02_task-isometric30percentMVC_run-02_channels.tsv
-            ├── sub-02_ses-02_task-isometric30percentMVC_run-03_emg.edf
-            ├── sub-02_ses-02_task-isometric30percentMVC_run-03_emg.json
-            └── sub-02_ses-02_task-isometric30percentMVC_run-03_channels.tsv
+├── sub-02/
+│   ├── ses-01/
+│   │   └── emg/
+│   │       ├── sub-02_ses-01_electrodes.tsv
+│   │       ├── sub-02_ses-01_space-lowerLeg_coordsystem.json
+│   │       ├── sub-02_ses-01_space-grid1_coordsystem.json
+│   │       ├── sub-02_ses-01_space-grid2_coordsystem.json
+│   │       ├── sub-02_ses-01_task-rest_run-01_emg.edf
+│   │       ├── sub-02_ses-01_task-rest_run-01_emg.json
+│   │       ├── sub-02_ses-01_task-rest_run-01_channels.tsv
+│   │       └── ...  (isometric runs with _emg.edf, _emg.json, _channels.tsv, _events.tsv)
+│   └── ses-02/
+│       └── emg/
+│           ├── sub-02_ses-02_electrodes.tsv
+│           ├── sub-02_ses-02_space-grid1_coordsystem.json
+│           └── ...  (isometric runs with _emg.edf, _emg.json, _channels.tsv, _events.tsv)
+│
+└── derivatives/
+    └── motor-unit-decomposition/
+        ├── dataset_description.json
+        ├── sub-01/
+        │   └── emg/
+        │       ├── sub-01_task-rest_run-01_desc-decomposition_events.tsv
+        │       ├── sub-01_task-isometric30percentMVC_run-01_desc-decomposition_events.tsv
+        │       └── ...
+        └── sub-02/
+            ├── ses-01/emg/  (one _desc-decomposition_events.tsv per recording)
+            └── ses-02/emg/  (one _desc-decomposition_events.tsv per recording)
 ```
 
-Each recording has its own `_emg.json` and `_channels.tsv`. `_electrodes.tsv` and `_coordsystem.json` files are **inherited** — shared across all recordings in a session and placed at the session (or subject) level. There is one `_coordsystem.json` per coordinate space: sub-01 gets two (anatomical + grid), sub-02 session 1 gets three (anatomical + two grids), and sub-02 session 2 gets one (grid only, since no anatomical landmark was measured in that session).
+Each recording has its own `_emg.json`, `_channels.tsv`, and — for task recordings — an `_events.tsv` with the behavioural annotations. The `_electrodes.tsv` and `_coordsystem.json` files are **shared** across recordings within a session and placed at the session (or subject) level. Decomposed spike trains live under `derivatives/motor-unit-decomposition/`, mirroring the same subject/session folder structure.
 
-Once you have the metadata ZIP and your recordings converted to EDF, you have everything needed for a fully BIDS-compliant HD-EMG dataset — self-describing, shareable, and ready for any BIDS-compatible tool or repository.
+With all of this in place you have a fully BIDS-compliant HD-EMG dataset: self-describing, shareable, and ready for submission to MUnitQuest or any BIDS-compatible tool or repository!
+
+<span style="font-size: 2rem;">🥳</span>
+
+---
+
+**Author:** Pranav Mamidanna  
+**Reviewed by:** Thomas Klotz; Robin Rohlen  
+**Feedback:** Found something unclear? [Open an issue on GitHub](https://github.com/MUnitQuest/MUnitQuest_tutorials/issues) — contributions are very welcome.

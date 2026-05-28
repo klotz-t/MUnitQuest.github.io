@@ -967,7 +967,7 @@ function buildBIDS_emgJson(rec, setupRow) {
         ElectrodeManufacturer: def(setupRow.ElectrodeManufacturer),
         ElectrodeManufacturersModelName: def(setupRow.ElectrodeManufacturersModelName),
         EMGReference: def(setupRow.EMGReference) || 'n/a',
-        EMGPlacementScheme: def(setupRow.EMGPlacementScheme) || 'n/a',
+        EMGPlacementScheme: (() => { const v = def(setupRow.EMGPlacementScheme); return v ? v.charAt(0).toUpperCase() + v.slice(1) : 'n/a'; })(),
         EMGChannelCount: defInt(setupRow.EMGChannelCount),
         TaskDescription: def(setupRow.TaskDescription),
         Instructions: def(setupRow.Instructions),
@@ -1157,15 +1157,22 @@ async function handleDownload(e) {
 
     if (participantsData.length > 0) {
         const headers = Object.keys(participantsData[0]);
-        const lines = participantsData.map(row => headers.map(h => row[h] || 'n/a').join('\t'));
+        const lines = participantsData.map(row => headers.map(h => {
+            if (h === 'participant_id') {
+                const v = row[h] || '';
+                return v.startsWith('sub-') ? v : `sub-${v}`;
+            }
+            return row[h] || 'n/a';
+        }).join('\t'));
         zip.file('participants.tsv', [headers.join('\t'), ...lines].join('\n'));
         zip.file('participants.json', JSON.stringify({
             participant_id: { Description: 'Unique subject identifier' },
             age:            { Description: 'Age of the participant at time of testing', Unit: 'years' },
-            sex:            { Description: 'Biological sex of the participant', Levels: { F: 'female', M: 'male', O: 'other' } },
-            handedness:     { Description: 'Handedness as reported by participant', Levels: { L: 'left', R: 'right' } },
+            sex:            { Description: 'Biological sex of the participant' },
+            handedness:     { Description: 'Handedness as reported by participant' },
             weight:         { Description: 'Body weight of the participant', Unit: 'kg' },
             height:         { Description: 'Body height of the participant', Unit: 'm' },
+            group:          { Description: 'Experimental group the participant belongs to' },
         }, null, 2));
     }
 
