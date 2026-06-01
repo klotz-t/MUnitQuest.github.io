@@ -32,11 +32,15 @@ An online form that takes your five filled-in CSV files and produces a `metadata
 
 The Python-based [MUniverse package](https://github.com/dfarinagroup/muniverse/tree/main) includes a set of classes for handling EMG-BIDS datasets. For example, to read, write, and validate a dataset/recording. We provide a tutorial illustrating how to use these utilities to generate your own EMG-BIDS dataset, including motor unit spike labels.  
 
-[Open the Jupyter Notebook Tutorial →](https://nbviewer.org/github/MUnitQuest/MUnitQuest_tutorials/blob/main/emg_bids_tutorial2/emg_bids_tutorial2.ipynb)
+[Open the Jupyter Notebook Tutorial →](/tutorials/emg_bids_tutorial2.html)
 
-#### BIDS documentation and examples
+#### BIDS documentation, Examples and Tools
 
-For a deep dive into EMG-BIDS, check out the [BIDS documentation](https://bids-specification.readthedocs.io/en/stable/) and the [BIDS examples](https://github.com/bids-standard/bids-examples). The [online BIDS validator](https://bids-standard.github.io/bids-validator/) allows you to verify your own BIDS dataset. Further, a list of tools to handle BIDS datasets can be found [here](https://bids.neuroimaging.io/tools/others.html).
+For a deep dive into EMG-BIDS, check out the [BIDS documentation](https://bids-specification.readthedocs.io/en/stable/) and the [BIDS examples](https://github.com/bids-standard/bids-examples). 
+
+Examples of publicly available EMG-BIDS datasets can be found, e.g., in the [MUniverse data collection](https://dataverse.harvard.edu/dataverse/muniverse-datasets) or on [NEMAR](https://nemar.org/dataexplorer).
+
+The [online BIDS validator](https://bids-standard.github.io/bids-validator/) allows you to verify your own BIDS dataset. A list of tools to handle BIDS datasets can be found [here](https://bids.neuroimaging.io/tools/others.html).
 
 ---
 
