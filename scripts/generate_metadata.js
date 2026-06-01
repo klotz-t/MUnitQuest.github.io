@@ -182,7 +182,12 @@ function buildDatasetJson() {
         InstitutionName:    FORM.institution?.name    || '',
         InstitutionAddress: FORM.institution?.address || '',
     };
-    if (generatedBy.length > 0) bids.GeneratedBy = generatedBy;
+    generatedBy.push({
+        Name:        'MUnitQuest Metadata Tool',
+        Description: 'Web-based tool for generating BIDS-compliant sidecar files for HD-sEMG datasets',
+        CodeURL:     'https://munitquest.github.io/metadata-form/',
+    });
+    bids.GeneratedBy = generatedBy;
     return bids;
 }
 
@@ -238,6 +243,7 @@ function buildEMGJson(rec, setupRow) {
         Manufacturer:                def(setupRow.Manufacturer)                     || 'n/a',
         ManufacturersModelName:      def(setupRow.ManufacturersModelName)           || 'n/a',
         SamplingFrequency:           defNum(setupRow.SamplingFrequency)             ?? 'n/a',
+        Gain:                        defNum(setupRow.Gain),
         PowerLineFrequency:          defNum(setupRow.PowerLineFrequency)            ?? 'n/a',
         RecordingType:               def(setupRow.RecordingType)                    || 'continuous',
         SoftwareFilters: {

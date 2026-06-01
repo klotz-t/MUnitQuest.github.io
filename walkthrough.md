@@ -115,6 +115,18 @@ The dataset-level fields — name, authors, license, BIDS version — are filled
   "DatasetType": "raw",
   "License": "CC0",
   "Authors": ["MUnitQuest"],
+  "EthicsApprovals": ["n/a"],
+  "GeneratedBy": [
+    {
+      "Name": "MUnitQuest Tutorial",
+      "CodeURL": "https://github.com/MUnitQuest/MUnitQuest_tutorials/tree/main/emg_bids_tutorial1"
+    },
+    {
+      "Name": "MUnitQuest Metadata Tool",
+      "Description": "Web-based tool for generating BIDS-compliant sidecar files for HD-sEMG datasets",
+      "CodeURL": "https://munitquest.github.io/metadata-form/"
+    }
+  ]
 }
 ```
 
@@ -172,11 +184,13 @@ With the index files in place, we now describe the three recording configuration
 
 (2) Acquisition settings columns:
 
-| setup_name | SamplingFrequency | PowerLineFrequency | RecordingType | SoftwareHighPassHz | SoftwareLowPassHz | HardwareHighPassHz | HardwareLowPassHz | EMGChannelCount | EMGReference | EMGPlacementScheme |
-|------------|-------------------|--------------------|---------------|--------------------|-------------------|--------------------|-------------------|-----------------|--------------|---------------------|
-| VL_3x4s_1i | 2048 | 50 | continuous | 10 | 900 | 10 | 900 | 13 | monopolar | measured |
-| TA_dual_3x3 | 2048 | 50 | continuous | 10 | 900 | 10 | 900 | 18 | monopolar | measured |
-| TA_4x4 | 2048 | 50 | continuous | 10 | 900 | 10 | 900 | 16 | monopolar | measured |
+| setup_name | Gain | SamplingFrequency | PowerLineFrequency | RecordingType | SoftwareHighPassHz | SoftwareLowPassHz | HardwareHighPassHz | HardwareLowPassHz | EMGChannelCount | EMGReference | EMGPlacementScheme |
+|------------|------|-------------------|--------------------|---------------|--------------------|-------------------|--------------------|-------------------|-----------------|--------------|---------------------|
+| VL_3x4s_1i | 150 | 2048 | 50 | continuous | 10 | 900 | 10 | 900 | 13 | monopolar | measured |
+| TA_dual_3x3 | 150 | 2048 | 50 | continuous | 10 | 900 | 10 | 900 | 18 | monopolar | measured |
+| TA_4x4 | 150 | 2048 | 50 | continuous | 10 | 900 | 10 | 900 | 16 | monopolar | measured |
+
+> **Note:** Setting `Gain` here applies a single value to all channels in the setup — convenient for typical lab amplifiers (like the Quattrocento) where every channel shares the same gain stage. This is a more restrictive use of the field than BIDS strictly requires: if you use multiple grids or preamps with different gain settings within the same recording, you may specify `gain` per channel in `channels_electrodes.csv` instead of (or in addition to) the setup-level value.
 
 (3) Task description columns:
 
@@ -329,7 +343,13 @@ x=0    x=8    x=16   x=24
 
 ### Generating EMG-BIDS Metadata
 
-With all five CSV files prepared, head to the [MUnitQuest EMG-BIDS Metadata Tool](/metadata-form). The last step of the form asks you to upload your CSVs and fill in a few dataset-level fields (dataset name, authors, licence, institution). Click **Generate & Download** and the tool will produce a `metadata.zip` containing the full set of BIDS sidecar files — one `_emg.json`, `_channels.tsv`, `_electrodes.tsv`, and `_coordsystem.json` per recording, plus `dataset_description.json`, `participants.tsv`, and `participants.json` at the dataset root.
+With all five CSV files prepared, head to the [MUnitQuest EMG-BIDS Metadata Tool](/metadata-form). The last step of the form asks you to upload your CSVs and fill in a few dataset-level fields (dataset name, authors, licence, institution). Click **Generate & Download** and the tool will produce a `metadata.zip` containing the full set of BIDS sidecar files:
+
+- **Root level**: `dataset_description.json`, `participants.tsv`, `participants.json`, and `README.md`
+- **Per recording**: `_emg.json`, `_channels.tsv`
+- **Per setup (shared across recordings in a session)**: `_electrodes.tsv`, `_coordsystem.json`
+
+The `README.md` is generated automatically from the dataset-level fields you filled in (name, description, license, authors, ethics). It gives human readers a plain-language entry point to the dataset — BIDS requires a `README` at the dataset root, and the tool handles this so you don't have to write one from scratch. You can always open and edit it after downloading if you want to add more context.
 
 We will use the generated `metadata.zip` file and insert the data files where necessary as shown next.
 
@@ -424,7 +444,7 @@ An example for a standard ramp–hold–ramp isometric protocol at 30% MVC (samp
 
 `onset` and `duration` are always in seconds. `sample` is the corresponding integer sample index (onset × fs). For rest recordings with no task structure, omit the events file entirely.
 
-> **Important:** For submissions to MUnitQuest, we require that the "muscle_on" and "muscle_off" events be always annotated such that we can easily separate signal portions from rest. Any other annotations, e.g., mvc_level, descriptions of task phases etc. are welcome!
+> **Important:** For submissions to MUnitQuest, we require that the "muscle_on" and "muscle_off" (or "rest") events be always annotated such that we can easily separate signal portions from rest. Any other annotations, e.g., mvc_level, descriptions of task phases etc. are welcome!
 
 Given our dataset contains only simple isometric tasks, we have included the following dataset-level `_events.json` sidecar that describes the how we annotate the task in the `_events.tsv` file above. By placing this at the top-level directory, it is inherited by all recordings!
 
@@ -450,8 +470,9 @@ Given our dataset contains only simple isometric tasks, we have included the fol
   "event_type": {
     "Description": "Category of the event.",
     "Levels": {
-      "muscle_on":   "Onset of voluntary muscle activation.",
-      "muscle_off":  "End of voluntary muscle activation.",
+      "rest": "No voluntary muscle activation",
+      "muscle_on": "Onset of voluntary muscle activation.",
+      "muscle_off": "End of voluntary muscle activation.",
       "linear_ramp": "Linear force ramp between two target levels.",
       "steady_hold": "Steady isometric contraction at a fixed target level."
     }
@@ -489,31 +510,41 @@ Which can easily produced by the following code, given you have arranged the dec
     rows = []
     for mu_label in sorted(spike_trains.keys()):
         for sample in spike_trains[mu_label]:
-            rows.append({"onset": round(float(sample) / fs, 6), "duration": 0.0, "trial_type": mu_label})
-    df = pd.DataFrame(rows, columns=["onset", "duration", "trial_type"])
+            rows.append({
+                "onset":       round(float(sample) / fs, 4),
+                "duration":    0.0,
+                "sample":      sample,
+                "unit_id":     int(mu_label),
+                "description": "motor-unit-spike",
+            })
+    df = pd.DataFrame(rows, columns=["onset", "duration", "sample", "unit_id", "description"])
     df.sort_values("onset").reset_index(drop=True).to_csv(out_path, sep="\t", index=False)</code></pre>
 </div>
 <div class="tab-pane" data-label="MATLAB">
 <pre><code class="language-matlab">function writeEventsTsv(outPath, spikeTrains, fs)
-    % outPath    -- full path to the output _events.tsv file
-    % spikeTrains -- containers.Map: mu_label -> sample index array
-    % fs         -- sampling frequency in Hz
+    % outPath     -- full path to the output _events.tsv file
+    % spikeTrains -- containers.Map: mu_label -> sample index array (e.g. "MU_00" -> [12, 45, ...])
+    % fs          -- sampling frequency in Hz
     outDir = fileparts(outPath);
     if ~isempty(outDir) && ~isfolder(outDir), mkdir(outDir); end
 
     muLabels = sort(keys(spikeTrains));
-    onset = []; duration = []; trialType = {};
+    onset = []; duration = []; sampleIdx = []; unitId = []; description = {};
     for i = 1:numel(muLabels)
         label   = muLabels{i};
         samples = spikeTrains(label);
+        uid     = str2int(label(end-1:end));
         for s = samples(:)'
-            onset(end+1,1)     = round(double(s) / fs, 6); %#ok
-            duration(end+1,1)  = 0; %#ok
-            trialType{end+1,1} = label; %#ok
+            onset(end+1,1)       = round(double(s) / fs, 4); %#ok
+            duration(end+1,1)    = 0; %#ok
+            sampleIdx(end+1,1)   = s; %#ok
+            unitId(end+1,1)      = uid; %#ok
+            description{end+1,1} = 'motor-unit-spike'; %#ok
         end
     end
 
-    t = table(onset, duration, trialType, 'VariableNames', {'onset','duration','trial_type'});
+    t = table(onset, duration, sampleIdx, unitId, description, ...
+              'VariableNames', {'onset','duration','sample','unit_id','description'});
     t = sortrows(t, 'onset');
     writetable(t, outPath, 'Delimiter', '\t', 'FileType', 'text');
 end</code></pre>
@@ -614,7 +645,10 @@ def assemble_bids_dataset(recordings_csv, channels_csv, metadata_zip,
         (deriv_root / "dataset_description.json").write_text(json.dumps({
             "Name": PIPELINE_NAME, "BIDSVersion": "1.11.1",
             "DatasetType": "derivative",
-            "GeneratedBy": [{"Name": PIPELINE_NAME}],
+            "GeneratedBy": [{
+                "Name":    PIPELINE_NAME,
+                "CodeURL": "https://github.com/MUnitQuest/MUnitQuest_tutorials/tree/main/emg_bids_tutorial1",
+            }],
         }, indent=2))
 
     (output_dir / ".bidsignore").write_text("derivatives/\n")
@@ -708,9 +742,10 @@ function assembleBidsDataset(recordingsCsv, channelsCsv, metadataZip, ...
     if hasDerivatives
         derivRoot = fullfile(outputDir, "derivatives", pipelineName);
         if ~isfolder(derivRoot), mkdir(derivRoot); end
+        codeUrl = "https://github.com/MUnitQuest/MUnitQuest_tutorials/tree/main/emg_bids_tutorial1";
         desc = struct("Name", pipelineName, "BIDSVersion", "1.11.1", ...
                       "DatasetType", "derivative", ...
-                      "GeneratedBy", {{struct("Name", pipelineName)}});
+                      "GeneratedBy", {{struct("Name", pipelineName, "CodeURL", codeUrl)}});
         fid = fopen(fullfile(derivRoot, "dataset_description.json"), "w");
         fprintf(fid, "%s", jsonencode(desc, "PrettyPrint", true));
         fclose(fid);
@@ -744,6 +779,7 @@ Running the assembly script with the five CSVs, `metadata.zip`, and source data 
 ```
 dataset/
 ├── .bidsignore
+├── README.md
 ├── dataset_description.json
 ├── participants.tsv
 ├── participants.json

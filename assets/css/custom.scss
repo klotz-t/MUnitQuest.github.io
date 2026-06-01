@@ -104,6 +104,14 @@ Control header/feature image height
 }
 
 /* -------------------------
+   FIX THEME: pre always-visible scrollbar
+   Theme sets overflow-x: scroll; override to only show when needed.
+------------------------- */
+.typeset pre {
+  overflow-x: auto;
+}
+
+/* -------------------------
    BODY FONT & LAYOUT
 ------------------------- */
 body {
