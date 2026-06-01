@@ -60,7 +60,7 @@ Data must be submitted in the standardized [EMG-BIDS](https://bids-specification
 For each recording, provide a `*_events.tsv` file (BIDS-events file) containing the labeled motor unit spike trains. See the [example below](#example-how-to-report-motor-unit-spike-trains) for the required format. The [Tutorials](/resources/) cover how to assemble these into your BIDS dataset.
 
 **Step 3 — Write a 2-page PDF**
-Include a short description of your labeling approach (for experimental data) or simulation model (for synthetic data). For concurrent iEMG submissions, describe how the invasive reference was used. This PDF will be placed at the root of your final submission (see Step 5). Use our [submission template](/assets/files/template_submission.txt) as a starting point.
+Include a short description of your dataset and labeling approach (for experimental data) or simulation model (for synthetic data). For concurrent iEMG submissions, describe how the invasive reference was used. This PDF will be placed at the root of your final submission (see Step 5). Use our [submission template](/assets/files/template_submission.txt) as a starting point.
 
 **Step 4 — Upload a metadata-only zip to Codabench**
 Prepare a `.zip` of your BIDS dataset that excludes all raw data files (`.edf` or `.bdf`) and upload it to the [Data Challenge on Codabench](https://www.codabench.org/competitions/15762/). You can use the following shell command from the parent directory of your BIDS dataset folder:
