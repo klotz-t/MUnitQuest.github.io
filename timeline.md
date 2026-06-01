@@ -11,7 +11,7 @@ Here we summarize key dates and the competition timeline.
 
 | **Date**       | **Event** |
 | -------------- | ----------- |
-| 01/06/2026     | **Data Challenge:** The data submission portal opens |
+| <span style="color:#d1d5db">01/06/2026</span>     | <span style="color:#d1d5db">**Data Challenge:** The data submission portal opens</span> |
 | 15/06/2026     | **Algorithm Challenge – Familiarization:** The prediction submission portal opens |
 | 25/06/2026     | **MUnitQuest Symposium at ISEK2026** (12:30 - 14:00, EEST) |
 | 15/09/2026     | **Data Challenge:** The data submission closes (23:59, CET) |
