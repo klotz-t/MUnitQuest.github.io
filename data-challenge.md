@@ -40,3 +40,20 @@ Each dataset is rated by the expert panel on the following criteria:
 ### Awards
 
 All accepted data contributions will be published according to the FAIR (Findable, Accessible, Interoperable, Reusable) principles in an open data repository. All accepted dataset contributions will also be invited to share their work in a collaborative data paper in a special issue of the [Journal of Electromyography and Kinesiology](https://www.sciencedirect.com/journal/journal-of-electromyography-and-kinesiology).
+
+### FAQ
+
+- **Q:** Do I need to format my dataset in EMG-BIDS?     
+  **A:** Yes, the submission portal will only accept data in EMG-BIDS format. We make getting started with EMG-BIDS as easy as possible through our tutorials. If you have additional questions on how to convert your dataset, do not hesitate to contact the organizers. 
+
+- **Q:** My dataset has been published elsewhere. Can I still participate in the Data Challenge?     
+  **A:** Of course! Reusing existing data makes a lot of sense anytime suitable data already exists. Just make sure to reference related papers or data repositories in your submission. 
+
+- **Q:** How to deal with missing motor unit labels?     
+  **A:** If there is any recording for which no motor unit spike labels exist, but you still want to include that recording for the sake of completeness, simply add an empty label file. The submission portal will display a warning to confirm that this did not happen accidentally.
+
+- **Q:** Can I submit more than one dataset?     
+  **A:** If you have more than one dataset that fits the purpose of the Data Challenge, we would be more than happy if you do so. Get in touch with the organizers for assistance.
+
+
+  
