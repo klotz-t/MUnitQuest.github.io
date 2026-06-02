@@ -71,6 +71,8 @@ zip -r submission_metadata.zip <your_bids_folder>/ --exclude "*.edf" --exclude "
 
 After processing, you will be able to download an HTML report of your submission — review it to confirm everything is in order before proceeding.
 
+> **Note:** Make sure that your `.zip` archive contains a single folder with the name of your dataset!
+
 **Step 5 — Upload the full dataset**
 If your Step 4 submission is successful, a link will be provided to upload the complete dataset (including the raw `.edf` files) together with your 2-page PDF placed at the root of the submission.
 
@@ -98,5 +100,5 @@ Here is a minimal example of the format ([BIDS-event file](https://bids-specific
 - *duration*: Duration of the event (measured from onset) in seconds. As a motor unit spike can be regarded as a Dirac impulse, its duration is zero.  
 - *sample*: Sample index of the event onset (zero-indexing).
 - *unit_id*: Unique identifier (integer value) of the motor unit corresponding to the detected spike.
-- *description*: Human-readable free-text description of the event.
+- *description*: Human-readable free-text description of the event. Here, it should always be "motor-unit-spike".
  

@@ -7604,15 +7604,16 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [46]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Basic imports</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 
-<span class="kn">from</span> <span class="nn">muniverse.utils.bids_routines</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">muniverse.utils.bids_routines</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">BIDSDataset</span><span class="p">,</span> 
     <span class="n">EMGBIDSRecording</span><span class="p">,</span> 
     <span class="n">BIDSDecompositionDerivative</span>
@@ -7659,15 +7660,28 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [47]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">readme</span> <span class="o">=</span> <span class="s2">"""</span>
 <span class="s2"># Header 1</span>
-<span class="s2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+<span class="s2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, </span>
+<span class="s2">sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </span>
+<span class="s2">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris </span>
+<span class="s2">nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in </span>
+<span class="s2">reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </span>
+<span class="s2">Excepteur sint occaecat cupidatat non proident, sunt in culpa </span>
+<span class="s2">qui officia deserunt mollit anim id est laborum.</span>
 
 <span class="s2"># Header 2</span>
-<span class="s2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+<span class="s2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, </span>
+<span class="s2">sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </span>
+<span class="s2">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris </span>
+<span class="s2">nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in </span>
+<span class="s2">reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </span>
+<span class="s2">Excepteur sint occaecat cupidatat non proident, sunt in culpa </span>
+<span class="s2">qui officia deserunt mollit anim id est laborum.</span>
+
 <span class="s2">"""</span>
 </pre></div>
 </div>
@@ -7690,29 +7704,29 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [48]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">dataset_sidecar</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="s2">"Name"</span><span class="p">:</span> <span class="s2">"FictionalDatasetExample"</span><span class="p">,</span> <span class="c1"># The name of your dataset</span>
-  <span class="s2">"License"</span><span class="p">:</span> <span class="s2">"CC BY 4.0"</span><span class="p">,</span> <span class="c1"># License this dataset will be available under.</span>
-  <span class="s2">"DatasetType"</span><span class="p">:</span> <span class="s2">"raw"</span><span class="p">,</span> <span class="c1"># Indicates that this unprocessed data</span>
-  <span class="s2">"Authors"</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">"alice"</span><span class="p">,</span>
+  <span class="s2">"Name"</span><span class="p">:</span> <span class="s2">"FictionalDatasetExample"</span><span class="p">,</span>  <span class="c1"># The name of your dataset</span>
+  <span class="s2">"License"</span><span class="p">:</span> <span class="s2">"CC BY 4.0"</span><span class="p">,</span>             <span class="c1"># License this dataset will be available under.</span>
+  <span class="s2">"DatasetType"</span><span class="p">:</span> <span class="s2">"raw"</span><span class="p">,</span>               <span class="c1"># Indicates that this unprocessed data</span>
+  <span class="s2">"Authors"</span><span class="p">:</span> <span class="p">[</span>                        <span class="c1"># List of individuals who contributed to the creation/curation of                                     </span>
+    <span class="s2">"alice"</span><span class="p">,</span>                          <span class="c1">#   the dataset. Has to be a list even if it has only one entry. </span>
     <span class="s2">"bob"</span>
-  <span class="p">],</span> <span class="c1"># List of individuals who contributed to the creation/curation of the dataset., has to be a list even if it has only one entry </span>
-  <span class="s2">"ReferencesAndLinks"</span><span class="p">:</span> <span class="p">[</span>
+  <span class="p">],</span> 
+  <span class="s2">"ReferencesAndLinks"</span><span class="p">:</span> <span class="p">[</span>             <span class="c1"># E.g. the name of the related publication and the corresponing DOI. </span>
     <span class="s2">"citation of related publication as text"</span><span class="p">,</span>
     <span class="s2">"related publication as DOI"</span>
-  <span class="p">],</span> <span class="c1"># E.g. the name of the related publication and the corresponing DOI. </span>
-  <span class="s2">"EthicsApprovals"</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">"number of ethics approval."</span>
-  <span class="p">],</span> <span class="c1"># List of ethics committee approvals of the research protocols and/or protocol identifiers. Has to be a list even if it has only one entry </span>
-  <span class="s2">"GeneratedBy"</span><span class="p">:</span> <span class="p">[</span>
+  <span class="p">],</span> 
+  <span class="s2">"EthicsApprovals"</span><span class="p">:</span> <span class="p">[</span>                <span class="c1"># List of ethics committee approvals of the research protocols and/or </span>
+    <span class="s2">"number of ethics approval."</span>      <span class="c1">#   protocol identifiers. Has to be a list even if it has only one entry. </span>
+  <span class="p">],</span> 
+  <span class="s2">"GeneratedBy"</span><span class="p">:</span> <span class="p">[</span>                    <span class="c1"># A list of tools used to generate this dataset (must be a list of objects)  </span>
         <span class="p">{</span>
           <span class="s2">"Name"</span><span class="p">:</span><span class="s2">"MUniverse"</span>
         <span class="p">}</span>
-    <span class="p">],</span> <span class="c1"># A list of tools used to generate this dataset (must be a list of objects) </span>
+    <span class="p">],</span> 
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -7735,17 +7749,36 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [49]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">subjects_data</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"participant_id"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"sub-01"</span><span class="p">,</span> <span class="s2">"sub-02"</span><span class="p">,</span> <span class="s2">"sub-03"</span><span class="p">,</span> <span class="s2">"sub-04"</span><span class="p">,</span> <span class="s2">"sub-05"</span><span class="p">,</span> <span class="s2">"sub-06"</span><span class="p">],</span> <span class="c1"># Unique subject identifier. Every participant_id must start with "sub-"</span>
-    <span class="s2">"age"</span><span class="p">:</span> <span class="p">[</span><span class="mi">42</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">47</span><span class="p">],</span> <span class="c1"># optional </span>
-    <span class="s2">"sex"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"M"</span><span class="p">,</span> <span class="s2">"F"</span><span class="p">,</span> <span class="s2">"M"</span><span class="p">,</span> <span class="s2">"F"</span><span class="p">,</span> <span class="s2">"M"</span><span class="p">,</span> <span class="s2">"F"</span><span class="p">],</span> <span class="c1"># optional </span>
-    <span class="s2">"handedness"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"R"</span><span class="p">,</span> <span class="s2">"L"</span><span class="p">,</span> <span class="s2">"R"</span><span class="p">,</span> <span class="s2">"R"</span><span class="p">,</span> <span class="s2">"L"</span><span class="p">,</span> <span class="s2">"R"</span><span class="p">],</span> <span class="c1"># optional </span>
-    <span class="s2">"weight"</span><span class="p">:</span> <span class="p">[</span><span class="mi">70</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span> <span class="c1"># optional </span>
-    <span class="s2">"height"</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.7</span><span class="p">,</span> <span class="mf">1.72</span><span class="p">,</span> <span class="mf">1.74</span><span class="p">,</span> <span class="mf">1.76</span><span class="p">,</span> <span class="mf">1.78</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">],</span> <span class="c1"># optional </span>
-    <span class="s2">"group"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"T"</span><span class="p">,</span> <span class="s2">"T"</span><span class="p">,</span> <span class="s2">"T"</span><span class="p">,</span> <span class="s2">"P"</span><span class="p">,</span> <span class="s2">"P"</span><span class="p">,</span> <span class="s2">"P"</span><span class="p">],</span> <span class="c1"># optional </span>
+    <span class="s2">"participant_id"</span><span class="p">:</span> <span class="p">[</span>     <span class="c1"># Unique subject identifier. Every participant_id must start with "sub-"</span>
+        <span class="s2">"sub-01"</span><span class="p">,</span> 
+        <span class="s2">"sub-02"</span><span class="p">,</span> 
+        <span class="s2">"sub-03"</span><span class="p">,</span> 
+        <span class="s2">"sub-04"</span><span class="p">,</span> 
+        <span class="s2">"sub-05"</span><span class="p">,</span> 
+        <span class="s2">"sub-06"</span>
+    <span class="p">],</span> 
+    <span class="s2">"age"</span><span class="p">:</span> <span class="p">[</span>                <span class="c1"># Age in years (Optional)</span>
+        <span class="mi">42</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">47</span>
+    <span class="p">],</span> 
+    <span class="s2">"sex"</span><span class="p">:</span> <span class="p">[</span>                <span class="c1"># F: female, M: male, or O: other (Optional)</span>
+        <span class="s2">"M"</span><span class="p">,</span> <span class="s2">"F"</span><span class="p">,</span> <span class="s2">"M"</span><span class="p">,</span> <span class="s2">"F"</span><span class="p">,</span> <span class="s2">"M"</span><span class="p">,</span> <span class="s2">"F"</span>
+    <span class="p">],</span> 
+    <span class="s2">"handedness"</span><span class="p">:</span> <span class="p">[</span>         <span class="c1"># L: left, R: right (Optional)</span>
+        <span class="s2">"R"</span><span class="p">,</span> <span class="s2">"L"</span><span class="p">,</span> <span class="s2">"R"</span><span class="p">,</span> <span class="s2">"R"</span><span class="p">,</span> <span class="s2">"L"</span><span class="p">,</span> <span class="s2">"R"</span>
+    <span class="p">],</span> 
+    <span class="s2">"weight"</span><span class="p">:</span> <span class="p">[</span>             <span class="c1"># Weight in kg (Optional)</span>
+        <span class="mi">70</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">60</span>
+    <span class="p">],</span> 
+    <span class="s2">"height"</span><span class="p">:</span> <span class="p">[</span>             <span class="c1"># Height in m (Optional)</span>
+        <span class="mf">1.7</span><span class="p">,</span> <span class="mf">1.72</span><span class="p">,</span> <span class="mf">1.74</span><span class="p">,</span> <span class="mf">1.76</span><span class="p">,</span> <span class="mf">1.78</span><span class="p">,</span> <span class="mf">1.8</span>
+    <span class="p">],</span>                      
+    <span class="s2">"group"</span><span class="p">:</span> <span class="p">[</span>              <span class="c1"># T: treatment, C: control (Optional)</span>
+        <span class="s2">"T"</span><span class="p">,</span> <span class="s2">"T"</span><span class="p">,</span> <span class="s2">"T"</span><span class="p">,</span> <span class="s2">"P"</span><span class="p">,</span> <span class="s2">"P"</span><span class="p">,</span> <span class="s2">"P"</span>
+    <span class="p">],</span>  
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -7768,7 +7801,7 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [50]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">subjects_sidecar</span> <span class="o">=</span> <span class="p">{</span>
@@ -7801,7 +7834,7 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [51]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">BIDSIGNORE</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"derivatives/"</span><span class="p">]</span>
@@ -7826,7 +7859,7 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [52]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># (i) Init the BIDS-dataset class</span>
@@ -7836,8 +7869,8 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <span class="p">)</span>
 <span class="c1"># (ii) Set metadata </span>
 <span class="n">FictionalDatasetExample</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s1">'subjects_data'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">subjects_data</span><span class="p">)</span>
-<span class="n">FictionalDatasetExample</span><span class="o">.</span><span class="n">get_default_participant_sidecar</span><span class="p">()</span> <span class="c1"># Pre-implemented template</span>
-<span class="n">FictionalDatasetExample</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s1">'subjects_sidecar'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">subjects_sidecar</span><span class="p">)</span> <span class="c1"># Add your custom fields</span>
+<span class="n">FictionalDatasetExample</span><span class="o">.</span><span class="n">set_default_participant_sidecar</span><span class="p">()</span> <span class="c1"># Make use of a pre-implemented template</span>
+<span class="n">FictionalDatasetExample</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s1">'subjects_sidecar'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">subjects_sidecar</span><span class="p">)</span> <span class="c1"># Add custom fields</span>
 <span class="n">FictionalDatasetExample</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s1">'dataset_sidecar'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">dataset_sidecar</span><span class="p">)</span>
 <span class="n">FictionalDatasetExample</span><span class="o">.</span><span class="n">readme</span> <span class="o">=</span> <span class="n">readme</span>
 <span class="n">FictionalDatasetExample</span><span class="o">.</span><span class="n">BIDSIGNORE</span> <span class="o">=</span> <span class="n">BIDSIGNORE</span>
@@ -7890,18 +7923,31 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">emg_sidecar_template</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"EMGPlacementScheme"</span><span class="p">:</span> <span class="s2">"Measured"</span><span class="p">,</span> <span class="c1"># Must be the keyword "Measured" if you have grids and specify electrode locations in coordinate systems. </span>
-    <span class="s2">"EMGPlacementSchemeDescription"</span><span class="p">:</span> <span class="s2">"(i) Surface EMG: lorem ipsum. (ii) Invasive thin film EMG: lorem ipsum. (iii) Invasive Fine Wire EMG: lorem ipsum. (iv) Invasive Needle EMG: lorem ipsum."</span><span class="p">,</span> <span class="c1"># Describe how electrodes are placed. Include anatomical landmarks used to position. Include the measurement method for placement. Include placement of reference electrode(s). Include placement of ground electrode. Include if a dry linear array for fiber alignment was used or not. Include if innervation zone was measured and how electrodes are positioned relative to it. For different types of electrodes (surface grid, invasive grid, fine wire, etc) use i), ii), iii), ... to separate placement description (similar to our provided example). </span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Describe (free-text) how electrodes are placed:</span>
+<span class="c1"># - Include anatomical landmarks used for positioning. </span>
+<span class="c1"># - Include the measurement method for placement. </span>
+<span class="c1"># - Include placement of reference electrode(s). </span>
+<span class="c1"># - Include placement of ground electrode. </span>
+<span class="c1"># - For multiple electrodes make sure to cover all (e.g., iterating over them).  </span>
+<span class="n">placement_description</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"(i) Surface EMG: lorem ipsum. "</span>
+    <span class="s2">"(ii) Invasive thin film EMG: lorem ipsum. "</span>
+    <span class="s2">"(iii) Invasive Fine Wire EMG: lorem ipsum. "</span>
+    <span class="s2">"(iv) Invasive Needle EMG: lorem ipsum."</span>
+<span class="p">)</span>
+
+<span class="n">emg_sidecar_template</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"EMGPlacementScheme"</span><span class="p">:</span> <span class="s2">"Measured"</span><span class="p">,</span> <span class="c1"># Must be the keyword "Measured" if electrode locations are defined in coordinate systems. </span>
+    <span class="s2">"EMGPlacementSchemeDescription"</span><span class="p">:</span> <span class="n">placement_description</span><span class="p">,</span>
     <span class="s2">"EMGReference"</span><span class="p">:</span> <span class="s2">"ChannelSpecific"</span><span class="p">,</span>
     <span class="s2">"EMGGround"</span><span class="p">:</span> <span class="s2">"G1"</span><span class="p">,</span> <span class="c1"># The name of the ground electrode (as specified in electrodes metadata). </span>
-    <span class="s2">"SamplingFrequency"</span><span class="p">:</span> <span class="mi">2048</span><span class="p">,</span> <span class="c1"># The main sampling frequency (in Hz) of your data. If your dataset contains more than one sampling frequency contact us. </span>
-    <span class="s2">"PowerLineFrequency"</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="c1"># Frequency (in Hz) of the power grid where the data was recorded. </span>
+    <span class="s2">"SamplingFrequency"</span><span class="p">:</span> <span class="mi">2048</span><span class="p">,</span> <span class="c1"># The sampling frequency in Hz </span>
+    <span class="s2">"PowerLineFrequency"</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="c1"># Main power line frequency in Hz  </span>
     <span class="s2">"RecordingType"</span><span class="p">:</span> <span class="s2">"continuous"</span><span class="p">,</span> 
-    <span class="s2">"HardwareFilters"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"HardwareFilters"</span><span class="p">:</span> <span class="p">{</span> <span class="c1"># A json object containing filter parameters. Use "n/a" if no filter was used.</span>
         <span class="s2">"Low-pass filter"</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">"Frequency"</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
             <span class="s2">"Roll-off"</span><span class="p">:</span> <span class="s2">"6dB/Octave"</span>
@@ -7910,14 +7956,14 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
             <span class="s2">"Frequency"</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
             <span class="s2">"Roll-off"</span><span class="p">:</span> <span class="s2">"6dB/Octave"</span>
         <span class="p">}</span>
-    <span class="p">},</span> <span class="c1"># A json object containing filter parameters. Use "n/a" if no filter was used.</span>
+    <span class="p">},</span> 
     <span class="s2">"SoftwareFilters"</span><span class="p">:</span> <span class="s2">"n/a"</span><span class="p">,</span> <span class="c1"># A json object containing filter parameters. Use "n/a" if no filter was used.</span>
     <span class="s2">"EMGChannelCount"</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span>
     <span class="s2">"TaskName"</span><span class="p">:</span> <span class="s2">"restNoise"</span><span class="p">,</span>
     <span class="s2">"TaskDescription"</span><span class="p">:</span> <span class="s2">"Relaxed muscle for 5 seconds."</span><span class="p">,</span>
     <span class="s2">"Instructions"</span><span class="p">:</span> <span class="s2">"Relax your muscle completely."</span><span class="p">,</span> 
     <span class="s2">"Preamplification"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="c1"># Amplification built into an EMG bipolar sensor, electrode grid, or other device.</span>
-    <span class="s2">"Gain"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="c1"># Signal gain from an in-line amplifier, applied between the EMG sensor/device and the data acquisition computer. </span>
+    <span class="s2">"Gain"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="c1"># Signal gain from an in-line amplifier, applied between the EMG sensor and the acquisition computer. </span>
     <span class="s2">"Manufacturer"</span><span class="p">:</span> <span class="s2">"some amplifier manufacturer"</span><span class="p">,</span> <span class="c1"># Manufacturer of the amplifier used to collect the data. </span>
     <span class="s2">"ManufacturersModelName"</span><span class="p">:</span> <span class="s2">"some amplifier model name"</span> <span class="c1"># Model name of the amplifier. </span>
 <span class="p">}</span>
@@ -7944,20 +7990,28 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [54]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">coord_sidecar</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">coord_sidecars</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">"forearmCoordSys"</span> <span class="p">:</span> <span class="p">{</span>
         <span class="s2">"EMGCoordinateSystem"</span><span class="p">:</span> <span class="s2">"Other"</span><span class="p">,</span>
         <span class="s2">"EMGCoordinateUnits"</span><span class="p">:</span> <span class="s2">"percent"</span><span class="p">,</span>
-        <span class="s2">"EMGCoordinateSystemDescription"</span><span class="p">:</span> <span class="s2">"x: Radial Styloid Process (RSP) -&gt; Ulnar Styloid Process (USP); y: Right-hand rule (limits: Olecranon Process -&gt; Cubital Fossa); z: midpoint RSP-USP -&gt; Lateral Humerus Epicondyle (LHE)"</span>
+        <span class="s2">"EMGCoordinateSystemDescription"</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">"x: Radial Styloid Process (RSP) -&gt; Ulnar Styloid Process (USP); "</span>
+            <span class="s2">"y: Right-hand rule (limits: Olecranon Process -&gt; Cubital Fossa); "</span>
+            <span class="s2">"z: midpoint RSP-USP -&gt; Lateral Humerus Epicondyle (LHE)"</span>
+        <span class="p">)</span>
     <span class="p">},</span> 
 
     <span class="s2">"grid1CoordSys"</span> <span class="p">:</span> <span class="p">{</span>
         <span class="s2">"EMGCoordinateSystem"</span><span class="p">:</span> <span class="s2">"Other"</span><span class="p">,</span>
         <span class="s2">"EMGCoordinateUnits"</span><span class="p">:</span> <span class="s2">"mm"</span><span class="p">,</span>
-        <span class="s2">"EMGCoordinateSystemDescription"</span><span class="p">:</span> <span class="s2">" The x-axis is left to right, the y-axis is bottom to top. Note: the z-axis is not used."</span><span class="p">,</span>
+        <span class="s2">"EMGCoordinateSystemDescription"</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">"The x-axis is left to right; "</span>
+            <span class="s2">"the y-axis is bottom to top. "</span> 
+            <span class="s2">"Note: the z-axis is not used."</span>
+        <span class="p">),</span>
         <span class="s2">"ParentCoordinateSystem"</span><span class="p">:</span> <span class="s2">"forearmCoordSys"</span><span class="p">,</span>
         <span class="s2">"AnchorElectrode"</span><span class="p">:</span> <span class="s2">"E001"</span><span class="p">,</span>
         <span class="s2">"AnchorCoordinates"</span><span class="p">:</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">80</span><span class="p">]</span>
@@ -7966,8 +8020,11 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
     <span class="s2">"grid2CoordSys"</span> <span class="p">:</span> <span class="p">{</span>
         <span class="s2">"EMGCoordinateSystem"</span><span class="p">:</span> <span class="s2">"Other"</span><span class="p">,</span>
         <span class="s2">"EMGCoordinateUnits"</span><span class="p">:</span> <span class="s2">"mm"</span><span class="p">,</span>
-        <span class="s2">"EMGCoordinateSystemDescription"</span><span class="p">:</span> <span class="s2">"The x-axis is left to right, the y-axis is bottom to top. Note: the z-axis is not used."</span><span class="p">,</span>
-        <span class="s2">"ParentCoordinateSystem"</span><span class="p">:</span> <span class="s2">"forearmCoordSys"</span><span class="p">,</span>
+        <span class="s2">"EMGCoordinateSystemDescription"</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">"The x-axis is left to right; "</span>
+            <span class="s2">"the y-axis is bottom to top. "</span> 
+            <span class="s2">"Note: the z-axis is not used."</span>
+        <span class="p">),</span>
         <span class="s2">"AnchorElectrode"</span><span class="p">:</span> <span class="s2">"E009"</span><span class="p">,</span>
         <span class="s2">"AnchorCoordinates"</span><span class="p">:</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">]</span>
     <span class="p">},</span> 
@@ -7975,7 +8032,11 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
     <span class="s2">"grid3CoordSys"</span> <span class="p">:</span> <span class="p">{</span>
         <span class="s2">"EMGCoordinateSystem"</span><span class="p">:</span> <span class="s2">"Other"</span><span class="p">,</span>
         <span class="s2">"EMGCoordinateUnits"</span><span class="p">:</span> <span class="s2">"mm"</span><span class="p">,</span>
-        <span class="s2">"EMGCoordinateSystemDescription"</span><span class="p">:</span> <span class="s2">"The x-axis is left to right, the y-axis is bottom to top. Note: the z-axis is not used."</span><span class="p">,</span>
+        <span class="s2">"EMGCoordinateSystemDescription"</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">"The x-axis is left to right; "</span>
+            <span class="s2">"the y-axis is bottom to top. "</span> 
+            <span class="s2">"Note: the z-axis is not used."</span>
+        <span class="p">),</span>
         <span class="s2">"ParentCoordinateSystem"</span><span class="p">:</span> <span class="s2">"forearmCoordSys"</span><span class="p">,</span>
         <span class="s2">"AnchorElectrode"</span><span class="p">:</span> <span class="s2">"E017"</span><span class="p">,</span>
         <span class="s2">"AnchorCoordinates"</span><span class="p">:</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
@@ -7984,7 +8045,11 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
     <span class="s2">"intraGrid1CoordSys"</span> <span class="p">:</span> <span class="p">{</span>
         <span class="s2">"EMGCoordinateSystem"</span><span class="p">:</span> <span class="s2">"Other"</span><span class="p">,</span>
         <span class="s2">"EMGCoordinateUnits"</span><span class="p">:</span> <span class="s2">"mm"</span><span class="p">,</span>
-        <span class="s2">"EMGCoordinateSystemDescription"</span><span class="p">:</span> <span class="s2">"The x-axis is left to right, the y-axis is bottom to top. Note: the z-axis is not used."</span><span class="p">,</span>
+        <span class="s2">"EMGCoordinateSystemDescription"</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">"The x-axis is left to right; "</span>
+            <span class="s2">"the y-axis is bottom to top. "</span> 
+            <span class="s2">"Note: the z-axis is not used."</span>
+        <span class="p">),</span>
         <span class="s2">"ParentCoordinateSystem"</span><span class="p">:</span> <span class="s2">"forearmCoordSys"</span><span class="p">,</span>
         <span class="s2">"AnchorElectrode"</span><span class="p">:</span> <span class="s2">"iE001"</span><span class="p">,</span>
         <span class="s2">"AnchorCoordinates"</span><span class="p">:</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">70</span><span class="p">]</span>
@@ -7993,7 +8058,11 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
     <span class="s2">"intraGrid2CoordSys"</span> <span class="p">:</span> <span class="p">{</span>
         <span class="s2">"EMGCoordinateSystem"</span><span class="p">:</span> <span class="s2">"Other"</span><span class="p">,</span>
         <span class="s2">"EMGCoordinateUnits"</span><span class="p">:</span> <span class="s2">"mm"</span><span class="p">,</span>
-        <span class="s2">"EMGCoordinateSystemDescription"</span><span class="p">:</span> <span class="s2">"The x-axis is left to right, the y-axis is bottom to top. Note: the z-axis is not used."</span><span class="p">,</span>
+        <span class="s2">"EMGCoordinateSystemDescription"</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">"The x-axis is left to right; "</span>
+            <span class="s2">"the y-axis is bottom to top. "</span> 
+            <span class="s2">"Note: the z-axis is not used."</span>
+        <span class="p">),</span>
         <span class="s2">"ParentCoordinateSystem"</span><span class="p">:</span> <span class="s2">"forearmCoordSys"</span><span class="p">,</span>
         <span class="s2">"AnchorElectrode"</span><span class="p">:</span> <span class="s2">"iE009"</span><span class="p">,</span>
         <span class="s2">"AnchorCoordinates"</span><span class="p">:</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
@@ -8029,7 +8098,7 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [33]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [55]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">el_metadata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"fictionalDatasetExampleInputMetadata//electrodes.tsv"</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\t</span><span class="s2">"</span><span class="p">)</span> 
@@ -8044,7 +8113,7 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[33]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[55]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8201,11 +8270,15 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [34]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [56]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">electrodes_sidecar</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"interelectrode_distance"</span><span class="p">:</span> <span class="s2">"Distance between electrodes. In a grid this means distance between neighboring electrodes. In a fine wire it means distance between the wire tips."</span><span class="p">,</span> 
+    <span class="s2">"interelectrode_distance"</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">"Distance between pairs of electrodes. "</span>
+        <span class="s2">"In a grid this means distance between neighboring electrodes. "</span>
+        <span class="s2">"In a fine wire it means distance between the wire tips."</span>
+    <span class="p">),</span> 
     <span class="s2">"electrode_surface_area"</span><span class="p">:</span> <span class="s2">"Surface area of the electrode in mm^2"</span><span class="p">,</span> 
     <span class="s2">"electrode_diameter"</span><span class="p">:</span> <span class="s2">"Diameter of the electrode in mm"</span><span class="p">,</span> 
     <span class="s2">"electrode_tip_length"</span><span class="p">:</span> <span class="s2">"Unisolated length (in mm) of the fine wire tip"</span><span class="p">,</span> 
@@ -8242,7 +8315,7 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [35]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [57]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">ch_metadata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"fictionalDatasetExampleInputMetadata//channels.tsv"</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\t</span><span class="s2">"</span><span class="p">)</span> 
@@ -8257,7 +8330,7 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[35]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[57]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8384,11 +8457,12 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [36]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [58]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">channels_sidecar</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"some_additional_column"</span><span class="p">:</span> <span class="s2">"some Description of this column"</span> <span class="c1"># we define an optional column for illustrative purposes</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># we define an optional column for illustrative purposes</span>
+<span class="n">channels_sidecar</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"some_additional_column"</span><span class="p">:</span> <span class="s2">"some Description of this column"</span> 
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -8412,13 +8486,15 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [37]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [59]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># the baseline noise recording does not get an events.tsv file, because there are no events we could write into it. </span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># the baseline noise recording does not get an events.tsv file, </span>
+<span class="c1"># because there are no events we could write into it. </span>
 <span class="n">events_metadata1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"fictionalDatasetExampleInputMetadata//events30PercentMVC.tsv"</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\t</span><span class="s2">"</span><span class="p">)</span>
 <span class="n">events_metadata2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"fictionalDatasetExampleInputMetadata//events50PercentMVC.tsv"</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\t</span><span class="s2">"</span><span class="p">)</span>
-<span class="c1"># To retrieve these cleanly later from inside a for-loop we pack them into a dict with tasknames as keys </span>
+<span class="c1"># To retrieve these cleanly later from inside a for-loop, </span>
+<span class="c1"># we pack them into a dict with tasknames as keys </span>
 <span class="n">events_metadata_taskDict</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">"trapezoidalContraction30PercentMVC"</span><span class="p">:</span> <span class="n">events_metadata1</span><span class="p">,</span> 
     <span class="s2">"trapezoidalContraction50PercentMVC"</span><span class="p">:</span> <span class="n">events_metadata2</span><span class="p">,</span>    
@@ -8434,7 +8510,7 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[37]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[59]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8537,7 +8613,7 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [38]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [60]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">events_sidecar</span> <span class="o">=</span> <span class="p">{</span>
@@ -8592,7 +8668,7 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [39]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [61]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span>
@@ -8603,8 +8679,16 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 
 <span class="n">task_descriptions</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">"The muscle is fully relaxed."</span><span class="p">,</span>
-    <span class="s2">"A trapezoidal contraction at 30 percent MVC, consisting of linear ramps up and down performed at 30 percent per second and a plateau maintained for 1 s."</span><span class="p">,</span>
-    <span class="s2">"A trapezoidal contraction at 50 percent MVC, consisting of linear ramps up and down performed at 50 percent per second and a plateau maintained for 1 s."</span>
+    <span class="p">(</span>
+        <span class="s2">"A trapezoidal contraction at 30 percent MVC, "</span>
+        <span class="s2">"consisting of linear ramps up and down performed at 30 percent per second "</span> 
+        <span class="s2">"and a plateau maintained for 1 s."</span>
+    <span class="p">),</span>
+    <span class="p">(</span>
+        <span class="s2">"A trapezoidal contraction at 50 percent MVC, "</span>
+        <span class="s2">"consisting of linear ramps up and down performed at 50 percent per second "</span> 
+        <span class="s2">"and a plateau maintained for 1 s."</span>
+     <span class="p">)</span>
 <span class="p">]</span>
 
 <span class="n">task_instructions</span> <span class="o">=</span> <span class="p">[</span>
@@ -8622,7 +8706,7 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [40]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [62]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">samplingFrequency</span> <span class="o">=</span> <span class="mi">2048</span> <span class="c1"># samples per second</span>
@@ -8655,22 +8739,52 @@ An <strong>electrode</strong> is a physical object attached to the skin. A <stro
             <span class="n">subject_label</span><span class="o">=</span><span class="n">subject_label</span><span class="p">,</span> 
             <span class="n">task_label</span><span class="o">=</span><span class="n">task</span><span class="p">,</span> 
             <span class="n">datatype</span><span class="o">=</span><span class="s1">'emg'</span><span class="p">,</span>
-            <span class="n">inherited_metadata</span><span class="o">=</span><span class="p">[</span><span class="s2">"coordsystem.json"</span><span class="p">,</span> <span class="s2">"electrodes.tsv"</span><span class="p">,</span> <span class="s2">"electrodes.json"</span><span class="p">,</span> <span class="s2">"events.json"</span><span class="p">],</span> <span class="c1"># Here is where we define which files to inherit</span>
-            <span class="n">inherited_level</span><span class="o">=</span><span class="p">[</span><span class="s2">"subject"</span><span class="p">,</span> <span class="s2">"subject"</span><span class="p">,</span> <span class="s2">"dataset"</span><span class="p">,</span> <span class="s2">"dataset"</span><span class="p">],</span> <span class="c1"># and here which level they are inherited to </span>
+            <span class="n">inherited_metadata</span><span class="o">=</span><span class="p">[</span>    <span class="c1"># Here is where we define which files to inherit</span>
+                <span class="s2">"coordsystem.json"</span><span class="p">,</span> 
+                <span class="s2">"electrodes.tsv"</span><span class="p">,</span> 
+                <span class="s2">"electrodes.json"</span><span class="p">,</span> 
+                <span class="s2">"events.json"</span>
+            <span class="p">],</span> 
+            <span class="n">inherited_level</span><span class="o">=</span><span class="p">[</span>       <span class="c1"># and here which level they are inherited to</span>
+                <span class="s2">"subject"</span><span class="p">,</span> 
+                <span class="s2">"subject"</span><span class="p">,</span> 
+                <span class="s2">"dataset"</span><span class="p">,</span> 
+                <span class="s2">"dataset"</span>
+            <span class="p">],</span>  
         <span class="p">)</span>
         <span class="c1"># Set data and metadata</span>
-        <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s1">'emg_sidecar'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">emg_sidecar</span><span class="p">)</span>
-        <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s1">'data'</span><span class="p">,</span> <span class="n">mydata</span><span class="o">=</span><span class="n">data</span><span class="p">,</span><span class="n">fsamp</span><span class="o">=</span><span class="n">samplingFrequency</span><span class="p">)</span>
-        <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s1">'coord_sidecar'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">coord_sidecar</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s1">'electrodes_sidecar'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">electrodes_sidecar</span><span class="p">)</span>
-        <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s1">'electrodes'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">el_metadata</span><span class="p">)</span> 
-        <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s1">'channels_sidecar'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">channels_sidecar</span><span class="p">)</span>
-        <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s1">'channels'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">ch_metadata</span><span class="p">)</span>
-        <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s2">"events_sidecar"</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">events_sidecar</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">events_metadata_taskDict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> <span class="c1"># Not needed for resting tasks</span>
-            <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s2">"events"</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">events_metadata_taskDict</span><span class="p">[</span><span class="n">task</span><span class="p">])</span>
+        <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span>
+            <span class="n">field_name</span><span class="o">=</span><span class="s1">'emg_sidecar'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">emg_sidecar</span>
+        <span class="p">)</span>
+        <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span>
+            <span class="n">field_name</span><span class="o">=</span><span class="s1">'electrodes_sidecar'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">electrodes_sidecar</span>
+        <span class="p">)</span>
+        <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span>
+            <span class="n">field_name</span><span class="o">=</span><span class="s1">'electrodes'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">el_metadata</span>
+        <span class="p">)</span> 
+        <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span>
+            <span class="n">field_name</span><span class="o">=</span><span class="s1">'channels_sidecar'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">channels_sidecar</span>
+        <span class="p">)</span>
+        <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span>
+            <span class="n">field_name</span><span class="o">=</span><span class="s1">'channels'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">ch_metadata</span>
+        <span class="p">)</span>
+        <span class="c1"># There is a own function to handle coordinate system (as there are multiple files)</span>
+        <span class="k">for</span> <span class="n">coord_name</span><span class="p">,</span> <span class="n">coord_metadata</span> <span class="ow">in</span> <span class="n">coord_sidecars</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">emg_recording</span><span class="o">.</span><span class="n">add_coordinate_system</span><span class="p">(</span><span class="n">coord_name</span><span class="p">,</span> <span class="n">coord_metadata</span><span class="p">)</span>
+        <span class="c1"># Add the actual data</span>
+        <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span>
+            <span class="n">field_name</span><span class="o">=</span><span class="s1">'data'</span><span class="p">,</span> <span class="n">mydata</span><span class="o">=</span><span class="n">data</span><span class="p">,</span><span class="n">fsamp</span><span class="o">=</span><span class="n">samplingFrequency</span>
+        <span class="p">)</span>
+        <span class="c1"># events.tsv is not needed for resting tasks</span>
+        <span class="k">if</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">events_metadata_taskDict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
+            <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span>
+                <span class="n">field_name</span><span class="o">=</span><span class="s2">"events_sidecar"</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">events_sidecar</span>
+            <span class="p">)</span>
+            <span class="n">emg_recording</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span>
+                <span class="n">field_name</span><span class="o">=</span><span class="s2">"events"</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">events_metadata_taskDict</span><span class="p">[</span><span class="n">task</span><span class="p">]</span>
+            <span class="p">)</span>
         <span class="c1"># Write metadata and data    </span>
-        <span class="n">emg_recording</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+        <span class="n">emg_recording</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8701,7 +8815,7 @@ Bidsifying data of sub-06
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Validation">Validation<a class="anchor-link" href="#Validation">¶</a></h1><p>Finally we use the BIDS-validator to check the integrity of our dataset. 
+<h1 id="Validation">Validation<a class="anchor-link" href="#Validation">¶</a></h1><p>Finally we use the BIDS-validator to check the integrity of our dataset.
 For more information see here: <a href="https://github.com/bids-standard/bids-validator">https://github.com/bids-standard/bids-validator</a></p>
 <p>The muniverse wrapper for the bids-validator allows us to ignore certain codes or fields. This can be helpful for decluttering the output of the validator.</p>
 </div>
@@ -8712,27 +8826,33 @@ For more information see here: <a href="https://github.com/bids-standard/bids-va
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [41]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [63]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">err</span><span class="p">,</span> <span class="n">warn</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">FictionalDatasetExample</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span>
     <span class="n">print_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">print_warnings</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">ignored_codes</span><span class="o">=</span><span class="p">[</span>
-        <span class="s2">"EVENTS_TSV_MISSING"</span><span class="p">,</span> <span class="c1"># we specify events.tsv files, but not for restNoise. In order to not get one warning per restNoise recording in the dataset, we ignore the code. </span>
+        <span class="s2">"EVENTS_TSV_MISSING"</span><span class="p">,</span>   <span class="c1"># we specify events.tsv files, but not for restNoise. </span>
+                                <span class="c1"># In order to not get one warning per restNoise recording in the dataset, </span>
+                                <span class="c1"># we ignore the code. </span>
     <span class="p">],</span>
-    <span class="n">ignored_fields</span><span class="o">=</span><span class="p">[</span> <span class="c1"># We ignore some fields that would produce warnings</span>
-        <span class="s2">"SourceDatasets"</span><span class="p">,</span> <span class="c1"># there isn't one</span>
-        <span class="s2">"DeviceSerialNumber"</span><span class="p">,</span> <span class="c1"># no hardware was used to record this dataset</span>
-        <span class="s2">"SoftwareVersions"</span><span class="p">,</span> <span class="c1"># this also pertains to measurement hardware </span>
-        <span class="s2">"InstitutionName"</span><span class="p">,</span> <span class="c1"># we also don't want to specify an affiliated institution </span>
+    <span class="n">ignored_fields</span><span class="o">=</span><span class="p">[</span>            <span class="c1"># We ignore some fields that would produce warnings</span>
+        <span class="s2">"SourceDatasets"</span><span class="p">,</span>       <span class="c1"># there isn't one</span>
+        <span class="s2">"DeviceSerialNumber"</span><span class="p">,</span>   <span class="c1"># no hardware was used to record this dataset</span>
+        <span class="s2">"SoftwareVersions"</span><span class="p">,</span>     <span class="c1"># this also pertains to measurement hardware </span>
+        <span class="s2">"InstitutionName"</span><span class="p">,</span>      <span class="c1"># we also don't want to specify an affiliated institution </span>
         <span class="s2">"InstitutionAddress"</span><span class="p">,</span>
         <span class="s2">"InstitutionalDepartmentName"</span><span class="p">,</span>
 
-        <span class="s2">"HEDVersion"</span><span class="p">,</span> <span class="c1"># we don't use HED. </span>
+        <span class="s2">"HEDVersion"</span><span class="p">,</span>           <span class="c1"># we don't use HED. </span>
         <span class="s2">"StimulusPresentation"</span><span class="p">,</span> <span class="c1"># we also ignore this, to not clutter this jupyter notebook. </span>
 
-        <span class="c1"># We have different ElectrodeManufacturer and ElectrodeManufacturersModelName per electrode, so we specify it on a per electrode basis in the electrodes.tsv file, rather than inside of emg.json (as mandated by the BIDS documentation for this case). However at the time of writing this script, the Validator is not smart enough to understand this. So we ignore the raised warning. </span>
+        <span class="c1"># We have different ElectrodeManufacturer and ElectrodeManufacturersModelName per electrode, </span>
+        <span class="c1"># so we specify it on a per electrode basis in the electrodes.tsv file, rather than inside </span>
+        <span class="c1"># of emg.json (as mandated by the BIDS documentation for this case). However at the time </span>
+        <span class="c1"># of writing this tutorial, the Validator is not smart enough to understand this. </span>
+        <span class="c1"># So we ignore the raised warning. </span>
         <span class="s2">"ElectrodeManufacturer"</span><span class="p">,</span> 
         <span class="s2">"ElectrodeManufacturersModelName"</span><span class="p">,</span> 
     <span class="p">],</span>
@@ -8780,7 +8900,7 @@ Your BIDS dataset contains 0 errors and 0 warnings
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [42]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [64]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">labels_dataset_sidecar</span> <span class="o">=</span> <span class="p">{</span>
@@ -8820,13 +8940,13 @@ Your BIDS dataset contains 0 errors and 0 warnings
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [43]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [65]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">participant_id</span> <span class="ow">in</span> <span class="n">subjects_data</span><span class="p">[</span><span class="s2">"participant_id"</span><span class="p">]:</span>
     
     <span class="n">subject_label</span> <span class="o">=</span> <span class="n">participant_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Bidsifying data of sub-</span><span class="si">{</span><span class="n">subject_label</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="c1"># Print progress</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Bidsifying motor unit labels of sub-</span><span class="si">{</span><span class="n">subject_label</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="c1"># Print progress</span>
 
     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">task</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tasks</span><span class="p">):</span>
 
@@ -8838,8 +8958,8 @@ Your BIDS dataset contains 0 errors and 0 warnings
         <span class="n">n_spikes</span> <span class="o">=</span> <span class="mi">20</span>
         <span class="n">spikes_times</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_units</span><span class="p">)}</span>
         <span class="k">for</span> <span class="n">unit_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_units</span><span class="p">):</span>
-            <span class="n">spikes_times</span><span class="p">[</span><span class="n">unit_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span>
-                <span class="n">low</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">2048</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_spikes</span><span class="p">)</span>
+            <span class="n">spikes_times</span><span class="p">[</span><span class="n">unit_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span>
+                <span class="n">low</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">2048</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_spikes</span><span class="p">))</span>
 
         <span class="n">decomposed_recording</span> <span class="o">=</span> <span class="n">BIDSDecompositionDerivative</span><span class="p">(</span>
             <span class="n">parent_dataset</span><span class="o">=</span><span class="n">dataset_labels</span><span class="p">,</span>
@@ -8863,12 +8983,12 @@ Your BIDS dataset contains 0 errors and 0 warnings
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Bidsifying data of sub-01
-Bidsifying data of sub-02
-Bidsifying data of sub-03
-Bidsifying data of sub-04
-Bidsifying data of sub-05
-Bidsifying data of sub-06
+<pre>Bidsifying motor unit labels of sub-01
+Bidsifying motor unit labels of sub-02
+Bidsifying motor unit labels of sub-03
+Bidsifying motor unit labels of sub-04
+Bidsifying motor unit labels of sub-05
+Bidsifying motor unit labels of sub-06
 </pre>
 </div>
 </div>
