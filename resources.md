@@ -6,6 +6,14 @@ feature_image: "/Images/header.jpeg"
 
 All tutorials and reference material are available both below and in the [MUnitQuest Tutorials](https://github.com/MUnitQuest/MUnitQuest_tutorials) repository on GitHub. As registration and submission are handled through Codabench, dedicated platform tutorials are included alongside the technical content below.
 
+### Competition Data
+
+The competition data is availible on [DaRUS](https://darus.uni-stuttgart.de/dataverse/munitquest-algorithm-challenge) guarnteeing data sharing under the FAIR (Findable, Accesible, Interoperable and Reusable) principles.
+
+[Go to the Isometric Familiarization Data Collection →](https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/DARUS-6143)
+
+[Go to the Dynamic Familiarization Data Collection →](https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/DARUS-6144)
+
 ### Codabench
 
 [Codabench](https://www.codabench.org/) is an open-source platform for data science competitions and is used in **MUnitQuest** to handle submissions to both the [Data challenge](/data-challenge/) and the [Algorithm challenge](/algorithm-challenge/). We provide a Codabench Tutorial to help you learn how to register on Codabench, form a Team, make a submission, etc.   
@@ -48,4 +56,7 @@ The [online BIDS validator](https://bids-standard.github.io/bids-validator/) all
 
 Jupyter notebooks to help algorithm developers get started with the MUnitQuest training data and submission pipeline.
 
-*Coming soon.*
+[Go to the tutorial notebook for the Isometric Challenge →](https://github.com/MUnitQuest/MUnitQuest_tutorials/blob/main/algorithm_challenge_tutorials/01_familiarisation_isometric.ipynb)
+
+[Go to the tutorial notebook for the Dynamic Challenge →](https://github.com/MUnitQuest/MUnitQuest_tutorials/blob/main/algorithm_challenge_tutorials/02_familiarisation_dynamic.ipynb)
+

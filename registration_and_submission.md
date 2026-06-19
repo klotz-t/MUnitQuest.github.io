@@ -80,10 +80,10 @@ If your Step 4 submission is successful, a link will be provided to upload the c
 
 #### Algorithm submission
 
-This is a prediction submission competition. During both the **Familiarization Phase** and the **Showdown Phase**, you will be asked to upload, for each recording, a tabular file (`recordingName_events.tsv`) containing your predicted motor unit spikes (BIDS-events file) together with a log file (`recordingName_log.json`) describing essential process metadata (further details to be announced). Submissions apply to both tasks (**Isometric** and **Dynamic**) independently. To be eligible for awards, you need to share your code openly (e.g., on GitHub) upon the completion of the competition.
+This is a prediction submission competition. During both the **Familiarization Phase** and the **Showdown Phase**, you will be asked to upload, for each recording, a tabular file (`*desc-decomposed_events.tsv`) containing your predicted motor unit spikes (BIDS-events file) together with a log file (`*desc-decomposed_log.json`) describing essential process metadata (further details to be announced). Submissions apply to both tasks (**Isometric** and **Dynamic**) independently. To be eligible for awards, you need to share your code openly (e.g., on GitHub) upon the completion of the competition.
 
 
-#### Example: how to report motor unit spike trains
+#### How to report motor unit spike trains
 
 Here is a minimal example of the format ([BIDS-event file](https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files/events.html)) used for submitting motor unit spike trains (both for labels and algorithm predictions):    
 
@@ -96,9 +96,38 @@ Here is a minimal example of the format ([BIDS-event file](https://bids-specific
 | 0.016     | 0            | 16         | 1           | motor-unit-spike      |
 | ...       | ...          | ...        | ...         | ...      |
 
-- *onset*: Onset (in seconds) of the event, measured from the beginning of the acquisition.
-- *duration*: Duration of the event (measured from onset) in seconds. As a motor unit spike can be regarded as a Dirac impulse, its duration is zero.  
-- *sample*: Sample index of the event onset (zero-indexing).
-- *unit_id*: Unique identifier (integer value) of the motor unit corresponding to the detected spike.
-- *description*: Human-readable free-text description of the event. Here, it should always be "motor-unit-spike".
+- ``onset:`` Onset (in seconds) of the event, measured from the beginning of the acquisition.
+- ``duration:`` Duration of the event (measured from onset) in seconds. As a motor unit spike can be regarded as a Dirac impulse, its duration is zero.  
+- ``sample:`` Sample index of the event onset (zero-indexing).
+- ``unit_id:`` Unique identifier (integer value) of the motor unit corresponding to the detected spike.
+- ``description:`` Human-readable free-text description of the event. Here, it should always be "motor-unit-spike".
+
+> If you do manual post-processing, we encourage using an additional column ``curation_status`` (optional), and assigning each event a label such as ``accepted_spike``, ``rejected_spike``, or ``added_spike``. For rejected spikes, change the description to a key such as ``artifact`` or ``MISC`` (the scoring function will only consider events that have the description ``motor-unit-spike``).   
+
+#### How to report process metadata
+
+Here is a minimal example for the log-file:
+
+```json
+{
+    "GeneratedBy": [{
+        "Name": "MUnitQuest Tutorials",
+        "Description": "Minimal Example",
+        "CodeURL": "https://munitquest.github.io/",
+        "License": "MIT",
+    }],
+    "Execution": {
+        "Runtime": 42,   
+    },
+    "RuntimeEnvironment": {
+        "CPU": "CPU Info",
+        "GPU": "GPU Info",
+        "RAM": "RAM in GB"
+    }
+}
+```
+
+The runtime is the total wall-clock execution time for your algorithm (in seconds, reported as a number). The CodeURL is required even if your repository is private — it is used to verify algorithm identity, not to access the code.
+
+
  
